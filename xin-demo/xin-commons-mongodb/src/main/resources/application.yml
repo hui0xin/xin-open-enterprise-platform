@@ -1,0 +1,18 @@
+## 应用名称
+spring:
+  application:
+    name: mongodb-server
+
+## 端口号
+server:
+  port: 6666
+
+---
+## mongodb config
+spring:
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      #指定操作的数据库
+      database: test

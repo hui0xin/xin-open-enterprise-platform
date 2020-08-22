@@ -1,0 +1,315 @@
+# application name
+spring:
+  application:
+    name: @spring.application.name@
+
+# port
+server:
+  port: @server.port@
+  tomcat:
+    uri-encoding: UTF-8
+    # 最大线程数
+    max-threads: @server.tomcat.max-threads@
+    # 最大连接数
+    max-connections: @server.tomcat.max-connections@
+    # 最大排队数
+    accept-count: 6000
+
+---
+#上传 文件限制
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      #单个数据的大小 可以使用MB活着kb 默认是1MB
+      max-file-size: 10MB
+      #总数据的大小 可以使用MB活着kb 默认是10MB
+      #设置上传文件的临时目录
+      #location :
+      max-request-size: 100MB
+      #设置文件缓存的临界点,超过则先保存到临时目录 值可以使用后缀“mb”或“kb” 默认是0
+      file-size-threshold: 0
+      #是否在文件或参数访问时延迟解析多部分请求。默认是fasle
+      resolve-lazily: false
+
+
+#API网关配置
+zuul:
+  #add-proxy-headers: true
+  # 此处解决后端服务重定向导致用户浏览的 host 变成 后端服务的 host 问题
+  add-host-header: true
+#  ribbonIsolationStrategy: THREAD #设置Hystrix隔离策略为线程池
+#  threadPool:
+#    useSeparateThreadPools: true #每个路由使用独立的线程池
+  #是否开启路由重试
+#  retryable: true
+  # 忽略掉所有注册在eureka上的路由，使用自定义路由规则
+  ignored-services: '*'
+  #ignoredHeaders会过滤服务之间通信附带的headers ,sensitiveHeaders会过滤客户端附带的headers
+  sensitive-headers: Access-Control-Allow-Origin
+  ignored-headers: Access-Control-Allow-Origin
+  # 排除一些接口 不做路由(进不了网关)
+  ignored-patterns:
+    - /**/openapi/**
+    - /**/**/inner/**
+    - /**/inner/**
+    - /**/**/svr/**
+    - /**/svr/**
+  # 路由规则
+  routes:
+    sunFlowerService:
+      path: /sunflower/**
+      # serviceId 不配置的时候，sunFlowerService 为serverid
+      serviceId: innovate-sunflower
+      # stripPrefix=false url不会截取前缀 默认为true
+      stripPrefix: false
+      #关闭该服务的重试机制：
+      retryable: false
+    auth-server:
+      path: /auth/**
+      stripPrefix: false
+    # 重定向
+    user-server:
+      path: /user/login
+      serviceId: user-server
+      stripPrefix: false
+    uaa:
+      path: /uaa/**
+      strip-prefix: true
+      sensitiveHeaders:
+      serviceId: auth2.0-center
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      access-token-uri: http://10.10.8.2:9030/uaa/oauth/token ##网关的地址
+      user-authorization-uri: http://10.10.8.2:9030/uaa/oauth/authorize
+    resource:
+      user-info-uri:  http://10.10.8.2:9030/uaa/user
+      prefer-token-info: false
+
+---
+ #限流
+zuul:
+  ratelimit:
+    # 对应存储类型（用来存储统计信息） IN_MEMORY #key存储类型，默认是IN_MEMORY本地内存，此外还有多种形式 redis
+    repository: IN_MEMORY
+    # 对应用来标识请求的key的前缀
+    key-prefix: your-prefix
+    # 启动限流服务
+    enabled: true
+    #代理之后
+    behind-proxy: true
+    # default-policy: #全局限流策略，可单独细化到服务粒度
+    default-policy:
+      # 请求数量
+      limit: 100
+      # 请求总时间
+      quota: 20
+      # 统计窗口刷新时间
+      refresh-interval: 60
+      # 限流类型 user origin url
+      type:
+        - user #可指定用户粒度
+        - origin #可指定客户端地址粒度
+        - url #可指定url粒度
+    policies:
+      #特定的路由 serverId
+      auth-server:
+        limit: 10 #可选- 每个刷新时间窗口对应的请求数量限制
+        quota: 1000 #可选-  每个刷新时间窗口对应的请求时间限制（秒）
+        refresh-interval: 60 # 刷新时间窗口的时间，默认值 (秒)
+        type: #可选 限流方式
+          - user
+          - origin
+          - url
+
+## 配置在该处的接口（不做token认证）
+services:
+  token-ignored-urls:
+    - /user/login
+    - /auth/user/login
+
+  #不做签名认证
+  sig-ignored-urls:
+    - /user/checkname
+    - /auth/check
+
+##重定向
+redirect:
+  routes:
+    ## 这里只是一个标示，不要重复就可以
+    userredirect:
+      ## 原来请求接口 ，跳转到其他接口
+      ## 这里注意 最好使用全局路径，或者路径尽量长，不然可能会导致其接口被转发
+      ## /user/hh/** , /auth/mm/hh1/**
+      paths: /user/login , /auth/user/login
+      ## 原始请求服务serverId  ，调转的新的服务的serverId
+      serviceIds: user-server, auth-server
+
+
+# 开启断路器 新版本的fegin自带断路器
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      #默认 超时时间
+      default:
+        connect-timeout: 3000
+        read-timeout: 15000
+#      # activity 单个服务 超时时间
+#      user-server:
+#        connect-timeout: 10000
+#        read-timeout: 20000
+
+---
+#该参数用来开启重试机制，默认是关闭
+spring:
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+
+
+# 如果你在zuul配置了熔断fallback的话，熔断超时也要配置
+# 上传大文件得将超时时间设置长一些，否则会报超时异常。
+hystrix:
+  command:
+    # default 默认所有的设置，这里可以是具体的服务 例如：activity
+    default:
+      execution:
+        isolation:
+          #THREAD —— 在固定大小线程池中，以单独线程执行，并发请求数受限于线程池大小。
+          #SEMAPHORE —— 在调用线程中执行，通过信号量来限制并发量。
+          strategy: THREAD #隔离策略是Thread 默认是这个
+          thread:
+            #默认=1000（毫秒） 断路器的超时时间需要大于ribbon的超时时间，不然不会触发重试
+            timeoutInMilliseconds: 38000
+            #发生超时是是否中断，默认true
+            interruptOnTimeout: true
+        timeout:
+          # 执行是否启用超时
+          enabled: true
+      circuitBreaker:
+        #当在配置时间窗口内达到此数量的失败后，进行短路。默认20个）
+        requestVolumeThreshold: 20
+        #短路多久以后开始尝试是否恢复，默认5s
+        sleepWindowInMilliseconds: 5000
+        #出错百分比阈值，当达到此阈值后，开始短路。默认50%
+        errorThresholdPercentage: 50
+  threadpool:
+    default:
+      #并发执行的最大线程数，默认10
+      coreSize: 100
+      #BlockingQueue的最大队列数，当设为－1，会使用SynchronousQueue，值为正时使用LinkedBlcokingQueue。
+      #该设置只会在初始化时有效，之后不能修改threadpool的queue size，除非reinitialising thread executor。默认－1。
+      maxQueueSize: -1
+      #即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝。
+      #因为maxQueueSize不能被动态修改，这个参数将允许我们动态设置该值。if maxQueueSize == -1，该字段将不起作用
+      queueSizeRejectionThreshold: -1
+      #如果corePoolSize和maxPoolSize设成一样（默认实现）该设置无效。
+      #如果通过plugin（https://github.com/Netflix/Hystrix/wiki/Plugins）使用自定义实现，该设置才有用，默认1.
+      keepAliveTimeMinutes: 1
+
+
+# ribbon config 负载均衡配置
+#根据如下配置，当访问到故障请求的时候，它会再尝试访问一次当前实例（次数由MaxAutoRetries配置），
+#如果不行，就换一个实例进行访问，如果还是不行，再换一次实例访问（更换次数由MaxAutoRetriesNextServer配置），
+#如果依然不行，返回失败信息。
+ribbon:
+#  httpclient:
+#    # 关闭 httpclient 支持
+#    enabled: false
+#  okhttp:
+#    # 开启 okhttp 支持
+#    enabled: true
+  #ribbon请求连接的超时时间- 限制3秒内必须请求到服务，并不限制服务处理的返回时间
+  #ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
+  #ribbonTimeout = (15000 + 3000) * (1 + 0) * (1 + 1) = 36000
+  ConnectTimeout: 3000
+  #请求处理的超时时间 下级服务响应最大时间,超出时间消费方（路由也是消费方）返回timeout
+  ReadTimeout: 15000
+  # 是否开启重试 对所有操作请求都进行重试
+#  OkToRetryOnAllOperations: true
+  # 重试期间，切换实例的重试次数
+  MaxAutoRetriesNextServer: 1
+  # 当前实例重试次数
+  MaxAutoRetries: 0
+  #负载策略
+  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+  eureka:
+    #false将明确禁用在Ribbon中使用Eureka
+    enabled: true
+
+
+#配置具体服务ribbon负载均衡策略 这里的配置要优先于 全局配置
+# 单独设置某个服务的超时时间，会覆盖其他的超时时间限制，服务的名称已注册中心页面显示的名称为准，超时时间不可大于断路器的超时时间
+#user-server:
+#  ribbon:
+##    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #随机
+##    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #轮询
+##    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RetryRule # 重试
+##    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule # 响应时间权重
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule # 最空闲连接策略
+#    ConnectTimeout: 1500 #请求连接超时时间
+#    ReadTimeout: 2000 #请求处理的超时时间
+#    OkToRetryOnAllOperations: true #对所有请求都进行重试
+#    MaxAutoRetriesNextServer: 2 #切换实例的重试次数
+#    MaxAutoRetries: 1 #对当前实例的重试次数
+
+# 允许/actuator/bus-refresh接口被外部调用
+management:
+  endpoints:
+    web:
+      exposure:
+        # 开放监控内容
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true #启用shutdown端点
+    health:
+      # health/detail 细节（）
+      show-details: always
+
+---
+## redis config
+spring:
+  redis:
+    # Redis数据库索引（默认为0）
+    database: 0
+    host: @spring.redis.host@
+    port: @spring.redis.port@
+    # 超时时间
+    timeout: @spring.redis.timeout@
+    password: @spring.redis.password@
+#    cluster:
+#      nodes: 192.168.211.134:7000,192.168.211.134:7001
+#      -
+#      max-redirects:
+#    sentinel:
+#      master: master1
+#      nodes: 172.16.33.216:16001,172.16.33.216:16002
+    lettuce:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: @spring.redis.lettuce.pool.max-active@
+        # 连接池中的最大空闲连接
+        max-idle: @spring.redis.lettuce.pool.max-idle@
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: @spring.redis.lettuce.pool.max-wait@
+        # 连接池中的最小空闲连接
+        min-idle: @spring.redis.lettuce.pool.min-idle@
+
+## 日志配置
+logging:
+  config: classpath:logs/logback-spring.xml
+
+---
+#控制台输出彩色
+spring:
+  output:
+    ansi:
+      enabled: always
+

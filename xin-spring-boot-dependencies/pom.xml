@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--springboot版本-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.6.RELEASE</version>
+    </parent>
+
+    <groupId>com.xin.commons</groupId>
+    <artifactId>xin-spring-boot-dependencies</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+
+    <description>公司项目所有基于springboot开发的组件及应用的版本管理都在这里</description>
+    <!--个人博客地址-->
+    <url>https://www.jianshu.com/u/6ad247189165</url>
+
+    <!--商标，许可信息-->
+    <licenses>
+        <license>
+            <name>xin License, Version 1.0</name>
+            <url>http://www.xin.org/licenses/LICENSE-1.0</url>
+        </license>
+    </licenses>
+
+    <!--开发者的信息-->
+    <developers>
+        <developer>
+            <id>xin</id>
+            <name>xin</name>
+            <email>hxniit@126.com</email>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <url>http://www.xin.com</url>
+            <organization>xin</organization>
+            <organizationUrl>http://www.xin.com</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <!--开发组织的信息-->
+    <organization>
+        <name>xin Inc.</name>
+        <url>http://www.xin.com</url>
+    </organization>
+    <inceptionYear>2020</inceptionYear>
+
+    <!--代码仓库-->
+    <scm>
+        <connection>${project.gitlab.url}</connection>
+        <developerConnection>${project.gitlab.url}</developerConnection>
+        <url>${project.gitlab.group}</url>
+    </scm>
+
+    <!--版本管理-->
+    <properties>
+
+        <!--gitlib的分组和地址 ；暂时这里都是虚拟的，可以替换为公司真正的地址-->
+        <project.gitlab.group>http://gitlab.xin.com/xin-commons/</project.gitlab.group>
+        <project.gitlab.url>git@gitlab.xin.com:xin-commons/xin-spring-boot-dependencies.git</project.gitlab.url>
+
+        <!--docker config-->
+        <push.image>true</push.image>
+        <docker.serverId>xin-docker-hub</docker.serverId>
+        <docker.repostory>xin.com</docker.repostory>
+        <docker.registry.name>xin_repository</docker.registry.name>
+
+        <!-- java版本 -->
+        <java.version>1.8</java.version>
+        <!-- java 字符集 -->
+        <java.encoding>UTF-8</java.encoding>
+        <!-- 定义项目字符集编码 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- springcloud 版本 -->
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
+
+        <!-- spring 相关包-->
+        <spring-boot-admin.version>2.2.2</spring-boot-admin.version>
+        <spring-statemachine-core.version>2.2.0.RELEASE</spring-statemachine-core.version>
+        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+        <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
+        <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
+        <spring-cloud-zuul-ratelimit.version>2.4.0.RELEASE</spring-cloud-zuul-ratelimit.version>
+
+        <!-- 数据库操作 相关包-->
+        <mysql-connector-java.version>8.0.19</mysql-connector-java.version>
+        <!-- <mysql-connector-java.version>5.1.47</mysql-connector-java.version>-->
+        <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
+        <pagehelper-spring-boot-starter.version>1.2.13</pagehelper-spring-boot-starter.version>
+        <druid-spring-boot-starter.version>1.1.21</druid-spring-boot-starter.version>
+
+        <!-- redis相关包 相关包-->
+        <jedis.version>3.2.0</jedis.version>
+        <lettuce-core.version>5.2.2.RELEASE</lettuce-core.version>
+
+        <!-- 第三方类库依赖 -->
+        <commons-lang3.version>3.10</commons-lang3.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <commons-email.version>1.5</commons-email.version>
+        <commons-pool2.version>2.8.0</commons-pool2.version>
+
+        <lombok.version>1.18.12</lombok.version>
+        <apollo-client.version>1.5.1</apollo-client.version>
+        <jjwt.version>0.9.1</jjwt.version>
+        <guava.version>28.2-jre</guava.version>
+        <okhttp.version>4.4.1</okhttp.version>
+        <fastjson.version>1.2.68</fastjson.version>
+        <jackson.version>2.10.3</jackson.version>
+        <jackson-mapper.version>1.9.13</jackson-mapper.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <aspectjrt.version>1.9.6</aspectjrt.version>
+
+        <feign-form.version>3.8.0</feign-form.version>
+        <feign-form-spring.version>3.8.0</feign-form-spring.version>
+    </properties>
+
+    <!-- 管理依赖  -->
+    <dependencyManagement>
+        <dependencies>
+            <!--spring cloud 版本管理 最新版本（Finchley.RELEASE）-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.openfeign.form</groupId>
+                <artifactId>feign-form</artifactId>
+                <version>${feign-form.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.openfeign.form</groupId>
+                <artifactId>feign-form-spring</artifactId>
+                <version>${feign-form.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.statemachine</groupId>
+                <artifactId>spring-statemachine-core</artifactId>
+                <version>${spring-statemachine-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ctrip.framework.apollo</groupId>
+                <artifactId>apollo-client</artifactId>
+                <version>${apollo-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-email</artifactId>
+                <version>${commons-email.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson-mapper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectjrt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.lettuce</groupId>
+                <artifactId>lettuce-core</artifactId>
+                <version>${lettuce-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox-swagger-ui.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>swagger-bootstrap-ui</artifactId>
+                <version>${swagger-bootstrap-ui.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-server-ui</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.marcosbarbero.cloud</groupId>
+                <artifactId>spring-cloud-zuul-ratelimit</artifactId>
+                <version>${spring-cloud-zuul-ratelimit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ctrip.framework.apollo</groupId>
+                <artifactId>apollo-client</artifactId>
+                <version>${apollo-client.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!--parent-->
+    <parent>
+        <groupId>com.xin.commons</groupId>
+        <artifactId>xin-spring-boot-dependencies</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.xin.commons</groupId>
+    <artifactId>xin-spring-boot-starter-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+
+    <description>公司所有项目的父pom，所有项目都依赖它</description>
+    <!--个人博客地址-->
+    <url>https://www.jianshu.com/u/6ad247189165</url>
+
+    <!--版本管理-->
+    <properties>
+        <xin-commons-redis.version>1.0-SNAPSHOT</xin-commons-redis.version>
+        <xin-commons-lock.version>1.0-SNAPSHOT</xin-commons-lock.version>
+        <xin-commons.version>1.0-SNAPSHOT</xin-commons.version>
+        <xin-commons-support.version>1.0-SNAPSHOT</xin-commons-support.version>
+        <xin-commons-support-web.version>1.0-SNAPSHOT</xin-commons-support-web.version>
+        <xin-commons-support-log.version>1.0-SNAPSHOT</xin-commons-support-log.version>
+        <xin-commons-mail.version>1.0-SNAPSHOT</xin-commons-mail.version>
+        <xin-file-upload-sdk>1.0-SNAPSHOT</xin-file-upload-sdk>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-commons-redis</artifactId>
+                <version>${xin-commons-redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-commons-lock</artifactId>
+                <version>${xin-commons-lock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-commons</artifactId>
+                <version>${xin-commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-commons-mail</artifactId>
+                <version>${xin-commons-mail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-commons-support</artifactId>
+                <version>${xin-commons-support.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-commons-support-web</artifactId>
+                <version>${xin-commons-support-web.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-commons-support-log</artifactId>
+                <version>${xin-commons-support-log.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-file-upload-sdk</artifactId>
+                <version>${xin-file-upload-sdk.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <!--构建项目-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${java.encoding}</encoding>
+                </configuration>
+                <version>${maven-compiler-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-source</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+<!--    &lt;!&ndash; 指定仓库&ndash;&gt;-->
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>nexus-xin-releases</id>-->
+<!--            <url>http://nexus.xin.com/repository/maven-releases/</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>nexus-xin-snapshots</id>-->
+<!--            <url>http://nexus.xin.com/repository/maven-snapshots/</url>-->
+<!--            <releases>-->
+<!--                <enabled>false</enabled>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+
+<!--    &lt;!&ndash; 指定插件仓库仓库&ndash;&gt;-->
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>nexus-xin-releases</id>-->
+<!--            <url>http://nexus.xin.com/repository/maven-releases/</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--        <pluginRepository>-->
+<!--            <id>nexus-xin-snapshots</id>-->
+<!--            <url>http://nexus.xin.com/repository/maven-snapshots/</url>-->
+<!--            <releases>-->
+<!--                <enabled>false</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
+
+<!--    &lt;!&ndash; 项目发布&ndash;&gt;-->
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>nexus-xin-releases</id>-->
+<!--            <url>http://nexus.xin.com/repository/maven-releases/</url>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--            <id>nexus-xin-snapshots</id>-->
+<!--            <url>http://nexus.xin.com/repository/maven-snapshots/</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
+
+</project>

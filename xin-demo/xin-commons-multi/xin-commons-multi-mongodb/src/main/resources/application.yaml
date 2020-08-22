@@ -1,0 +1,17 @@
+# application name
+spring:
+  application:
+    name: multi-mongodb
+
+# port
+server:
+  port: 6666
+
+mongodb:
+  primary:
+    uri: mongodb://192.168.0.75:20000
+    database: primary
+  secondary:
+    uri: mongodb://192.168.0.75:20000
+  database: secondary
+

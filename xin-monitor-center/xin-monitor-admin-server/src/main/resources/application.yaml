@@ -1,0 +1,114 @@
+# application name
+spring:
+  application:
+    name: @spring.application.name@
+
+# port
+server:
+  port: @server.port@
+  tomcat:
+    uri-encoding: UTF-8
+    # 最大线程数
+    max-threads: @server.tomcat.max-threads@
+    # 最大连接数
+    max-connections: @server.tomcat.max-connections@
+
+info:
+  groupId: @project.groupId@
+  artifactId: @project.artifactId@
+  version: @project.version@
+
+---
+spring:
+  security:
+    user:
+      # SpringBootAdmin登录时的用户名和密码
+      name: @spring.security.user.name@
+      password: @spring.security.user.password@
+
+---
+# 这里表示只监控以下在eureka注册的服务
+spring:
+  boot:
+    admin:
+      discovery:
+        services:
+          - file-upload-server
+          - api-gateway-server
+          - config-server
+          - hystrix-dashboard-server
+          - hystrix-turbine-server
+
+      ui:
+        title: 微服务监控平台
+      #要获取的client的端点信息
+#      probed-endpoints: health, env, metrics, httptrace:trace, threaddump:dump, jolokia, info, logfile, refresh, flyway, liquibase, heapdump, loggers, auditevents
+      monitor:
+        #查询client状态信息时的读取超时时间，单位是毫秒，默认是2秒
+        read-timeout: 5000
+        #查询client状态信息时的连接超时时间，单位是毫秒，默认是2秒
+        connect-timeout: 5000
+        #client端状态的生命周期，该生命周期内不会更新client状态。单位是毫秒，默认值是10秒钟；
+        status-lifetime: 8000
+        #更新client端状态的时间间隔，单位是毫秒，默认值是10秒钟；
+        period: 8000
+      #server端的访问路径，默认是/
+      context-path: /
+
+# 允许/actuator/bus-refresh接口被外部调用
+management:
+  endpoints:
+    web:
+      exposure:
+        # 开放监控内容
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true #启用shutdown端点
+    health:
+      # health/detail 细节（）
+      show-details: always
+
+---
+#邮件通知配置
+spring:
+  mail:
+    host: smtp.exmail.qq.com
+    username: xin
+    password: xxxx
+    properties:
+      mail.debug: false
+      mail.smtp.auth: true   #安全认证(默认是true)
+#      mail.smtp.ssl.enable: true  #开启ssl加密 否则项目启动时报530error
+#      mail.smtp.ssl.socketFactory: sf
+#      mail.smtp.starttls.enable: true
+#      mail.smtp.starttls.required: true
+  boot:
+    admin:
+      notify:
+        mail:
+          from: hxniit@126.com
+          to: @spring.boot.admin.notify.mail.to@
+          #  #从任何状态到up状态都不要发邮件通知
+          ignore-changes: @spring.boot.admin.notify.mail.ignore-changes@
+#            - "*:UP"
+#            - UP:OFFLINE
+#            - UNKNOWN:OFFLINE
+#            - OFFLINE:UNKNOWN
+#            - "DOWN:*"
+#          to:
+#            - 1122@qq.com.com
+#            - 2222@qq.com.com
+
+
+## 日志配置
+logging:
+  config: classpath:logs/logback-spring.xml
+
+---
+#控制台输出彩色
+spring:
+  output:
+    ansi:
+      enabled: always
+

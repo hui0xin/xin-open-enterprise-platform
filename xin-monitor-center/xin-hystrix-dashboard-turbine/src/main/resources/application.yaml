@@ -1,0 +1,65 @@
+# application name
+spring:
+  application:
+    name: @spring.application.name@
+
+# port
+server:
+  port: @server.port@
+  tomcat:
+    uri-encoding: UTF-8
+    # 最大线程数
+    max-threads: @server.tomcat.max-threads@
+    # 最大连接数
+    max-connections: @server.tomcat.max-connections@
+
+turbine:
+  # turbine.appConfig ：配置Eureka中的serviceId列表，表明监控哪些服务
+  appConfig: servicId1,servicId2
+  #turbine.aggregator.clusterConfig ：指定聚合哪些集群，多个使用","分割，默认为default。
+  #可使用http://.../turbine.stream?cluster={clusterConfig之一}访问
+  aggregator:
+    # 需要聚合的集群的名字列表，和服务消费者里面的eureka.instance.metadata-map.cluster的值一致 默认 default
+    clusterConfig: default
+  # 为true 表示可以让同一主机上的服务通过主机名和端口号的组合来进行区分
+  combine-host-port: true
+  #指定集群名称，默认表达式appName；此时：turbine.aggregator.clusterConfig需要配置想要监控的应用名称；
+  #当clusterNameExpression: default时，turbine.aggregator.clusterConfig可以不写，因为默认就是default；
+  #3. 当clusterNameExpression: metadata['cluster']时，假设想要监控的应用配置了eureka.instance.metadata-map.cluster: ABC，则需要配置，同时turbine.aggregator.clusterConfig: ABC
+  clusterNameExpression: new String("default")
+  # instanceUrlSuffix=/xxx/hystrix:
+
+---
+##rabbitmq配置
+spring:
+  rabbitmq:
+    host: 10.0.0.1
+    port: 5672
+    username: admin
+    password: admin
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # 开放监控内容
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true #启用shutdown端点
+    health:
+      # health/detail 细节（）
+      show-details: always
+
+## 日志配置
+logging:
+  config: classpath:logs/logback-spring.xml
+  levels: @logging.levels@
+
+---
+#控制台输出彩色
+spring:
+  output:
+    ansi:
+      enabled: always
+

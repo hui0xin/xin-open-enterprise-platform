@@ -1,0 +1,17 @@
+# eureka 注册中心
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: @eureka.client.serviceUrl.defaultZone@
+    # 表示eureka client间隔多久去拉取服务注册信息，默认为30秒
+    registry-fetch-interval-seconds: @eureka.client.registryFetchIntervalSeconds@
+  instance:
+    #表示eureka server至上一次收到client的心跳之后，等待下一次心跳的超时时间 默认90秒
+    lease-expiration-duration-in-seconds: @eureka.instance.leaseExpirationDurationInSeconds@
+    #表示eureka client发送心跳给server端的频率，即每30秒发送一次心跳 默认30秒
+    lease-renewal-interval-in-seconds: @eureka.instance.leaseRenewalIntervalInSeconds@
+    health-check-url-path: /actuator/health
+    # 配置SpringBootAdmin登录使用的密码
+    metadata-map:
+      user.name: @spring.security.user.name@
+      user.password: @spring.security.user.password@

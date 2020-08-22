@@ -1,0 +1,20 @@
+## 应用名称
+spring:
+  application:
+    name: elasticsearch-server
+
+## 端口号
+server:
+  port: 6666
+
+---
+spring:
+  data:
+    elasticsearch:
+      # 集群名称
+      cluster-name: elasticsearch
+      # 集群，用，隔开
+      cluster-nodes: 127.0.0.1:9300
+      repositories:
+        # 是否开启es仓库
+        enabled: true

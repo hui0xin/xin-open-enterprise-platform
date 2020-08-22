@@ -1,0 +1,20 @@
+# eureka 注册中心
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: @eureka.client.serviceUrl.defaultZone@
+    # 表示eureka client间隔多久去拉取服务注册信息，默认为30秒
+    registry-fetch-interval-seconds: @eureka.client.registryFetchIntervalSeconds@
+    #需要将我的服务注册到eureka上
+    #register-with-eureka: true
+    #需要检索服务
+    #fetch-registry: true
+  instance:
+    #表示eureka server至上一次收到client的心跳之后，等待下一次心跳的超时时间 默认90秒 超过则剔除
+    lease-expiration-duration-in-seconds: @eureka.instance.leaseExpirationDurationInSeconds@
+    #表示eureka client发送心跳给server端的频率，即每30秒发送一次心跳 默认30秒
+    lease-renewal-interval-in-seconds: @eureka.instance.leaseRenewalIntervalInSeconds@
+    # 启用ip配置 这样在注册中心列表中看见的是以ip+端口呈现的
+    #prefer-ip-address: true
+    # 实例名称  最后呈现地址：ip:2002
+    #instance-id: ${spring.cloud.client.ip-address}:${server.port}

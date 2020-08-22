@@ -1,0 +1,40 @@
+# application name
+spring:
+  application:
+    name: @spring.application.name@
+
+# port
+server:
+  port: @server.port@
+  tomcat:
+    uri-encoding: UTF-8
+    # 最大线程数
+    max-threads: @server.tomcat.max-threads@
+    # 最大连接数
+    max-connections: @server.tomcat.max-connections@
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # 开放监控内容
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true #启用shutdown端点
+    health:
+      # health/detail 细节（）
+      show-details: always
+
+## 日志配置
+logging:
+  config: classpath:logs/logback-spring.xml
+  levels: @logging.levels@
+
+---
+#控制台输出彩色
+spring:
+  output:
+    ansi:
+      enabled: always

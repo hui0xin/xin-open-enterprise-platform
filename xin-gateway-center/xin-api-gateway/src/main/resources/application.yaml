@@ -1,0 +1,296 @@
+---
+spring:
+  application:
+    name: @spring.application.name@
+
+# port
+server:
+  port: @server.port@
+  tomcat:
+    uri-encoding: UTF-8
+    # 最大线程数
+    max-threads: @server.tomcat.max-threads@
+    # 最大连接数
+    max-connections: @server.tomcat.max-connections@
+    # 最大排队数
+    accept-count: 6000
+
+
+---
+#上传 文件限制
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      #单个数据的大小 可以使用MB活着kb 默认是1MB
+      max-file-size: 10MB
+      #总数据的大小 可以使用MB活着kb 默认是10MB
+      #设置上传文件的临时目录
+      #location :
+      max-request-size: 100MB
+      #设置文件缓存的临界点,超过则先保存到临时目录 值可以使用后缀“mb”或“kb” 默认是0
+      file-size-threshold: 0
+      #是否在文件或参数访问时延迟解析多部分请求。默认是fasle
+      resolve-lazily: false
+
+# 配置 cors 跨域
+---
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          # 匹配所有请求
+          '[/**]':
+            allowedHeaders: "*"
+            #跨域处理 允许所有的域
+            allowedOrigins: "*"
+            # 支持的方法
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTION
+---
+spring:
+  cloud:
+    gateway:
+      locator:
+        enabled: true
+        # 服务名小写
+        lower-case-service-id: true
+      # 以下接口进不了网关，直接拒绝
+      ignored-patterns:
+        - /**/openapi/**
+        - /**/**/inner/**
+        - /**/inner/**
+        - /**/**/svr/**
+        - /**/svr/**
+      #规则的开始
+      routes:
+        # 这里的第一个global是为了解决 "/"请求报错的问题
+        - id: global
+          uri: http://localhost:5555/global
+          # 路由执行顺序（也可理解成过滤器的执行顺序），执行顺序是从小到大执行，较高的值被解释为较低的优先级。
+          order: 0
+          predicates:
+            - Path=/
+        # 路由的唯一标示
+        - id: user-server
+          # uri：路由转发地址，以 lb 开头的路由，也可以配置成 http://localhost:2222。
+          uri: lb://user-server
+          # 路由断言
+          predicates:
+            # 匹配访问路径为 "/user/**" 的请求。
+            - Path=/user/**
+            # 网关的过滤器配置
+          filters:
+            #  比如我们访问 /user/v1/**，调用的时候变成 http://localhost:2222/v1/**  StripPrefix=1 表示去掉前缀user
+            - StripPrefix=1
+            # 限流器 这定义了 每个用户 10 个请求的限制。允许 20 个突发，但下一秒只有 10 个请求可用。
+            - name: RequestRateLimiter
+              args:
+                # SPEL 表达式获取 Bean 对象的名字。表达式根据#{@beanName}从 Spring 容器中获取 Bean 对象。
+                key-resolver: '#{@ipKeyResolver}'
+                # 允许用户每秒执行多少请求（令牌桶的填充速率）
+                redis-rate-limiter.replenishRate: 10
+                # 允许用户在一秒内执行的最大请求数。（令牌桶可以保存的令牌数）。将此值设置为零将阻止所有请求。
+                redis-rate-limiter.burstCapacity: 20
+        - id: vip-server
+          uri: lb://vip-server
+          predicates:
+            - Path=/vip/common/**
+          filters:
+            # StripPrefix=2 表示去掉2个前缀/vip/common
+            - StripPrefix=2
+
+
+  #-----------------------------一以下下接口为之前重定向的接口 开始--------------------------------
+        - id: user-server
+          uri: lb://user-server
+          order: 0
+          predicates:
+            - Path=/auth/api/**
+          filters:
+            # 访问localhost:8080/auth/api/**, 请求会转发到localhost:8001/user/api/**
+            - RewritePath=/auth/api/(?<segment>.*), /user/api/$\{segment}
+
+
+  #-----------------------------一以下下接口为之前重定向的接口 结束--------------------------------
+
+## 配置在该处的接口（不做token认证）
+services:
+  token-ignored-urls:
+    - /user/login
+    - /auth/user/login
+
+  #不做签名认证
+  sig-ignored-urls:
+    - /user/checkname
+    - /auth/check
+
+
+# 开启断路器 新版本的fegin自带断路器
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      #默认 超时时间
+      default:
+        connect-timeout: 3000
+        read-timeout: 15000
+#      # activity 超时时间
+#      activity:
+#        connect-timeout: 10000
+#        read-timeout: 20000
+
+---
+#该参数用来开启重试机制，默认是关闭
+spring:
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+
+# ribbon 全局负载均衡配置
+#根据如下配置，当访问到故障请求的时候，它会再尝试访问一次当前实例（次数由MaxAutoRetries配置），
+#如果不行，就换一个实例进行访问，如果还是不行，再换一次实例访问（更换次数由MaxAutoRetriesNextServer配置），
+#如果依然不行，返回失败信息。
+ribbon:
+  #  httpclient:
+  #    # 关闭 httpclient 支持
+  #    enabled: false
+  #  okhttp:
+  #    # 开启 okhttp 支持
+  #    enabled: true
+  #ribbon请求连接的超时时间- 限制3秒内必须请求到服务，并不限制服务处理的返回时间
+  #ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
+  #ribbonTimeout = (15000 + 3000) * (1 + 0) * (1 + 1) = 36000
+  ConnectTimeout: 3000
+  #请求处理的超时时间 下级服务响应最大时间,超出时间消费方（路由也是消费方）返回timeout
+  ReadTimeout: 15000
+  # 是否开启重试 对所有操作请求都进行重试
+  #  OkToRetryOnAllOperations: true
+  # 重试期间，切换实例的重试次数
+  MaxAutoRetriesNextServer: 1
+  # 当前实例重试次数
+  MaxAutoRetries: 1
+  #负载策略
+  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+  eureka:
+    #false将明确禁用在Ribbon中使用Eureka
+    enabled: true
+
+
+#配置具体服务ribbon负载均衡策略 这里的配置要优先于 全局配置
+# 单独设置某个服务的超时时间，会覆盖其他的超时时间限制，服务的名称已注册中心页面显示的名称为准，超时时间不可大于断路器的超时时间
+#user-server:
+#  ribbon:
+##    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #随机
+##    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #轮询
+##    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RetryRule # 重试
+##    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule # 响应时间权重
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule # 最空闲连接策略
+#    ConnectTimeout: 1500 #请求连接超时时间
+#    ReadTimeout: 2000 #请求处理的超时时间
+#    OkToRetryOnAllOperations: true #对所有请求都进行重试
+#    MaxAutoRetriesNextServer: 2 #切换实例的重试次数
+#    MaxAutoRetries: 1 #对当前实例的重试次数
+
+
+# 如果你在zuul配置了熔断fallback的话，熔断超时也要配置
+# 上传大文件得将超时时间设置长一些，否则会报超时异常。
+hystrix:
+  command:
+    # default 默认所有的设置，这里可以是具体的服务 例如：activity
+    default:
+      execution:
+        isolation:
+          strategy: THREAD #隔离策略是Thread
+          thread:
+            #默认=1000 断路器的超时时间需要大于ribbon的超时时间，不然不会触发重试
+            timeoutInMilliseconds: 38000
+            #发生超时是是否中断，默认true
+            interruptOnTimeout: true
+        timeout:
+          # 执行是否启用超时
+          enabled: true
+      circuitBreaker:
+        #当在配置时间窗口内达到此数量的失败后，进行短路。默认20个）
+        requestVolumeThreshold: 20
+        #短路多久以后开始尝试是否恢复，默认5s
+        sleepWindowInMilliseconds: 5000
+        #出错百分比阈值，当达到此阈值后，开始短路。默认50%
+        errorThresholdPercentage: 50
+  threadpool:
+    default:
+      #并发执行的最大线程数，默认10
+      coreSize: 10
+      #BlockingQueue的最大队列数，当设为－1，会使用SynchronousQueue，值为正时使用LinkedBlcokingQueue。
+      #该设置只会在初始化时有效，之后不能修改threadpool的queue size，除非reinitialising thread executor。默认－1。
+      maxQueueSize: -1
+      #即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝。
+      #因为maxQueueSize不能被动态修改，这个参数将允许我们动态设置该值。if maxQueueSize == -1，该字段将不起作用
+      queueSizeRejectionThreshold: -1
+      #如果corePoolSize和maxPoolSize设成一样（默认实现）该设置无效。
+      #如果通过plugin（https://github.com/Netflix/Hystrix/wiki/Plugins）使用自定义实现，该设置才有用，默认1.
+      keepAliveTimeMinutes: 1
+
+
+# 允许/actuator/bus-refresh接口被外部调用
+management:
+  endpoints:
+    web:
+      exposure:
+        # 开放监控内容
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true #启用shutdown端点
+    health:
+      # health/detail 细节（）
+      show-details: always
+
+---
+# redis config redis 相关配置是为了实现 Gateway 的限流方案。
+spring:
+  redis:
+    # Redis数据库索引（默认为0）
+    database: 0
+    host: @spring.redis.host@
+    port: @spring.redis.port@
+    # 超时时间
+    timeout: @spring.redis.timeout@
+    password: @spring.redis.password@
+#    cluster:
+#      nodes: 192.168.211.134:7000,192.168.211.134:7001
+#      -
+#      max-redirects:
+#    sentinel:
+#      master: master1
+#      nodes: 172.16.33.216:16001,172.16.33.216:16002
+    lettuce:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: @spring.redis.lettuce.pool.max-active@
+        # 连接池中的最大空闲连接
+        max-idle: @spring.redis.lettuce.pool.max-idle@
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: @spring.redis.lettuce.pool.max-wait@
+        # 连接池中的最小空闲连接
+        min-idle: @spring.redis.lettuce.pool.min-idle@
+
+
+## 日志配置
+logging:
+  config: classpath:logs/logback-spring.xml
+  levels: info
+
+---
+#控制台输出彩色
+spring:
+  output:
+    ansi:
+      enabled: always

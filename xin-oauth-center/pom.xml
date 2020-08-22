@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.xin.commons</groupId>
+    <artifactId>xin-oauth-center</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+
+    <description>oauth认证中心</description>
+    <!--个人博客地址-->
+    <url>https://www.jianshu.com/u/6ad247189165</url>
+
+    <modules>
+        <module>xin-auth-jwt</module>
+        <module>xin-oauth2</module>
+
+    </modules>
+
+</project>
