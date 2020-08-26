@@ -22,7 +22,7 @@ server:
 spring:
   messages:
     # #指定message的basename，多个以逗号分隔，如果不加包名的话，默认从classpath路径开始，默认: messages
-    basename: messages/messages-system,messages/messages-redis,messages/messages-lock
+    basename: messages/messages-system,messages/messages-redis,messages/messages-lock,messages/messages-jwt
     # 设置是否始终应用MessageFormat规则，甚至解析不带参数的消息
     always-use-message-format: true
     # #设定加载的资源文件缓存失效时间，-1的话为永不过期，默认为-1

@@ -2,6 +2,7 @@ package com.xin.mybatis.generator.plugins;
 
 import freemarker.template.TemplateException;
 import org.apache.commons.lang3.StringUtils;
+import org.mybatis.generator.api.GeneratedXmlFile;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -23,6 +24,19 @@ public class BasePlugin extends PluginAdapter {
     public boolean validate(List<String> list) {
         return true;
     }
+
+    /**
+     * 生成的xml是以覆盖方式，而不是追加
+     * @param sqlMap
+     * @param introspectedTable
+     * @return
+     */
+    @Override
+    public boolean sqlMapGenerated(GeneratedXmlFile sqlMap, IntrospectedTable introspectedTable) {
+        sqlMap.setMergeable(false);
+        return super.sqlMapGenerated(sqlMap, introspectedTable);
+    }
+
 
     @Override
     public boolean clientBasicCountMethodGenerated(Method var1, Interface var2, IntrospectedTable var3){
