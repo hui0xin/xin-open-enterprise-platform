@@ -9,6 +9,7 @@ import com.xin.commons.support.il8n.LocaleUtils;
  * @author: xin
  */
 public enum HttpErrorCode implements ErrorCode {
+
     /**
      * 错误的请求
      */
@@ -56,11 +57,6 @@ public enum HttpErrorCode implements ErrorCode {
 
     public String getMessage(final Object... args) {
         return LocaleUtils.getMessage(CommonConstant.HTTPCODEPREFIX+code, args);
-    }
-
-    @Override
-    public String toString() {
-        return "[" + this.getCode() + "]" + this.getMessage();
     }
 
 }

@@ -19,7 +19,7 @@ public class WebMvcConfigration extends WebMvcConfigurationSupport {
 
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
-        //自动过滤后缀.do
+        //自动过滤后缀 比如：/user/add.sa
         configurer.setUseSuffixPatternMatch(false);
         //自动去掉 '/'
         configurer.setUseTrailingSlashMatch(false);

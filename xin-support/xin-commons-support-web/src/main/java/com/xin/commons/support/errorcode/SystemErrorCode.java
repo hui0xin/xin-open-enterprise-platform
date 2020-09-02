@@ -17,11 +17,7 @@ public enum SystemErrorCode implements ErrorCode {
     /**
      * 系统内部错误
      */
-    SYSTEM_ERROR(1),
-    /**
-     * 未定义的错误
-     */
-    UNKNOWN_ERROR(-1),
+    SYSTEM_ERROR(-1),
     /**
      * api 已禁用
      */
@@ -95,22 +91,4 @@ public enum SystemErrorCode implements ErrorCode {
     public String getMessage(final Object... args) {
         return LocaleUtils.getMessage(CommonConstant.SYSCODEPREFIX+code, args);
     }
-
-    /**
-     * 通过code获取错误，如果找不到，就是位置异常
-     * @param code
-     * @return
-     */
-    public static SystemErrorCode valueOf(final int code) {
-        return Arrays.stream(values())
-                .filter(x -> x.getCode() == code)
-                .findFirst()
-                .orElse(SystemErrorCode.UNKNOWN_ERROR);
-    }
-
-    @Override
-    public String toString() {
-        return "[" + this.getCode() + "]" + this.getMessage();
-    }
-
 }
