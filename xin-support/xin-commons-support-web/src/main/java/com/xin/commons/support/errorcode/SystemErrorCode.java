@@ -19,10 +19,6 @@ public enum SystemErrorCode implements ErrorCode {
      */
     SYSTEM_ERROR(-1),
     /**
-     * api 已禁用
-     */
-    API_DISABLED(-2),
-    /**
      * HttpMessageConverter转换失败
      */
     HTTP_MESSAGE_NOT_READABLE(900),
@@ -70,6 +66,11 @@ public enum SystemErrorCode implements ErrorCode {
      * 查询失败
      */
     QUERY_FAIL(911),
+
+    /**
+     * api 已禁用
+     */
+    API_DISABLED(930),
     ;
 
     private final int code;
