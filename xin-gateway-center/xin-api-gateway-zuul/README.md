@@ -375,6 +375,45 @@ hystrix.threadpool.default.keepAliveTimeMinutes 如果corePoolSize和maxPoolSize
 hystrix.threadpool.default.metrics.rollingStats.timeInMilliseconds 线程池统计指标的时间，默认10000
 hystrix.threadpool.default.metrics.rollingStats.numBuckets 将rolling window划分为n个buckets，默认10
 
+ hystrix:
+  command:
+    default: # 表示全局配置
+      execution:
+        isolation:
+          strategy: SEMAPHORE # 修改默认的隔离策略为信号量隔离，默认是线程池隔离
+          thread:
+            timeoutInMilliseconds: 1000 # 命令执行超时时间，单位为毫秒，命令执行超时将会执行fallback，默认是1000
+            interruptOnTimeout: true # 超时是否中断HystrixCommand.run方法的执行，默认值是 true
+        timeout:
+          enabled: true # 是否启用命令执行超时,默认是true
+      fallback:
+        isolation:
+          semaphore:
+            maxConcurrentRequests: 50 # 如果并发数达到该设置值，请求会被拒绝和抛出异常并且fallback不会被调用。（线程池隔离和信号量隔离都适用）默认值是：10
+    ProductService01Feign#selectByProductIdAndName(String,String):  # 为某个方法单独配置隔离策略 格式： 类名#方法名(参数类型...)
+       execution:
+         isolation:
+           strategy: THREAD # 修改默认的隔离策略为线程池隔离，默认是线程池隔离
+           semaphore:
+             maxConcurrentRequests: 10  # 信号量最大的大小，当最大并发数达到该设置值时，后续的请求将会被拒绝，默认值是：10
+  threadpool:
+    default:
+      coreSize: 10 # 设置并发最大的核心线程数，默认值是：10
+    product-provider:
+      coreSize: 6 # 为product-provider这个线程组设置最大核心线程为6
+
+#hystrix.threadpool.default.maxQueueSize
+  # 当maxQueueSize=-1时，会使用SynchronousQueue，maxQueueSize>0时使用 LinkedBlcokingQueue，并且该值只在初始化的时候才生效，默认值是：-1
+#hystrix.threadpool.default.queueSizeRejectionThreshold
+  # 因为maxQueueSize的值在设置后不可进行修改，如果要还没有达到maxQueueSize值，请求也被拒绝，那么修改这个值即可，当maxQueueSize==-1时不生效。queueSizeRejectionThreshold默认值是：5
+
+# 更多参数：https://github.com/Netflix/Hystrix/wiki/Configuration#ThreadPool
+
+
+
+
+
+
 
 //
 //    /**
