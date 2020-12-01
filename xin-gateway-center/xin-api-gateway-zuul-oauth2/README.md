@@ -8,20 +8,24 @@
 http://ip:port/routes
 
 ##1,Zuul的核心是一系列的过滤器，这些过滤器可以完成以下功能：
+```
 1、身份认证与安全：识别每个资源的验证要求，并拒绝那些与要求不符的请求。
 2、审查与监控：在边缘位置追踪有意义的数据和统计结果，从而带来精确的生产视图。
 3、动态路由：动态地将请求路由到不同的后端集群。
 4、压力测试：逐渐增加指向集群的流量，以了解性能。
 5、负载分配：为每一种负载类型分配对应容量，并启用超出限定值的请求。
 6、静态响应处理：在边缘位置直接建立部分相应，从而避免其转发到内部集群。
+```
 
 ##2,apigateway 结合oauth2.0使用步骤
+```
 1.用户请求某个资源前，需要先通过api网关访问Oauth2认证授权服务请求一个AccessToken
 2.用户通过认证授权服务得到AccessToken后，通过api网关调用其他资源服务A、B、C
 3.资源服务根据AccessToken从OAuth2认证授权服务验证该token的用户请求是否有效
-
+```
 
 ## 3，Zuul的四种过滤器API：
+```
 前置（Pre）
 路由（Route）
 后置（Post）
@@ -34,9 +38,9 @@ zuul前后置过滤器的典型应用场景：
 后置（Post）
 统计
 日志
-
+```
 #### application.yaml 配置
-
+```
 #Zuul：Cookie和动态路由
 #我们在web开发中，经常会利用到cookie来保存用户的登录标识。
 #但我们使用了zuul组件后，默认情况下，cookie是无法直接传递给服务的，
@@ -49,12 +53,14 @@ zuul前后置过滤器的典型应用场景：
 #      serviceId: product
 #      sensitiveHeaders:  # 置空该属性的值即可
 # 统一的路由前缀
-
+```
+```
 #zuul.routes.<key>.url=<url>指定一个服务的url或者使用forward转向Zuul服务的接口，对应路由路径为zuul.routes.<key>.path 
 users2:
   path: /userApi2/**
   url: http://localhost:8002
- 
+```
+```
 使用zuul.routes.<routeName>.stripPrefix=false在向服务发起请求时不会去掉path前缀，
 即http://localhost:8301/sms会代理到sms-service服务的/sms接口（
 如果stripPrefix设置为true我们需要使用http://localhost:8301/sms/sms才能正常访问到这个接口）。  
@@ -71,7 +77,7 @@ forward:
 zuul.routes.<ribbon>=<path>使用自定义Ribbon实现路由  
 service-by-ribbon: /service-by-ribbon/**
 
-
+```
 ## 路由规则
 ## 传统路由配置：不依赖服务发现。
 ## 所有以myapi开头的url路由至http://127.0.0.1:2000/下
@@ -79,15 +85,18 @@ service-by-ribbon: /service-by-ribbon/**
 zuul.routes.myApi.path=/myapi/**
 zuul.routes.myApi.url=http://127.0.0.1:2000
 
+```
 
 # 多实例
+```
 zuul.routes.server-provide.path=/user-service/**
 zuul.routes.server-provide.serviceId=user-service
 ribbon.eureka.enabled=false
 server-provide.ribbon.listOfServers=http://127.0.0.1:1001/,http://127.0.0.1:1001/
-
+```
 
 #如果系统zuul出现http://ip:port这一类的路由规则的时候，需要以下配置
+```
 zuul:
   host:
     #代理普通http请求的超时时间
@@ -98,8 +107,9 @@ zuul:
     # 每个route可用的最大连接数，默认值是20。
     max-per-route-connections: 200
 
-
+```
 # 以下是几种 demo
+```
 //
 //import com.netflix.zuul.ZuulFilter;
 //import com.netflix.zuul.context.RequestContext;
@@ -168,8 +178,8 @@ zuul:
 //    }
 //}
 
-
-
+```
+```
 //
 //import com.netflix.zuul.ZuulFilter;
 //import com.netflix.zuul.context.RequestContext;
@@ -253,8 +263,8 @@ zuul:
 //}
 
 
-
-
+```
+```
 //
 //import lombok.Data;
 //import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -293,17 +303,17 @@ zuul:
 //
 //}
 
-
-
+```
 
 #ribbo负载均衡策略配置，默认是依次轮询
+```
 API-USER-SERVER.ribbon.NFLoadBalancerRuleClassName=com.netflix.loadbalancer.RandomRule
 
 @HystrixCommand(fallbackMethod = "findError") //如果请求失败或超时
 public String find() {
     String s = restTemplate.getForEntity("http://API-USER-SERVER/user/find/123", String.class).getBody();  
 }
-
+```
 
  	    线程池隔离	             信号量隔离
 线程	    与调用线程非相同线程	     与调用线程相同（jetty线程）
