@@ -12,8 +12,11 @@
 
 2，支付系统   
 
-3，广告系统   
+3，广告系统  
 
+工程说明：
+
+```
 -- xin-business-center              业务系统    
 
     -- xin-adsystem                 广告系统   
@@ -98,3 +101,4 @@
 
 -- xin-spring-boot-dependencies      公司 依赖 jar 的版本管理（最顶层项目）   
 
+```
