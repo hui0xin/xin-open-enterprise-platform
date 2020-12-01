@@ -52,15 +52,14 @@ zuul前后置过滤器的典型应用场景：
 #      path: /myProduct/**
 #      serviceId: product
 #      sensitiveHeaders:  # 置空该属性的值即可
-# 统一的路由前缀
 ```
+# 统一的路由前缀
 ```
 #zuul.routes.<key>.url=<url>指定一个服务的url或者使用forward转向Zuul服务的接口，对应路由路径为zuul.routes.<key>.path 
 users2:
   path: /userApi2/**
   url: http://localhost:8002
-```
-```
+
 使用zuul.routes.<routeName>.stripPrefix=false在向服务发起请求时不会去掉path前缀，
 即http://localhost:8301/sms会代理到sms-service服务的/sms接口（
 如果stripPrefix设置为true我们需要使用http://localhost:8301/sms/sms才能正常访问到这个接口）。  
@@ -77,6 +76,7 @@ forward:
 zuul.routes.<ribbon>=<path>使用自定义Ribbon实现路由  
 service-by-ribbon: /service-by-ribbon/**
 
+```
 ```
 ## 路由规则
 ## 传统路由配置：不依赖服务发现。
@@ -178,8 +178,6 @@ zuul:
 //    }
 //}
 
-```
-```
 //
 //import com.netflix.zuul.ZuulFilter;
 //import com.netflix.zuul.context.RequestContext;
@@ -263,8 +261,6 @@ zuul:
 //}
 
 
-```
-```
 //
 //import lombok.Data;
 //import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -314,16 +310,16 @@ public String find() {
     String s = restTemplate.getForEntity("http://API-USER-SERVER/user/find/123", String.class).getBody();  
 }
 ```
-
+```
  	    线程池隔离	             信号量隔离
 线程	    与调用线程非相同线程	     与调用线程相同（jetty线程）
 开销	    排队、调度、上下文开销等	 无线程切换，开销低
 异步	    支持	                     不支持
 并发支持	支持（最大线程池大小）	     支持（最大信号量上限）
 
+```
 Execution相关的属性的配置：
-
-
+```
 hystrix.command.default.execution.isolation.strategy=THREAD 隔离策略，默认是Thread, 可选THREAD，SEMAPHORE
 thread 通过线程数量来限制并发请求数，可以提供额外的保护，但有一定的延迟。一般用于网络调用
 semaphore 通过semaphore count来限制并发请求数，适用于无网络的高并发请求
@@ -349,8 +345,9 @@ hystrix.command.default.circuitBreaker.sleepWindowInMilliseconds 触发短路的
 hystrix.command.default.circuitBreaker.errorThresholdPercentage错误比率阀值，如果错误率>=该值，circuit会被打开，并短路所有请求触发fallback。默认50
 hystrix.command.default.circuitBreaker.forceOpen 强制打开熔断器，如果打开这个开关，那么拒绝所有request，默认false
 hystrix.command.default.circuitBreaker.forceClosed 强制关闭熔断器 如果这个开关打开，circuit将一直关闭且忽略circuitBreaker.errorThresholdPercentage
-
+```
 Metrics相关参数
+```
 hystrix.command.default.metrics.rollingStats.timeInMilliseconds 设置统计的时间窗口值的，毫秒值，circuit break 的打开会根据1个rolling window的统计来计算。若rolling window被设为10000毫秒，则rolling window会被分成n个buckets，每个bucket包含success，failure，timeout，rejection的次数的统计信息。默认10000
 hystrix.command.default.metrics.rollingStats.numBuckets 设置一个rolling window被划分的数量，若numBuckets＝10，rolling window＝10000，那么一个bucket的时间即1秒。必须符合rolling window % numberBuckets == 0。默认10
 hystrix.command.default.metrics.rollingPercentile.enabled 执行时是否enable指标的计算和跟踪，默认true
@@ -384,8 +381,8 @@ hystrix.threadpool.default.queueSizeRejectionThreshold 即使maxQueueSize没有�
 hystrix.threadpool.default.keepAliveTimeMinutes 如果corePoolSize和maxPoolSize设成一样（默认实现）该设置无效。如果通过plugin（https://github.com/Netflix/Hystrix/wiki/Plugins）使用自定义实现，该设置才有用，默认1.
 hystrix.threadpool.default.metrics.rollingStats.timeInMilliseconds 线程池统计指标的时间，默认10000
 hystrix.threadpool.default.metrics.rollingStats.numBuckets 将rolling window划分为n个buckets，默认10
-
-
+```
+```
 //
 //    /**
 //     * 获取 请求来源
@@ -463,4 +460,4 @@ hystrix.threadpool.default.metrics.rollingStats.numBuckets 将rolling window划�
 //    }
 //
 
-
+```
