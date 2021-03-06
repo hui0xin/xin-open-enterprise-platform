@@ -209,8 +209,8 @@
         注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
         -->
 
-        <table tableName="t_loan_config" domainObjectName="LoanConfigDo"
-               mapperName="LoanConfigMapper" sqlProviderName="LoanConfigDynamicSqlSupport"
+        <table tableName="oauth_access_token" domainObjectName="OauthAccessTokenDo"
+               mapperName="OauthAccessTokenMapper" sqlProviderName="OauthAccessTokenDynamicSqlSupport"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
@@ -223,92 +223,7 @@
 <!--                <except column="col13"/>-->
 <!--            </ignoreColumnsByRegex>-->
             <!--将字段 "f_" 替换为 "" -->
-            <columnRenamingRule searchString="^f_" replaceString="" />
-        </table>
-
-
-        <table tableName="t_pledge_config" domainObjectName="PledgeConfigDo"
-               mapperName="PledgeConfigMapper" sqlProviderName="PledgeConfigDynamicSqlSupport"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
-               比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
-            <property name="useActualColumnNames" value="false" />
-            <!--将字段 "f_" 替换为 "" -->
-            <columnRenamingRule searchString="^f_" replaceString="" />
-        </table>
-
-        <table tableName="t_product_config" domainObjectName="ProductConfigDo"
-               mapperName="ProductConfigMapper" sqlProviderName="ProductConfigDynamicSqlSupport"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
-               比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
-            <property name="useActualColumnNames" value="false" />
-            <!--将字段 "f_" 替换为 "" -->
-            <columnRenamingRule searchString="^f_" replaceString="" />
-        </table>
-
-        <table tableName="t_loan_quota_config" domainObjectName="LoanQuotaConfigDo"
-               mapperName="LoanQuotaConfigMapper" sqlProviderName="LoanQuotaConfigDynamicSqlSupport"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
-               比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
-            <property name="useActualColumnNames" value="false" />
-            <!--将字段 "f_" 替换为 "" -->
-            <columnRenamingRule searchString="^f_" replaceString="" />
-        </table>
-
-        <table tableName="t_pledge_order" domainObjectName="PledgeOrderDo"
-               mapperName="PledgeOrderMapper" sqlProviderName="PledgeOrderDynamicSqlSupport"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
-               比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
-            <property name="useActualColumnNames" value="false" />
-            <!--将字段 "f_" 替换为 "" -->
-            <columnRenamingRule searchString="^f_" replaceString="" />
-        </table>
-
-        <table tableName="t_back_coin_record" domainObjectName="BackCoinRecordDo"
-               mapperName="BackCoinRecordMapper" sqlProviderName="BackCoinRecordDynamicSqlSupport"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
-               比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
-            <property name="useActualColumnNames" value="false" />
-            <!--将字段 "f_" 替换为 "" -->
-            <columnRenamingRule searchString="^f_" replaceString="" />
-        </table>
-
-        <table tableName="t_pledge_adjustment_record" domainObjectName="PledgeAdjustmentRecordDo"
-               mapperName="PledgeAdjustmentRecordMapper" sqlProviderName="PledgeAdjustmentRecordDynamicSqlSupport"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
-               比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
-            <property name="useActualColumnNames" value="false" />
-            <!--将字段 "f_" 替换为 "" -->
-            <columnRenamingRule searchString="^f_" replaceString="" />
-        </table>
-
-        <table tableName="t_liquidation_record" domainObjectName="LiquidationRecordDo"
-               mapperName="LiquidationRecordMapper" sqlProviderName="LiquidationRecordDynamicSqlSupport"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，
-               比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
-            <property name="useActualColumnNames" value="false" />
-            <!--将字段 "f_" 替换为 "" -->
-            <columnRenamingRule searchString="^f_" replaceString="" />
+            <!--<columnRenamingRule searchString="^f_" replaceString="" />-->
         </table>
 
     </context>

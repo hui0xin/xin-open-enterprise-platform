@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.user.auth.mapper.OauthAccessTokenMapper">
+  <resultMap id="BaseResultMap" type="com.user.auth.bean.DO.OauthAccessTokenDo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="token_id" jdbcType="VARCHAR" property="tokenId" />
+    <result column="authentication_id" jdbcType="VARCHAR" property="authenticationId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="refresh_token" jdbcType="VARCHAR" property="refreshToken" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.user.auth.bean.DO.OauthAccessTokenDo">
+    <result column="token" jdbcType="LONGVARBINARY" property="token" />
+    <result column="authentication" jdbcType="LONGVARBINARY" property="authentication" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, token_id, authentication_id, user_name, client_id, refresh_token, create_time, 
+    update_time
+  </sql>
+  <sql id="Blob_Column_List">
+    token, authentication
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from oauth_access_token
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from oauth_access_token
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.user.auth.bean.DO.OauthAccessTokenDo">
+    insert into oauth_access_token (id, token_id, authentication_id, 
+      user_name, client_id, refresh_token, 
+      create_time, update_time, token, 
+      authentication)
+    values (#{id,jdbcType=BIGINT}, #{tokenId,jdbcType=VARCHAR}, #{authenticationId,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{clientId,jdbcType=VARCHAR}, #{refreshToken,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{token,jdbcType=LONGVARBINARY}, 
+      #{authentication,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.user.auth.bean.DO.OauthAccessTokenDo">
+    insert into oauth_access_token
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tokenId != null">
+        token_id,
+      </if>
+      <if test="authenticationId != null">
+        authentication_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="clientId != null">
+        client_id,
+      </if>
+      <if test="refreshToken != null">
+        refresh_token,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="authentication != null">
+        authentication,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="tokenId != null">
+        #{tokenId,jdbcType=VARCHAR},
+      </if>
+      <if test="authenticationId != null">
+        #{authenticationId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null">
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="refreshToken != null">
+        #{refreshToken,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="authentication != null">
+        #{authentication,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.user.auth.bean.DO.OauthAccessTokenDo">
+    update oauth_access_token
+    <set>
+      <if test="tokenId != null">
+        token_id = #{tokenId,jdbcType=VARCHAR},
+      </if>
+      <if test="authenticationId != null">
+        authentication_id = #{authenticationId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null">
+        client_id = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="refreshToken != null">
+        refresh_token = #{refreshToken,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="authentication != null">
+        authentication = #{authentication,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.user.auth.bean.DO.OauthAccessTokenDo">
+    update oauth_access_token
+    set token_id = #{tokenId,jdbcType=VARCHAR},
+      authentication_id = #{authenticationId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      client_id = #{clientId,jdbcType=VARCHAR},
+      refresh_token = #{refreshToken,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      token = #{token,jdbcType=LONGVARBINARY},
+      authentication = #{authentication,jdbcType=LONGVARBINARY}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.user.auth.bean.DO.OauthAccessTokenDo">
+    update oauth_access_token
+    set token_id = #{tokenId,jdbcType=VARCHAR},
+      authentication_id = #{authenticationId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      client_id = #{clientId,jdbcType=VARCHAR},
+      refresh_token = #{refreshToken,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="baseQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and t.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != tokenId">
+         and t.token_id = #{tokenId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != authenticationId">
+         and t.authentication_id = #{authenticationId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != userName">
+         and t.user_name = #{userName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != clientId">
+         and t.client_id = #{clientId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != refreshToken">
+         and t.refresh_token = #{refreshToken,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createTime">
+         and t.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateTime">
+         and t.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != token">
+         and t.token = #{token,jdbcType=LONGVARBINARY}
+      </if>
+      <if test="null != authentication">
+         and t.authentication = #{authentication,jdbcType=LONGVARBINARY}
+      </if>
+    </trim>
+  </sql>
+  <select id="find" parameterType="com.user.auth.bean.DO.OauthAccessTokenDo" resultMap="BaseResultMap">
+    select  * from oauth_access_token
+    <include refid="baseQuery" />
+  </select>
+  <select id="list" parameterType="com.user.auth.bean.DO.OauthAccessTokenDo" resultMap="BaseResultMap">
+    select  * from oauth_access_token
+    <include refid="baseQuery" />
+  </select>
+</mapper>
