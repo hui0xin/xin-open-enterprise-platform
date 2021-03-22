@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @interface: ${fileName}Service
  * @Description:  ${moduleDesc} 接口
- * @author: huixin
+ * @author: 系统
  * @created: ${date?string('yyyy-MM-dd')}
  */
 public interface ${fileName}Service {
@@ -16,27 +16,41 @@ public interface ${fileName}Service {
      * @param:   ${fileDoName} 对象参数
      * @return:  int
      */
-    int insertSelective(${fileDoName} model);
+    int insert(${fileDoName} model);
 
     /**
      * @explain: 删除${fileDoName}对象
      * @param:   id  对象参数
      * @return:  int
      */
-    int deleteByPrimaryKey(Long id);
+    int deleteById(Long id);
 
     /**
      * @explain: 修改${fileDoName}对象
      * @param:   ${fileDoName}  对象参数
      * @return:  int
      */
-    int updateByPrimaryKeySelective(${fileDoName} model);
+    int update(${fileDoName} model);
 
     /**
      * @explain: 查询${fileDoName}对象
-     * @param:   id  对象参数
+     * @param:   id  id
      * @return:  ${fileDoName}
      */
     ${fileDoName} selectByPrimaryKey(Long id);
+
+    /**
+     * @explain: 查询${fileDoName}对象
+     * @param:   ${fileDoName}  对象参数
+     * @return:  ${fileDoName} 对象
+     */
+    ${fileDoName} selectByObject(${fileDoName} model);
+
+    /**
+     * @explain: 查询列表
+     * @param:  ${fileDoName}  对象参数
+     * @return: list
+     */
+    List<${fileDoName}> listByObject(${fileDoName} model);
 
 }

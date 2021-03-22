@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * @class: ${fileName}ServiceImpl
  * @Description:  ${moduleDesc} 接口实现
- * @author: huixin
+ * @author: 系统
  * @created: ${date?string('yyyy-MM-dd')}
  */
 @Slf4j
@@ -27,8 +27,8 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
      * @return:  int
      */
     @Override
-    public int insertSelective(${fileDoName} model) {
-        return ${fileName?uncap_first}Mapper.insertSelective(model);
+    public int insert(${fileDoName} model) {
+        return ${fileName?uncap_first}Mapper.insert(model);
     }
 
     /**
@@ -37,7 +37,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
      * @return:  int
      */
     @Override
-    public int deleteByPrimaryKey(Long id) {
+    public int deleteById(Long id) {
         return ${fileName?uncap_first}Mapper.deleteByPrimaryKey(id);
     }
 
@@ -47,7 +47,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
      * @return:  int
      */
     @Override
-    public int updateByPrimaryKeySelective(${fileDoName} model) {
+    public int update(${fileDoName} model) {
         return ${fileName?uncap_first}Mapper.updateByPrimaryKeySelective(model);
     }
 
@@ -59,6 +59,26 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
     @Override
     public ${fileDoName} selectByPrimaryKey(Long id) {
         return ${fileName?uncap_first}Mapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * @explain: 查询${fileDoName}对象
+     * @param:   ${fileDoName}  对象参数
+     * @return:  ${fileDoName} 对象
+     */
+    @Override
+    public ${fileDoName} selectByObject(${fileDoName} model) {
+        return ${fileName?uncap_first}Mapper.selectByObject(model);
+    }
+
+    /**
+     * @explain: 查询列表
+     * @param:  ${fileDoName}  对象参数
+     * @return: list
+     */
+    @Override
+    public List<${fileDoName}> listByObject(${fileDoName} model) {
+        return ${fileName?uncap_first}Mapper.listByObject(model);
     }
 
 }

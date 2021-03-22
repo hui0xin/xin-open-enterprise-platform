@@ -9,7 +9,7 @@ import ${packageDomain}.${fileDoName};
 /**
  * @class: ${fileName}Controller
  * @Description:  ${moduleDesc} Controller
- * @author: huixin
+ * @author: 系统
  * @created: ${date?string('yyyy-MM-dd')}
  */
 @RestController

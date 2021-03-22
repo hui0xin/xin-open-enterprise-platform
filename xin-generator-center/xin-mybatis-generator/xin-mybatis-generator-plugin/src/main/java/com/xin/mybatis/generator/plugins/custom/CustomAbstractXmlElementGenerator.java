@@ -1,4 +1,4 @@
-package com.xin.mybatis.generator.plugins;
+package com.xin.mybatis.generator.plugins.custom;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
@@ -7,15 +7,17 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
 
+/**
+ * 自定义生成 xml
+ * 可以扩展很多方法
+ */
 public class CustomAbstractXmlElementGenerator extends AbstractXmlElementGenerator {
-
-	private String baseQuery = "baseQuery";
 
 	@Override
 	public void addElements(XmlElement parentElement) {
-		// 增加base_query
+		// 增加baseQuery
 		XmlElement sql = new XmlElement("sql");
-		sql.addAttribute(new Attribute("id", baseQuery));
+		sql.addAttribute(new Attribute("id", "baseQuery"));
 		//在这里添加where条件
         XmlElement selectTrimElement = new XmlElement("trim"); //设置trim标签
         selectTrimElement.addAttribute(new Attribute("prefix", "WHERE"));  
@@ -31,7 +33,6 @@ public class CustomAbstractXmlElementGenerator extends AbstractXmlElementGenerat
 			// 添加and
 			sb.append(" and ");
 			// 添加别名t
-			sb.append("t.");
 			sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
 			// 添加等号
 			sb.append(" = ");
@@ -52,11 +53,11 @@ public class CustomAbstractXmlElementGenerator extends AbstractXmlElementGenerat
 		
 		// 公用include
 		XmlElement include = new XmlElement("include");
-		include.addAttribute(new Attribute("refid", baseQuery));
+		include.addAttribute(new Attribute("refid", "baseQuery"));
 		
 		// 增加find
 		XmlElement find = new XmlElement("select");
-		find.addAttribute(new Attribute("id", "find"));
+		find.addAttribute(new Attribute("id", "selectByObject"));
 		find.addAttribute(new Attribute("resultMap", "BaseResultMap"));
 		find.addAttribute(new Attribute("parameterType", introspectedTable.getBaseRecordType()));
 		find.addElement(selectText);
@@ -65,21 +66,13 @@ public class CustomAbstractXmlElementGenerator extends AbstractXmlElementGenerat
 		
 		// 增加list
 		XmlElement list = new XmlElement("select");
-		list.addAttribute(new Attribute("id", "list"));
+		list.addAttribute(new Attribute("id", "listByObject"));
 		list.addAttribute(new Attribute("resultMap", "BaseResultMap"));
 		list.addAttribute(new Attribute("parameterType", introspectedTable.getBaseRecordType()));
 		list.addElement(selectText);
 		list.addElement(include);
 		parentElement.addElement(list);
-		
-		// 增加pageList
-//		XmlElement pageList = new XmlElement("select");
-//		pageList.addAttribute(new Attribute("id", "pageList"));
-//		pageList.addAttribute(new Attribute("resultMap", "BaseResultMap"));
-//		pageList.addAttribute(new Attribute("parameterType", introspectedTable.getBaseRecordType()));
-//		pageList.addElement(selectText);
-//		pageList.addElement(include);
-//		parentElement.addElement(pageList);
+
 	}
 
 }

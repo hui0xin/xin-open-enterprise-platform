@@ -7,7 +7,7 @@ import lombok.Data;
 /**
  * @class: ${fileName}VO
  * @Description: ${moduleDesc} 实体类
- * @author: huixin
+ * @author: 系统
  * @created: ${date?string('yyyy-MM-dd')}
  */
 @ApiModel(value="${fileName}Vo",description="${moduleDesc} 返回前端的实体")

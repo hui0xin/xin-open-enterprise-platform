@@ -1,10 +1,11 @@
-package com.xin.mybatis.generator.plugins;
+package com.xin.mybatis.generator.plugins.annotation;
 
 /**
- * @enum: Annotation
+ * @enum: 导入包的配置
  * @author: xin
  */
-public enum Annotation {
+public enum ImportAnnotation {
+
     DATA("@Data", "lombok.Data"),
     Mapper("@Mapper", "org.apache.ibatis.annotations.Mapper"),
     Param("@Param", "org.apache.ibatis.annotations.Param"),
@@ -16,7 +17,7 @@ public enum Annotation {
     private String annotation;
     private String clazz;
 
-    Annotation(String annotation, String clazz) {
+    ImportAnnotation(String annotation, String clazz) {
         this.annotation = annotation;
         this.clazz = clazz;
     }

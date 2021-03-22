@@ -209,8 +209,8 @@
         注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
         -->
 
-        <table tableName="oauth_access_token" domainObjectName="OauthAccessTokenDo"
-               mapperName="OauthAccessTokenMapper" sqlProviderName="OauthAccessTokenDynamicSqlSupport"
+        <table tableName="sys_user" domainObjectName="SysUserDo"
+               mapperName="SysUserMapper" sqlProviderName="SysUserDynamicSqlSupport"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

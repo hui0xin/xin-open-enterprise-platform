@@ -1,5 +1,9 @@
 package com.xin.mybatis.generator.plugins;
 
+import com.xin.mybatis.generator.plugins.annotation.Annotation;
+import com.xin.mybatis.generator.plugins.annotation.ImportAnnotation;
+import com.xin.mybatis.generator.plugins.custom.CustomAbstractXmlElementGenerator;
+import com.xin.mybatis.generator.plugins.custom.CustomJavaMapperMethodGenerator;
 import freemarker.template.TemplateException;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.GeneratedXmlFile;
@@ -8,12 +12,11 @@ import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.api.dom.xml.Document;
+import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.AbstractJavaMapperMethodGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
 
 import java.io.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -23,16 +26,12 @@ import java.util.*;
  */
 public class BasePlugin extends PluginAdapter {
 
-    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
     public boolean validate(List<String> list) {
         return true;
     }
 
     /**
      * 生成的xml是以覆盖方式，而不是追加
-     * @param sqlMap
-     * @param introspectedTable
      * @return
      */
     @Override
@@ -41,30 +40,25 @@ public class BasePlugin extends PluginAdapter {
         return super.sqlMapGenerated(sqlMap, introspectedTable);
     }
 
-
     @Override
     public boolean clientBasicCountMethodGenerated(Method var1, Interface var2, IntrospectedTable var3){
-
         return true;
     }
 
     /**
      * 拦截普通字段
-     *
-     * @param topLevelClass
-     * @param introspectedTable
      * @return
      */
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         String remarks = introspectedTable.getRemarks();
-        classAnnotation(topLevelClass, remarks);
+        Annotation.classAnnotation(topLevelClass, remarks);
         Set<FullyQualifiedJavaType> set = new HashSet<FullyQualifiedJavaType>();
-        set.add(new FullyQualifiedJavaType(Annotation.ApiModel.getClazz()));
-        set.add(new FullyQualifiedJavaType(Annotation.DATA.getClazz()));
+        set.add(new FullyQualifiedJavaType(ImportAnnotation.ApiModel.getClazz()));
+        set.add(new FullyQualifiedJavaType(ImportAnnotation.DATA.getClazz()));
         topLevelClass.addImportedTypes(set);
-        topLevelClass.addAnnotation(Annotation.DATA.getAnnotation());
-        topLevelClass.addAnnotation(Annotation.ApiModel.getAnnotation() + "(value=\"" + topLevelClass.getType().getShortName() + "\",description=\"" + remarks + "\")");
+        topLevelClass.addAnnotation(ImportAnnotation.DATA.getAnnotation());
+        topLevelClass.addAnnotation(ImportAnnotation.ApiModel.getAnnotation() + "(value=\"" + topLevelClass.getType().getShortName() + "\",description=\"" + remarks + "\")");
         try {
             // 生成controller文件
             GenerateBeanUtils.generateControllerFile(topLevelClass, introspectedTable,properties);
@@ -90,7 +84,6 @@ public class BasePlugin extends PluginAdapter {
         return true;
     }
 
-
     /**
      * 拦截 blob 类型字段
      */
@@ -101,13 +94,7 @@ public class BasePlugin extends PluginAdapter {
 
     /**
      * get方法 false 不生成
-     *
-     * @param method
-     * @param topLevelClass
-     * @param introspectedColumn
-     * @param introspectedTable
-     * @param modelClassType
-     * @return
+     * @return false 不生成
      */
     @Override
     public boolean modelSetterMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType) {
@@ -116,43 +103,29 @@ public class BasePlugin extends PluginAdapter {
 
     /**
      * get方法 false 不生成
-     *
-     * @param method
-     * @param topLevelClass
-     * @param introspectedColumn
-     * @param introspectedTable
-     * @param modelClassType
-     * @return
+     * @return false 不生成
      */
     @Override
     public boolean modelGetterMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType) {
         return false;
     }
 
-
-
     /**
      * 实体类字段
-     *
-     * @param field
-     * @param topLevelClass
-     * @param introspectedColumn
-     * @param introspectedTable
-     * @param modelClassType
      * @return
      */
     @Override
     public boolean modelFieldGenerated(Field field, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType) {
         // 生成注释
-        fieldAnnotation(field, introspectedColumn.getRemarks());
+        Annotation.fieldAnnotation(field, introspectedColumn.getRemarks());
         // 生成注释结束
         // 追加ApiModelProperty注解
-        topLevelClass.addImportedType(new FullyQualifiedJavaType(Annotation.ApiModelProperty.getClazz()));
-        field.addAnnotation(Annotation.ApiModelProperty.getAnnotation() + "(name=\"" + introspectedColumn.getJavaProperty() + "\", value=\"" + introspectedColumn.getRemarks() + "\")");
+        topLevelClass.addImportedType(new FullyQualifiedJavaType(ImportAnnotation.ApiModelProperty.getClazz()));
+        field.addAnnotation(ImportAnnotation.ApiModelProperty.getAnnotation() + "(name=\"" + introspectedColumn.getJavaProperty() + "\", value=\"" + introspectedColumn.getRemarks() + "\")");
         // 追加日期格式化注解
         if (introspectedColumn.getJdbcTypeName() == "TIMESTAMP") {
-            field.addAnnotation(Annotation.JsonFormat.getAnnotation() + "(pattern = \"yyyy-MM-dd HH:mm:ss\",timezone=\"GMT+8\")");
-            topLevelClass.addImportedType(new FullyQualifiedJavaType(Annotation.JsonFormat.getClazz()));
+            field.addAnnotation(ImportAnnotation.JsonFormat.getAnnotation() + "(pattern = \"yyyy-MM-dd HH:mm:ss\",timezone=\"GMT+8\")");
+            topLevelClass.addImportedType(new FullyQualifiedJavaType(ImportAnnotation.JsonFormat.getClazz()));
         }
         // tinyint数据（Byte）转换成（Integer）类型
         String a = field.getType().getShortName();
@@ -164,89 +137,93 @@ public class BasePlugin extends PluginAdapter {
 
     /**
      * mapper接口方法
-     * DeleteByPrimaryKey方法
-     *
-     * @param method
-     * @param interfaze
-     * @param introspectedTable
-     * @return
-     */
-    public boolean clientDeleteByPrimaryKeyMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
-        methodAnnotation(method, "根据主键删除数据");
-        return super.clientDeleteByPrimaryKeyMethodGenerated(method, interfaze, introspectedTable);
-    }
-
-
-    /**
-     * mapper接口方法
-     * Insert方法
-     *
-     * @param method
-     * @param interfaze
-     * @param introspectedTable
+     * Insert方法 插入数据
      * @return
      */
     public boolean clientInsertMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
-        methodAnnotation(method, "插入数据库记录");
+        Annotation.methodAnnotation(method, "插入数据");
         return super.clientInsertMethodGenerated(method, interfaze, introspectedTable);
     }
-
 
     /**
      * mapper接口方法
      * InsertSelective方法
-     *
-     * @param method
-     * @param interfaze
-     * @param introspectedTable
-     * @return
+     * @return false 禁止生成该方法
      */
     public boolean clientInsertSelectiveMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
-        methodAnnotation(method, "插入数据库记录");
-        return super.clientInsertSelectiveMethodGenerated(method, interfaze, introspectedTable);
+        return false;
     }
 
+    /**
+     * mapper xml接口方法
+     * InsertSelective方法
+     * @return false 禁止生成该方法
+     */
+    public boolean sqlMapInsertSelectiveElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
+        return false;
+    }
 
     /**
      * mapper接口方法
-     * SelectByPrimaryKey方法
-     *
-     * @param method
-     * @param interfaze
-     * @param introspectedTable
+     * deleteByPrimaryKey方法 根据主键删除数据
      * @return
      */
-    public boolean clientSelectByPrimaryKeyMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
-        methodAnnotation(method, "根据主键id查询");
-        return super.clientSelectByPrimaryKeyMethodGenerated(method, interfaze, introspectedTable);
+    public boolean clientDeleteByPrimaryKeyMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        Annotation.methodAnnotation(method, "根据主键删除数据");
+        return super.clientDeleteByPrimaryKeyMethodGenerated(method, interfaze, introspectedTable);
     }
-
 
     /**
      * mapper接口方法
      * UpdateByPrimaryKeySelective方法
-     *
-     * @param method
-     * @param interfaze
-     * @param introspectedTable
      * @return
      */
     public boolean clientUpdateByPrimaryKeySelectiveMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
-        methodAnnotation(method, "修改数据");
+        Annotation.methodAnnotation(method, "修改数据");
         return super.clientUpdateByPrimaryKeySelectiveMethodGenerated(method, interfaze, introspectedTable);
     }
 
     /**
-     * 修改mapper接口
-     *
-     * @param interfaze
-     * @param topLevelClass
-     * @param introspectedTable
+     * mapper接口方法
+     * UpdateByPrimaryKey方法
+     * @return false 禁止生成
+     */
+    @Override
+    public boolean clientUpdateByPrimaryKeyWithoutBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    /**
+     * mapper xml 接口方法
+     * UpdateByPrimaryKey方法
+     * @return false 禁止生成
+     */
+    public boolean sqlMapUpdateByPrimaryKeyWithoutBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
+        return false;
+    }
+
+    /**
+     * mapper接口方法
+     * selectByPrimaryKey方法 根据主键id查询
+     * @return
+     */
+    public boolean clientSelectByPrimaryKeyMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        if(("selectByPrimaryKey").equals(method.getName())){
+            Annotation.methodAnnotation(method, "根据主键id查询");
+        }else if(("selectByObject").equals(method.getName())){
+            Annotation.methodAnnotation(method, "根据参数查询对象");
+        }else if(("listByObject").equals(method.getName())){
+            Annotation.methodAnnotation(method, "根据参数查询列表");
+        }
+        return super.clientSelectByPrimaryKeyMethodGenerated(method, interfaze, introspectedTable);
+    }
+
+    /**
+     * 为mapper添加新方法
      * @return
      */
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         AbstractJavaMapperMethodGenerator methodGenerator = new CustomJavaMapperMethodGenerator();
-        interfazeAnnotation(interfaze, introspectedTable.getRemarks());
         methodGenerator.setContext(context);
         methodGenerator.setIntrospectedTable(introspectedTable);
         methodGenerator.addInterfaceElements(interfaze);
@@ -254,7 +231,12 @@ public class BasePlugin extends PluginAdapter {
 
     }
 
-    @Override
+    /**
+     * 为mapper.xml 添加新方法
+     * @param document
+     * @param introspectedTable
+     * @return
+     */
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
         AbstractXmlElementGenerator elementGenerator = new CustomAbstractXmlElementGenerator();
         elementGenerator.setContext(context);
@@ -279,94 +261,6 @@ public class BasePlugin extends PluginAdapter {
         interfaze.addSuperInterface(fqjt);
         //添加import my.mabatis.example.base.MybatisBaseMapper;
         interfaze.addImportedType(imp);
-    }
-    /**
-     * mapper接口方法
-     * UUpdateByPrimaryKey方法
-     *
-     * @param method
-     * @param interfaze
-     * @param introspectedTable
-     * @return
-     */
-    public boolean clientUpdateByPrimaryKeyWithoutBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
-        methodAnnotation(method, "修改数据");
-        return super.clientUpdateByPrimaryKeyWithoutBLOBsMethodGenerated(method, interfaze, introspectedTable);
-    }
-
-    /**
-     * 方法注释生成
-     *
-     * @param method
-     * @param explain
-     */
-    public static void methodAnnotation(Method method, String explain) {
-        // 生成注释
-        StringBuilder sb = new StringBuilder();
-        method.addJavaDocLine("/**");
-        sb.append(" * ");
-        sb.append(explain);
-        method.addJavaDocLine(sb.toString());
-        Parameter parm = method.getParameters().get(0);
-        sb.setLength(0);
-        sb.append(" * @param ");
-        sb.append(parm.getName());
-        method.addJavaDocLine(sb.toString());
-        method.addJavaDocLine(" */");
-        // 生成注释结束
-    }
-
-
-    /**
-     * 属性注释生成
-     *
-     * @param field
-     * @param explain
-     */
-    public static void fieldAnnotation(Field field, String explain) {
-        // 生成注释
-        StringBuilder sb = new StringBuilder();
-        field.addJavaDocLine("/**");
-        sb.append(" * ");
-        sb.append(explain);
-        field.addJavaDocLine(sb.toString());
-        field.addJavaDocLine(" */");
-        // 生成注释结束
-    }
-
-    /**
-     * 类注释生成
-     *
-     * @param topLevelClass
-     * @param explain
-     */
-    public static void classAnnotation(TopLevelClass topLevelClass, String explain) {
-        // 生成注释
-        topLevelClass.addJavaDocLine("/**");
-        topLevelClass.addJavaDocLine("* @Class: "+ topLevelClass.getType().getShortName());
-        topLevelClass.addJavaDocLine("* @Description: "+explain);
-        topLevelClass.addJavaDocLine("* @author: 系统");
-        topLevelClass.addJavaDocLine("* @created: " + df.format(new Date()));
-        topLevelClass.addJavaDocLine("*/");
-        // 生成注释结束
-    }
-
-
-    /**
-     * 接口注释生成
-     *
-     * @param interfaze
-     * @param explain
-     */
-    public static void interfazeAnnotation(Interface interfaze, String explain) {
-        // 生成注释
-        interfaze.addJavaDocLine("/**");
-        interfaze.addJavaDocLine("* @Interface: " + interfaze.getType().getShortName());
-        interfaze.addJavaDocLine("* @Description: "+explain+" Mapper");
-        interfaze.addJavaDocLine("* @author: 系统");
-        interfaze.addJavaDocLine("* @created: " + df.format(new Date()));
-        interfaze.addJavaDocLine("*/");
-        // 生成注释结束
     }
 
 }
