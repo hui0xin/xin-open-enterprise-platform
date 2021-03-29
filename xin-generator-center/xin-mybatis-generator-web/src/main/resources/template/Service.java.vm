@@ -1,0 +1,42 @@
+package ${package}.service;
+
+import ${package}.bean.DO.${className}Do;
+import java.util.List;
+
+/**
+ * ${comments}
+ * @author 系统
+ */
+public interface ${className}Service {
+
+    /**
+     * 新增对象
+     * @return
+     */
+    int insert(${className}Do ${classname}Do);
+
+    /**
+     * 根据Id删除对象
+     * @return
+     */
+    int delete(Long id);
+
+    /**
+     * 修改对象
+     * @return
+     */
+    int update(${className}Do ${classname}Do);
+
+    /**
+    * 删除 根据Id对象
+    * @return
+    */
+    ${className}Do getById(Long id);
+
+    /**
+     * 根据条件查询
+     * @return
+     */
+    List<${className}Do> queryList(${className}Do ${classname}Do);
+
+}

@@ -1,0 +1,25 @@
+package ${package}.bean.DO;
+
+import java.io.Serializable;
+import lombok.Data;
+import java.util.Date;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+/**
+ * ${comments}
+ * @author 系统
+ */
+@Data
+public class ${className}Do implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+#foreach ($column in $columns)
+
+    /**
+     * $column.comments
+	 */
+	private $column.attrType $column.attrname;
+#end
+
+}

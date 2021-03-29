@@ -1,0 +1,66 @@
+package ${package}.service.impl;
+
+import java.util.List;
+import java.util.ArrayList;
+import javax.annotation.Resource;
+import ${package}.bean.DO.${className}Do;
+import ${package}.mapper.${className}Mapper;
+import ${package}.service.${className}Service;
+import org.springframework.stereotype.Service;
+
+/**
+ * ${comments}
+ * @author 系统
+ */
+@Service("${classname}Service")
+public class ${className}ServiceImpl implements ${className}Service {
+
+    @Resource
+    private ${className}Mapper ${classname}Mapper;
+
+    /**
+     * 新增对象
+     */
+    @Override
+    public int insert(${className}Do ${classname}Do) {
+        long now = System.currentTimeMillis();
+        ${classname}Do.setCreatedTime(now);
+        ${classname}Do.setUpdatedTime(now);
+        return ${classname}Mapper.insert(${classname}Do);
+    }
+
+    /**
+     * 根据Id删除对象
+     */
+    @Override
+    public int delete(Long id) {
+        return ${classname}Mapper.delete(id);
+    }
+
+    /**
+     * 修改对象
+     */
+    @Override
+    public int update(${className}Do ${classname}Do) {
+        long now = System.currentTimeMillis();
+        ${classname}Do.setUpdatedTime(now);
+        return ${classname}Mapper.update(${classname}Do);
+    }
+
+    /**
+     * 修改对象
+     */
+    @Override
+    public ${className}Do getById(Long id) {
+        return ${classname}Mapper.getById(id);
+    }
+
+    /**
+     * 根据条件查询
+     */
+    @Override
+    public List<${className}Do> queryList(${className}Do ${classname}Do) {
+        return ${classname}Mapper.queryList(${classname}Do);
+    }
+
+}

@@ -4,27 +4,37 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.xin.commons</groupId>
-        <artifactId>xin-commons-multi</artifactId>
+        <artifactId>xin-spring-boot-starter-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>xin-commons-multi-mybatis-annotation</artifactId>
-    <version>${projects.version}</version>
+    <artifactId>xin-mybatis-generator-web</artifactId>
     <name>${project.artifactId}</name>
 
     <properties>
-        <start-class>com.xin.commons.multi.mybatis.annotation.MybatisAnnotationApplication</start-class>
+        <start-class>com.xin.mybatis.generator.web.MybatisGeneratorApplication</start-class>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.xin.commons</groupId>
-            <artifactId>xin-commons-support</artifactId>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.8.0</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.10</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xin.commons</groupId>
+            <artifactId>xin-commons-support</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,7 +55,7 @@
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}-${projects.version}</finalName>
+        <finalName>${project.artifactId}-${version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

@@ -2,7 +2,6 @@ package com.xin.commons.multi.mybatis.annotation.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
-import org.springframework.util.Assert;
 
 /** 
  * 当前数据源
@@ -15,27 +14,18 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     /** 设置数据源类型*/
     public static void setDataSource(String dataSource) {
-        Assert.notNull(dataSource, "dataSource cannot be null");
         contextHolder.set(dataSource);
-        log.info("[this.set] datasource====》{}",dataSource);
-    }
-
-    /** 获取数据源类型*/
-    public static String getDataSource() {
-
-        return contextHolder.get();
+        log.info("设置数据源为：{}",dataSource);
     }
 
     /** 清除数据源类型*/
     public static void clearDataSource() {
-        log.info("[this.remove] datasource====》{}",contextHolder.get());
         contextHolder.remove();
-
     }
     
     @Override  
     protected Object determineCurrentLookupKey() {
-        log.info("当前数据源为:{}",this.getDataSource());
-        return this.getDataSource();
+        log.info("当前数据源为：{}",contextHolder.get());
+        return contextHolder.get();
     }  
 } 

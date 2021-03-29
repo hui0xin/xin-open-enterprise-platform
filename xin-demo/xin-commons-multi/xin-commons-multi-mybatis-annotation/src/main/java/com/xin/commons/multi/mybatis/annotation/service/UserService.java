@@ -9,4 +9,10 @@ public interface UserService {
     List<User> getAll1();
 
     List<User> getAll2();
+
+    void add1(User user);
+
+    void add2(User user);
+
+    void add3(User user);
 }
