@@ -11,10 +11,12 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.*;
+import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.AbstractJavaMapperMethodGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
+import org.mybatis.generator.internal.util.StringUtility;
 
 import java.io.*;
 import java.util.*;
@@ -142,6 +144,7 @@ public class BasePlugin extends PluginAdapter {
      */
     public boolean clientInsertMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
         Annotation.methodAnnotation(method, "插入数据");
+        //打完收工
         return super.clientInsertMethodGenerated(method, interfaze, introspectedTable);
     }
 
@@ -162,6 +165,61 @@ public class BasePlugin extends PluginAdapter {
     public boolean sqlMapInsertSelectiveElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
         return false;
     }
+
+    /**
+     * 新增返回 id
+     * @param element
+     * @param introspectedTable
+     * @return
+     */
+    @Override
+    public boolean sqlMapInsertElementGenerated(XmlElement element,
+                                                IntrospectedTable introspectedTable) {
+        //定义是否需要生成三个属性
+        boolean isGen = true;
+        //调用getTableConfigurationProperty方法，得到在当前这个table中定义的property元素
+        String isGenStr = properties.getProperty("usekeys");
+        //如果得到了值，就尝试转化成boolean
+        if (StringUtility.stringHasValue(isGenStr)) {
+            isGen = Boolean.valueOf(isGenStr);
+        }
+        //如果需要生成参数
+        if (isGen) {
+            // 要使用usegeneratedkeys只能有一个主键，并且主键的类型必须是数字类型；
+            //通过introspectedTable的getPrimaryKeyColumns方法得到解析出来数据库中的主键列；
+            //因为主键列可能是多个，所以返回的是List<IntrospectedColumn>
+            List<IntrospectedColumn> keyColumns = introspectedTable
+                    .getPrimaryKeyColumns();
+            IntrospectedColumn keyColumn = null;
+            //对于usegeneratedkeys来说，只能有一个主键列；
+            if (keyColumns.size() == 1) {
+                //得到这个唯一的主键列
+                keyColumn = keyColumns.get(0);
+                //得到这个列映射成Java模型之后的属性对应的Java类型；
+                FullyQualifiedJavaType javaType = keyColumn
+                        .getFullyQualifiedJavaType();
+                //usegeneratedkeys要求主键只能是递增的，所以我们把这个主键属性的类型分别和Integer，Long，Short做对比；
+                if (javaType.equals(PrimitiveTypeWrapper.getIntegerInstance())
+                        || javaType.equals(PrimitiveTypeWrapper
+                        .getLongInstance())
+                        || javaType.equals(PrimitiveTypeWrapper
+                        .getShortInstance())) {
+                    //如果是Integer，Long，Short三个类型中的而一个；则添加属性；
+                    //因为我们要添加的属性就是insert元素上的，而insert元素就是根节点，所以element就是insert元素；
+                    element.addAttribute(new Attribute("useGeneratedKeys", "true"));
+                    //通过IntrospectedColumn的getActualColumnName得到列中的名称，用于生成keyColumn属性；
+                    element.addAttribute(new Attribute("keyColumn", keyColumn
+                            .getActualColumnName()));
+                    //通过IntrospectedColumn的getJavaProperty方法得到key在Java对象中的属性名，用于生成keyProperty属性
+                    element.addAttribute(new Attribute("keyProperty", keyColumn
+                            .getJavaProperty()));
+                }
+            }
+        }
+        return true;
+    }
+
+
 
     /**
      * mapper接口方法
@@ -210,10 +268,10 @@ public class BasePlugin extends PluginAdapter {
     public boolean clientSelectByPrimaryKeyMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
         if(("selectByPrimaryKey").equals(method.getName())){
             Annotation.methodAnnotation(method, "根据主键id查询");
-        }else if(("selectByObject").equals(method.getName())){
-            Annotation.methodAnnotation(method, "根据参数查询对象");
-        }else if(("listByObject").equals(method.getName())){
-            Annotation.methodAnnotation(method, "根据参数查询列表");
+        }else if(("selectByPrimaryKeySelective").equals(method.getName())){
+            Annotation.methodAnnotation(method, "根据条件查询对象");
+        }else if(("selectByPrimaryKeySelectiveList").equals(method.getName())){
+            Annotation.methodAnnotation(method, "根据条件查询列表");
         }
         return super.clientSelectByPrimaryKeyMethodGenerated(method, interfaze, introspectedTable);
     }

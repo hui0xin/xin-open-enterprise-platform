@@ -40,8 +40,8 @@ public class CustomJavaMapperMethodGenerator extends AbstractJavaMapperMethodGen
 		FullyQualifiedJavaType returnType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
 		// 方法对象设置返回类型对象
 		method.setReturnType(returnType);
-		// 设置方法名称为我们在IntrospectedTable类中初始化的 “selectByObject”
-		method.setName("selectByObject");
+		// 设置方法名称为我们在IntrospectedTable类中初始化的 “selectByPrimaryKeySelective”
+		method.setName("selectByPrimaryKeySelective");
 		// 设置参数类型是对象
 		FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
 		// import参数类型对象
@@ -77,8 +77,8 @@ public class CustomJavaMapperMethodGenerator extends AbstractJavaMapperMethodGen
 		returnType.addTypeArgument(listType);
 		// 方法对象设置返回类型对象
 		method.setReturnType(returnType);
-		// 设置方法名称为我们在IntrospectedTable类中初始化的 “selectByObject”
-		method.setName("listByObject");
+		// 设置方法名称为我们在IntrospectedTable类中初始化的 “selectByPrimaryKeySelectiveList”
+		method.setName("selectByPrimaryKeySelectiveList");
 		// 设置参数类型是对象
 		FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
 		// import参数类型对象

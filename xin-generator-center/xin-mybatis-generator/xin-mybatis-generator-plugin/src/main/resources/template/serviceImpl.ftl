@@ -57,7 +57,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
      * @return:  ${fileDoName}
      */
     @Override
-    public ${fileDoName} selectByPrimaryKey(Long id) {
+    public ${fileDoName} selectById(Long id) {
         return ${fileName?uncap_first}Mapper.selectByPrimaryKey(id);
     }
 
@@ -68,7 +68,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
      */
     @Override
     public ${fileDoName} selectByObject(${fileDoName} model) {
-        return ${fileName?uncap_first}Mapper.selectByObject(model);
+        return ${fileName?uncap_first}Mapper.selectByPrimaryKeySelective(model);
     }
 
     /**
@@ -78,7 +78,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
      */
     @Override
     public List<${fileDoName}> listByObject(${fileDoName} model) {
-        return ${fileName?uncap_first}Mapper.listByObject(model);
+        return ${fileName?uncap_first}Mapper.selectByPrimaryKeySelectiveList(model);
     }
 
 }

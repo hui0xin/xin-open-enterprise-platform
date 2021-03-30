@@ -57,7 +57,7 @@ public class CustomAbstractXmlElementGenerator extends AbstractXmlElementGenerat
 		
 		// 增加find
 		XmlElement find = new XmlElement("select");
-		find.addAttribute(new Attribute("id", "selectByObject"));
+		find.addAttribute(new Attribute("id", "selectByPrimaryKeySelective"));
 		find.addAttribute(new Attribute("resultMap", "BaseResultMap"));
 		find.addAttribute(new Attribute("parameterType", introspectedTable.getBaseRecordType()));
 		find.addElement(selectText);
@@ -66,7 +66,7 @@ public class CustomAbstractXmlElementGenerator extends AbstractXmlElementGenerat
 		
 		// 增加list
 		XmlElement list = new XmlElement("select");
-		list.addAttribute(new Attribute("id", "listByObject"));
+		list.addAttribute(new Attribute("id", "selectByPrimaryKeySelectiveList"));
 		list.addAttribute(new Attribute("resultMap", "BaseResultMap"));
 		list.addAttribute(new Attribute("parameterType", introspectedTable.getBaseRecordType()));
 		list.addElement(selectText);

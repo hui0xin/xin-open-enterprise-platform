@@ -37,7 +37,7 @@ public interface ${fileName}Service {
      * @param:   id  id
      * @return:  ${fileDoName}
      */
-    ${fileDoName} selectByPrimaryKey(Long id);
+    ${fileDoName} selectById(Long id);
 
     /**
      * @explain: 查询${fileDoName}对象
