@@ -8,7 +8,6 @@ public interface RedissonLocker {
 
     /**
      * 加锁
-     *
      * @param lockKey
      * @return
      */
@@ -16,31 +15,27 @@ public interface RedissonLocker {
 
     /**
      * 带超时的锁
-     *
      * @param lockKey
      * @param timeout 超时时间   单位：秒
      */
-    RLock lock(String lockKey, int timeout);
+    RLock lock(String lockKey, long timeout);
 
     /**
      * 带超时的锁
-     *
      * @param lockKey
      * @param unit    时间单位
      * @param timeout 超时时间
      */
-    RLock lock(String lockKey, TimeUnit unit, int timeout);
+    RLock lock(String lockKey, TimeUnit unit, long timeout);
 
     /**
      * 释放锁
-     *
      * @param lockKey
      */
     void unlock(String lockKey);
 
     /**
      * 释放锁
-     *
      * @param lock
      */
     void unlock(RLock lock);
@@ -53,18 +48,17 @@ public interface RedissonLocker {
      * @param leaseTime 上锁后自动释放锁时间
      * @return
      */
-    boolean tryLock(String lockKey, int waitTime, int leaseTime);
+    boolean tryLock(String lockKey, long waitTime, long leaseTime);
 
     /**
      * 尝试获取锁
-     *
      * @param lockKey
      * @param unit      时间单位
      * @param waitTime  最多等待时间
      * @param leaseTime 上锁后自动释放锁时间
      * @return
      */
-    boolean tryLock(String lockKey, TimeUnit unit, int waitTime, int leaseTime);
+    boolean tryLock(String lockKey, TimeUnit unit, long waitTime, long leaseTime);
 
 
 }

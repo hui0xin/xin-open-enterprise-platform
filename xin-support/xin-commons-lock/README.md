@@ -19,6 +19,8 @@ spring.redis.host=0.0.0.0
 spring.redis.port=6379  
 #### Redis服务器连接密码（默认为空）
 spring.redis.password=
+#### 分布式锁的数据库，一般不要和业务放在同一个数据库
+spring.redis.database=9 
 #### 连接超时时间 单位 ms（毫秒）
 spring.redis.timeout=3000
 #### 连接池最大连接数（使用负值表示没有限制）
@@ -49,4 +51,13 @@ try {
     //释放锁
     redisLock.unLock(KEY，requestId);
 }
+
+##还有一种使用方式 在方法上加注解
+key 锁的名称 key，
+waitTime 尝试加锁，最多等待时间
+leaseTime 上锁以后xxx秒自动解锁
+@BizLock(key,waitTime,leaseTime) 
+
+有个文章写的不错，可以看看
+https://www.jianshu.com/p/f302aa345ca8
 

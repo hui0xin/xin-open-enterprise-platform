@@ -42,6 +42,7 @@ public class RedissonConfig {
      */
     @Bean
     RedissonClient redissonSingle() {
+        //单机模式
         Config config = new Config();
         SingleServerConfig serverConfig = config.useSingleServer()
                 .setAddress("redis://" + host + ":" + port)
@@ -52,6 +53,21 @@ public class RedissonConfig {
         if (StringUtils.isNotBlank(password)) {
             serverConfig.setPassword(password);
         }
+
+        //哨兵方式
+//        Config config = new Config();
+//        config.useSentinelServers().addSentinelAddress(
+//                "redis://172.29.3.245:26378","redis://172.29.3.245:26379", "redis://172.29.3.245:26380")
+//                .setMasterName("mymaster")
+//                .setPassword("a123456").setDatabase(0);
+
+        //集群方式
+//        Config config = new Config();
+//        config.useClusterServers().addNodeAddress(
+//                "redis://172.29.3.245:6375","redis://172.29.3.245:6376", "redis://172.29.3.245:6377",
+//                "redis://172.29.3.245:6378","redis://172.29.3.245:6379", "redis://172.29.3.245:6380")
+//                .setPassword("a123456").setScanInterval(5000);
+
         return Redisson.create(config);
     }
 

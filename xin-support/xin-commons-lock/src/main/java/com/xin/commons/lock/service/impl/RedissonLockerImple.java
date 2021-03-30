@@ -6,6 +6,7 @@ import com.xin.commons.lock.service.RedissonLocker;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.redisson.api.RLock;
+import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,7 +39,7 @@ public class RedissonLockerImple implements RedissonLocker {
     private RedissonClient redissonClient;
 
     //默认超时时间 5秒
-    private static final int expireTime = 5;
+    private static final long expireTime = 5;
 
     //默认时间类型 秒
     private static final TimeUnit timeType = TimeUnit.SECONDS;
@@ -66,12 +67,11 @@ public class RedissonLockerImple implements RedissonLocker {
 
     /**
      * 带超时的锁
-     *
      * @param lockKey 锁的名称
      * @param timeout 超时时间   单位：秒
      */
     @Override
-    public RLock lock(String lockKey, int timeout) {
+    public RLock lock(String lockKey, long timeout) {
         try {
             RLock lock = redissonClient.getLock(lockKey);
             lock.lock(timeout, timeType);
@@ -90,7 +90,7 @@ public class RedissonLockerImple implements RedissonLocker {
      * @param timeout 超时时间
      */
     @Override
-    public RLock lock(String lockKey, TimeUnit unit, int timeout) {
+    public RLock lock(String lockKey, TimeUnit unit, long timeout) {
         try {
             RLock lock = redissonClient.getLock(lockKey);
             lock.lock(timeout, unit);
@@ -111,7 +111,7 @@ public class RedissonLockerImple implements RedissonLocker {
      * @return
      */
     @Override
-    public boolean tryLock(String lockKey, int waitTime, int leaseTime) {
+    public boolean tryLock(String lockKey, long waitTime, long leaseTime) {
         try {
             RLock lock = redissonClient.getLock(lockKey);
             return lock.tryLock(waitTime, leaseTime, timeType);
@@ -122,9 +122,7 @@ public class RedissonLockerImple implements RedissonLocker {
     }
 
     /**
-     * 尝试获取锁 该方法的使用需要注意（小心）
-     * 在业务逻辑做操作 if(tryLock(lockKey, waitTime, leaseTime)){执行具体逻辑}else{不再执行}
-     *
+     * 尝试获取锁
      * @param lockKey
      * @param unit      时间单位
      * @param waitTime  最多等待时间
@@ -132,7 +130,7 @@ public class RedissonLockerImple implements RedissonLocker {
      * @return
      */
     @Override
-    public boolean tryLock(String lockKey, TimeUnit unit, int waitTime, int leaseTime) {
+    public boolean tryLock(String lockKey, TimeUnit unit, long waitTime, long leaseTime) {
         try {
             RLock lock = redissonClient.getLock(lockKey);
             return lock.tryLock(waitTime, leaseTime, unit);
@@ -177,7 +175,7 @@ public class RedissonLockerImple implements RedissonLocker {
      * @param waitTime  最多等待时间
      * @param leaseTime 上锁后自动释放锁时间
      */
-    public Boolean asyncReentrantLock(String lockKey, int waitTime, int leaseTime) {
+    public Boolean asyncReentrantLock(String lockKey, long waitTime, long leaseTime) {
         try {
             RLock lock = redissonClient.getLock(lockKey);
             Future<Boolean> result = lock.tryLockAsync(waitTime, leaseTime, timeType);
@@ -192,11 +190,10 @@ public class RedissonLockerImple implements RedissonLocker {
     /**
      * 公平锁
      * 当多个Redisson客户端线程同时请求加锁时，优先分配给先发出请求的线程。
-     *
      * @param lockKey
      * @param leaseTime
      */
-    public boolean fairLock(String lockKey, int waitTime, int leaseTime) {
+    public boolean fairLock(String lockKey, long waitTime, long leaseTime) {
         try {
             RLock fairLock = redissonClient.getFairLock(lockKey);
             //该方法没有返回值，一定会加锁
@@ -212,11 +209,10 @@ public class RedissonLockerImple implements RedissonLocker {
     /**
      * 公平锁 的异步执行
      * 保证了当多个Redisson客户端线程同时请求加锁时，优先分配给先发出请求的线程。
-     *
      * @param lockKey
      * @param leaseTime
      */
-    public boolean fairAsyncLock(String lockKey, int waitTime, int leaseTime) {
+    public boolean fairAsyncLock(String lockKey, long waitTime, long leaseTime) {
         try {
             RLock fairLock = redissonClient.getFairLock(lockKey);
             Future<Boolean> result = fairLock.tryLockAsync(waitTime, leaseTime, timeType);
@@ -227,5 +223,40 @@ public class RedissonLockerImple implements RedissonLocker {
             throw new LockException(LockErrorCode.LOCK_FAIL);
         }
     }
+
+    /**
+     * 读锁
+     * @param lockKey
+     * @param leaseTime
+     */
+    public boolean readLock(String lockKey, long waitTime, long leaseTime) {
+        try {
+            RReadWriteLock lock = redissonClient.getReadWriteLock(lockKey);
+            //该方法没有返回值，一定会加锁
+            //lock.readLock().lock(leaseTime,timeType);
+            return lock.readLock().tryLock(waitTime, leaseTime, timeType);
+        } catch (Exception e) {
+            log.error("fairLock失败: {}", ExceptionUtils.getStackTrace(e));
+            throw new LockException(LockErrorCode.LOCK_FAIL);
+        }
+    }
+
+    /**
+     * 写锁
+     * @param lockKey
+     * @param leaseTime
+     */
+    public boolean writeLock(String lockKey, long waitTime, long leaseTime) {
+        try {
+            RReadWriteLock lock = redissonClient.getReadWriteLock(lockKey);
+            //该方法没有返回值，一定会加锁
+            //lock.writeLock().lock(leaseTime,timeType);
+            return lock.writeLock().tryLock(waitTime, leaseTime, timeType);
+        } catch (Exception e) {
+            log.error("fairLock失败: {}", ExceptionUtils.getStackTrace(e));
+            throw new LockException(LockErrorCode.LOCK_FAIL);
+        }
+    }
+
 
 }
