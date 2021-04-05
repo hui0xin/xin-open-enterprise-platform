@@ -118,7 +118,7 @@ public class GlobalExceptionHandler {
 //        }else{
 //            return RestResult.failure(SystemErrorCodeEnum.SYSTEM_ERROR, ex.getMessage());
 //        }
-        return ResponseResult.failure(SystemErrorCode.UNKNOWN_ERROR);
+        return ResponseResult.failure(SystemErrorCode.SYSTEM_ERROR);
     }
 
 

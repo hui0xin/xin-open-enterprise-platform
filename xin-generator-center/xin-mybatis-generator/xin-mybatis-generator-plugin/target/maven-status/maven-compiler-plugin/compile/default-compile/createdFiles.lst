@@ -1,0 +1,9 @@
+com/xin/mybatis/generator/plugins/GenerateBeanUtils.class
+com/xin/mybatis/generator/plugins/BasePlugin.class
+com/xin/mybatis/generator/plugins/custom/CustomJavaMapperMethodGenerator.class
+com/xin/commons/support/base/BaseMapper.class
+com/xin/commons/support/base/BaseDO.class
+com/xin/mybatis/generator/plugins/custom/CustomAbstractXmlElementGenerator.class
+com/xin/mybatis/generator/plugins/FreeMarkerTemplateUtils.class
+com/xin/mybatis/generator/plugins/annotation/Annotation.class
+com/xin/mybatis/generator/plugins/annotation/ImportAnnotation.class
