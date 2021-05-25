@@ -1,42 +1,66 @@
-## 应用名称
 spring:
   application:
-    name: eureka-server
+    name: xin-eureka-server-ha
 
-## 端口号
+---
+#启动命令nohup java -jar xin-eureka-server-1.0-SNAPSHOT.jar --spring.profiles.active=peer1 &
+spring:
+  profiles: peer1
 server:
   port: 8761
-  tomcat:
-    uri-encoding: UTF-8
-    # 最大线程数
-    max-threads: 2000
-    # 最大连接数
-    max-connections: 2000
-    # 最大排队数
-    #accept-count: 6000
-  # 最大的连接超时时间
-  #connection-timeout: 200
-
-# 注册中心配置
 eureka:
-  server:
-    # 关闭自我保护模式（缺省为打开）
-    enable-self-preservation: false
-    #eureka server清理无效节点的时间间隔，默认60000毫秒，即60秒
-    eviction-interval-timer-in-ms: 60000
   instance:
-    hostname: ${spring.application.name}
-    # 它将使用其IP地址而不是其主机名。
-    # prefer-ip-address: true
+    ## 指定当profile=peer1时，主机名是peer1
+    hostname: peer1
   client:
-    # 是否注册自身到eureka
-    register-with-eureka: false
-    # 是否获取注册信息到本地
-    fetch-registry: false
-    #healthcheck:
-      #enabled: true
+    # 是否将自己注册到Eureka Server，默认为true
+    registerWithEureka: false
+    # 表示是否从Eureka Server获取注册信息，默认为true。30秒获取一次
+    fetchRegistry: false
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      # # 将自己注册到peer2这个Eureka上面去
+      defaultZone: http://peer2:8762/eureka/,http://peer3:8763/eureka/
+  server:
+    # 关闭自我保护机制，保证不可用的服务被及时剔除
+    enable-self-preservation: false
+    # 如果2秒内没有收到某个微服务的心跳，那就剔除该微服务，（单位毫秒，默认是60*1000）
+    eviction-interval-timer-in-ms: 60000
+
+---
+#启动命令nohup java -jar xin-eureka-server-1.0-SNAPSHOT.jar --spring.profiles.active=peer2 &
+spring:
+  profiles: peer2
+server:
+  port: 8762
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://peer1:8761/eureka/,http://peer3:8763/eureka/
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 60000
+
+---
+#启动命令nohup java -jar xin-eureka-server-1.0-SNAPSHOT.jar --spring.profiles.active=peer2 &
+spring:
+  profiles: peer3
+server:
+  port: 8763
+eureka:
+  instance:
+    hostname: peer3
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 60000
 
 
 ###actuator监控点 在YAML中有特殊的含义，所以如果你想包含（或排除）所有的端点，一定要加引号
@@ -48,29 +72,3 @@ management:
   endpoint:
     health:
       show-details: always
-
-#启用info端点并禁用所有其他端点
-#management.endpoints.enabled-by-default=false
-#management.endpoint.info.enabled=true
-
-#要停止通过JMX公开所有端点并仅公开health和info端点
-#management.endpoints.jmx.exposure.include=health,info
-
-#要通过HTTP公开除env和beans端点之外的所有内容，请使用以下属性：
-#management.endpoints.web.exposure.include=*
-#management.endpoints.web.exposure.exclude=env,beans
-
-#配置端点缓存响应的时间
-#management.endpoint.beans.cache.time-to-live=10s
-
-#默认情况下，CORS支持处于禁用状态 允许来自example.com域的GET和POST调用：
-#management.endpoints.web.cors.allowed-origins=http://example.com
-#management.endpoints.web.cors.allowed-methods=GET,POST
-
-
-#DOWN	服务不可用 (503)
-#OUT_OF_SERVICE	服务不可用 (503)
-#UP	默认情况下没有映射，所以http状态是200
-#UNKNOWN	默认情况下没有映射，所以http状态是200
-#management.health.status.order=FATAL, DOWN, OUT_OF_SERVICE, UNKNOWN, UP
-#management.health.status.http-mapping.FATAL=503

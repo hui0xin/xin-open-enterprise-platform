@@ -10,15 +10,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>${projectName}-sdk</artifactId>
-    <version>${r'${project.version}'}</version>
-    <name>${r'${project.artifactId}'}</name>
+    <version>${r'${projects.version}'}</version>
 
     <dependencies>
         <dependency>
             <groupId>com.xin.commons</groupId>
             <artifactId>${projectName}-bean</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
     </dependencies>
-
 </project>
 

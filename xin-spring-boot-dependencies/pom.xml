@@ -17,7 +17,7 @@
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
-    <description>公司项目所有基于springboot开发的组件及应用的版本管理都在这里</description>
+    <description>xin所有基于springboot开发的组件及应用的maven依赖包管理pom</description>
     <!--个人博客地址-->
     <url>https://www.jianshu.com/u/6ad247189165</url>
 
@@ -121,9 +121,14 @@
 
         <feign-form.version>3.8.0</feign-form.version>
         <feign-form-spring.version>3.8.0</feign-form-spring.version>
+
+        <bouncycastle.version>1.60</bouncycastle.version>
+
+        <datadog.version>2.8</datadog.version>
+        <datadog-trace.version>0.28.0</datadog-trace.version>
     </properties>
 
-    <!-- 管理依赖  -->
+    <!--管理依赖-->
     <dependencyManagement>
         <dependencies>
             <!--spring cloud 版本管理 最新版本（Finchley.RELEASE）-->
@@ -134,7 +139,12 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <!-- bouncycastle -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
             <dependency>
                 <groupId>io.github.openfeign.form</groupId>
                 <artifactId>feign-form</artifactId>
@@ -296,6 +306,83 @@
                 <artifactId>apollo-client</artifactId>
                 <version>${apollo-client.version}</version>
             </dependency>
+            <!-- datadog -->
+            <dependency>
+                <groupId>com.datadoghq</groupId>
+                <artifactId>java-dogstatsd-client</artifactId>
+                <version>${datadog.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.datadoghq</groupId>
+                <artifactId>dd-trace-api</artifactId>
+                <version>${datadog-trace.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
+
+<!--    &lt;!&ndash;指定仓库&ndash;&gt;-->
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>nexus-xin-releases</id>-->
+<!--            <url>http://nexus.xin.com/repository/maven-releases/</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>nexus-xin-snapshots</id>-->
+<!--            <url>http://nexus.xin.com/repository/maven-snapshots/</url>-->
+<!--            <releases>-->
+<!--                <enabled>false</enabled>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+
+<!--    &lt;!&ndash;指定插件仓库仓库&ndash;&gt;-->
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>nexus-xin-releases</id>-->
+<!--            <url>http://nexus.xin.com/repository/maven-releases/</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--        <pluginRepository>-->
+<!--            <id>nexus-xin-snapshots</id>-->
+<!--            <url>http://nexus.xin.com/repository/maven-snapshots/</url>-->
+<!--            <releases>-->
+<!--                <enabled>false</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
+<!--    -->
+<!--    &lt;!&ndash;项目发布位置&ndash;&gt;-->
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>releases</id>-->
+<!--            <url>https://nexus.xxx.com/repository/maven-releases/</url>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--            <id>snapshots</id>-->
+<!--            <url>https://nexus.xxx.com/repository/maven-snapshots/</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
+
 </project>

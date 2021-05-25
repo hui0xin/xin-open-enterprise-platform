@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 订单状态 demo
+ * @Description: 订单状态 demo
+ * @author: 系统
  */
 @Getter
 @AllArgsConstructor

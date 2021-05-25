@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
-    <description>开发的企业级应用平台</description>
+    <description>生成项目，通过表结构生成功能的 脚手架项目</description>
     <!--个人博客地址-->
     <url>https://www.jianshu.com/u/6ad247189165</url>
 

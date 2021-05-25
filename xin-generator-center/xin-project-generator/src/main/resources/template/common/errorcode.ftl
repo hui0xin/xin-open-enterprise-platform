@@ -5,7 +5,8 @@ import com.xin.commons.support.constant.CommonConstant;
 import com.xin.commons.support.il8n.LocaleUtils;
 
 /**
- * 业务错误码
+ * @Description: 业务错误码，错误信息在messages中配置
+ * @author: 系统
  */
 public enum ${className}ErrorCode implements ErrorCode {
 

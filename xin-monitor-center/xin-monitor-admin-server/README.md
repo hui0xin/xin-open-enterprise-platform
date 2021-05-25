@@ -3,7 +3,8 @@ springboot服务监控系统（健康状态，失败后邮件发送等）
 # 第一种 基于eureka
       
 ## 客户端 admin client
-####注意：这里其实不需要做任何操作，只需要在配置文件中加入 management.endpoints配置既可
+注意：这里其实不需要做任何操作，只需要在配置文件中加入 management.endpoints配置既可
+```
 <!--注册中心客户端 -->
 <dependency>
     <groupId>org.springframework.cloud</groupId>
@@ -14,7 +15,8 @@ springboot服务监控系统（健康状态，失败后邮件发送等）
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-actuator</artifactId>
 </dependency>
-
+```
+```
 management:
   endpoints:
     web:
@@ -23,14 +25,17 @@ management:
   endpoint:
     health:
       show-details: ALWAYS  
-        
-##如果具体客户端服务使用了
+```       
+如果具体客户端服务使用了
+```
 server:
   servlet:
     context-path: /sunflower
+```
 
-###那么eureka的配置就需要是以下才能陪admin server监控到
-# eureka 注册中心
+那么eureka的配置就需要是以下才能配置admin server监控到
+
+```
 eureka:
   client:
     serviceUrl:
@@ -48,10 +53,11 @@ eureka:
     metadata-map:
       management:
         context-path: ${server.servlet.context-path}/actuator
-   
+```  
     
 # 第二种 基于链接的
-## 服务端
+### 服务端
+``` 
 <dependency>
     <groupId>de.codecentric</groupId>
     <artifactId>spring-boot-admin-starter-server</artifactId>
@@ -64,10 +70,12 @@ eureka:
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
-
+``` 
+``` 
 @EnableAdminServer
-
-## 客户端
+``` 
+### 客户端
+``` 
 <dependency>
     <groupId>de.codecentric</groupId>
     <artifactId>spring-boot-admin-starter-client</artifactId>
@@ -81,8 +89,8 @@ eureka:
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
-
-
+``` 
+``` 
 spring:
   boot: 
     admin: 
@@ -93,3 +101,4 @@ management:
     web:
       exposure:
         include: "*"
+``` 

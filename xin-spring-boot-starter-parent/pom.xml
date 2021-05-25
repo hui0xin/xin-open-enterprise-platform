@@ -16,7 +16,8 @@
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
-    <description>公司所有项目的父pom，所有项目都依赖它</description>
+    <description>xin所有spring-boot项目的parent pom.xml所有的spring-boot应用都继承该pom.xml</description>
+
     <!--个人博客地址-->
     <url>https://www.jianshu.com/u/6ad247189165</url>
 
@@ -31,6 +32,11 @@
         <xin-commons-mail.version>1.0-SNAPSHOT</xin-commons-mail.version>
         <xin-file-upload-sdk>1.0-SNAPSHOT</xin-file-upload-sdk>
     </properties>
+
+    <!--构建maven需要的最低版本-->
+    <prerequisites>
+        <maven>3.2.1</maven>
+    </prerequisites>
 
     <dependencyManagement>
         <dependencies>
@@ -91,6 +97,7 @@
                 </configuration>
                 <version>${maven-compiler-plugin.version}</version>
             </plugin>
+            <!--源代码插件，打包时会将源码打出来-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -108,68 +115,5 @@
         </plugins>
     </build>
 
-<!--    &lt;!&ndash; 指定仓库&ndash;&gt;-->
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>nexus-xin-releases</id>-->
-<!--            <url>http://nexus.xin.com/repository/maven-releases/</url>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--                <updatePolicy>always</updatePolicy>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--                <updatePolicy>always</updatePolicy>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>nexus-xin-snapshots</id>-->
-<!--            <url>http://nexus.xin.com/repository/maven-snapshots/</url>-->
-<!--            <releases>-->
-<!--                <enabled>false</enabled>-->
-<!--                <updatePolicy>always</updatePolicy>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--                <updatePolicy>always</updatePolicy>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--    </repositories>-->
-
-<!--    &lt;!&ndash; 指定插件仓库仓库&ndash;&gt;-->
-<!--    <pluginRepositories>-->
-<!--        <pluginRepository>-->
-<!--            <id>nexus-xin-releases</id>-->
-<!--            <url>http://nexus.xin.com/repository/maven-releases/</url>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
-<!--        </pluginRepository>-->
-<!--        <pluginRepository>-->
-<!--            <id>nexus-xin-snapshots</id>-->
-<!--            <url>http://nexus.xin.com/repository/maven-snapshots/</url>-->
-<!--            <releases>-->
-<!--                <enabled>false</enabled>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
-<!--        </pluginRepository>-->
-<!--    </pluginRepositories>-->
-
-<!--    &lt;!&ndash; 项目发布&ndash;&gt;-->
-<!--    <distributionManagement>-->
-<!--        <repository>-->
-<!--            <id>nexus-xin-releases</id>-->
-<!--            <url>http://nexus.xin.com/repository/maven-releases/</url>-->
-<!--        </repository>-->
-<!--        <snapshotRepository>-->
-<!--            <id>nexus-xin-snapshots</id>-->
-<!--            <url>http://nexus.xin.com/repository/maven-snapshots/</url>-->
-<!--        </snapshotRepository>-->
-<!--    </distributionManagement>-->
 
 </project>

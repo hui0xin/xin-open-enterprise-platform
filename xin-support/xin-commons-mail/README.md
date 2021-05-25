@@ -2,17 +2,20 @@
 # 如果您觉得本项目对你有用，请随手star，谢谢
 技术文章地址：https://www.jianshu.com/u/6ad247189165
 
-# xin-commons-mail 邮件发送工具
+# xin-commons-mail 
+
+邮件发送工具
 
 ## 具体操作
 ### 第一步 引入jar
+``` 
 <dependency>
     <groupId>com.xin.commons</groupId>
     <artifactId>xin-commons-mail</artifactId>
 </dependency>
-
+``` 
 ### 第二步 配置文件
----
+``` 
 spring:
   mail:
     # 邮箱服务器
@@ -37,7 +40,9 @@ spring:
         #需要TLS认证 保证发送邮件安全验证
         enable: true
         required: true
-
+``` 
 ### 第三步 使用
+``` 
 @Autowired
 private SendMailService sendMailService;
+``` 

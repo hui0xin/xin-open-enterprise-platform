@@ -17,5 +17,9 @@
             <groupId>com.xin.commons</groupId>
             <artifactId>xin-auth-jwt-bean</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
     </dependencies>
 </project>

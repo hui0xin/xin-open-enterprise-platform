@@ -6,7 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 /**
- * StringUtil
+ * @Description: stringUtil demo
+ * @author: 系统
  */
 @Slf4j
 public class StringUtil {

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @class: DemoServiceImpl
- * @Description: 描述 这里可以通过 xin-mybatis-generator 直接生成
+ * @Description: 这里可以通过 xin-mybatis-generator 直接生成
  * @author: 系统
  */
 @Slf4j
@@ -36,7 +36,7 @@ public class DemoServiceImpl implements DemoService {
 
     /**
      * @explain: 删除DemoDo对象
-     * @param:   id  对象参数
+     * @param:   id
      * @return:  int
      */
     @Override
@@ -56,7 +56,7 @@ public class DemoServiceImpl implements DemoService {
 
     /**
      * @explain: 查询DemoDo对象
-     * @param:   id  对象参数
+     * @param:   id
      * @return:  DemoDo
      */
     @Override

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class RestProjectGenerateUtil {
 
-    public static void generateRestProject(String filePath,String projectName,String projectDesc,Boolean isDockerProject) throws Exception {
+    public static void generateRestProject(String filePath,String projectName,String projectDesc,Boolean isDockerProject,String isYaml) throws Exception {
         filePath = filePath+"/"+projectName+"/"+projectName+"-rest";
         //创建 项目 路径
         File projectFile = new File(filePath);
@@ -21,13 +21,31 @@ public class RestProjectGenerateUtil {
         projectFile.mkdirs();
 
         if(isDockerProject){
-            //生成 docker 项目 pom。xml
-            generateDockerPom(filePath,projectName);
-            System.out.println("    1, ----生成 pom.xml 文件成功");
+            if(isYaml.equals("yaml_properties")){
+                //生成 docker 项目 pom。xml
+                generateDockerPom(filePath,projectName);
+                System.out.println("    1, ----生成 pom.xml 文件成功");
+            }else if(isYaml.equals("yaml")){
+                //生成 docker 项目 pom。xml
+                generateYamlDockerPom(filePath,projectName);
+                System.out.println("    1, ----生成 pom.xml 文件成功");
+            }else{
+                System.out.println("    1, ----生成 pom.xml 文件成功");
+                return;
+            }
         }else{
-            //生成 普通项目 pom。xml
-            generateBasePom(filePath,projectName);
-            System.out.println("    1, ----生成 pom.xml 文件成功");
+            if(isYaml.equals("yaml_properties")){
+                //生成 普通项目 pom。xml
+                generateBasePom(filePath,projectName);
+                System.out.println("    1, ----生成 pom.xml 文件成功");
+            }else if(isYaml.equals("yaml")){
+                //生成 普通项目 pom。xml
+                generateYamlBasePom(filePath,projectName);
+                System.out.println("    1, ----生成 pom.xml 文件成功");
+            }else{
+                System.out.println("    1, ----生成 pom.xml 文件成功");
+                return;
+            }
         }
         //生成mybatis-config.xml
         generateMybatisConfigXml(filePath,projectName,projectDesc);
@@ -38,16 +56,26 @@ public class RestProjectGenerateUtil {
         System.out.println("    3, ----生成 logback-spring.xml 文件成功");
 
         //生成bootstrap.yaml
-        generateBootstrapYaml(filePath,projectName,projectDesc);
-        System.out.println("    4, ----生成 bootstrap.yaml 文件成功");
+        if(isYaml.equals("yaml_properties")){
+            generateBootstrapYaml(filePath,projectName,projectDesc);
+            System.out.println("    4, ----生成 bootstrap.yaml 文件成功");
+        }
 
-        //生成application.yaml
-        generateApplicationYaml(filePath,projectName,projectDesc);
-        System.out.println("    5, ----生成 application.yaml 文件成功");
-
-        ConfigGenerateUtil.generateConfig(filePath,projectName,projectDesc);
-        System.out.println("    6, ----生成 config配置 文件成功");
-
+        // (1) yaml 为纯yml配置，这种结构在启动的时候才确定环境，打出的jar都是一样的
+        //（2）yaml_properties，为混合方式，这种结构在打包时候就确定了环境
+        if(isYaml.equals("yaml_properties")){
+            //生成application.yaml
+            generateApplicationYaml(filePath,projectName,projectDesc);
+            System.out.println("    5, ----生成 application.yaml 文件成功");
+            ConfigGenerateUtil.generateConfig(filePath,projectName,projectDesc);
+            System.out.println("    6, ----生成 config配置 文件成功");
+        }else if(isYaml.equals("yaml")){
+            EnvYamlGenerateUtil.generateEnvYaml(filePath,projectName,projectDesc);
+            System.out.println("    6, ----生成 多个环境的yaml 文件成功");
+        }else{
+            System.out.println("    6, ----生成 多个环境的yaml 失败");
+            return;
+        }
         //生成message
         MessageGenerateUtil.generateMessages(filePath,projectName);
         System.out.println("    7, ----生成 message 文件成功");
@@ -95,12 +123,49 @@ public class RestProjectGenerateUtil {
     }
 
     /**
+     * 生成普通pom.xml
+     * filePath = .......-rest
+     */
+    public static void generateYamlBasePom(String filePath,String projectName) throws Exception {
+        File projectFilePom = new File(filePath+"/pom.xml");
+        Template template = FreeMarkerTemplateUtils.getTemplate("/rest/pom-yaml-base.ftl");
+        FileOutputStream fos = new FileOutputStream(projectFilePom);
+        Writer out = new BufferedWriter(new OutputStreamWriter(fos, "utf-8"), 10240);
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        String className = FilePathUtils.getClassName(projectName);
+        String packageName = FilePathUtils.getPackageName(projectName);
+        dataMap.put("projectName", projectName);
+        dataMap.put("className", className);
+        dataMap.put("packageName", packageName);
+        template.process(dataMap, out);
+    }
+
+
+    /**
      * 生成docker项目pom.xml
      * filePath = .......-rest
      */
     public static void generateDockerPom(String filePath,String projectName) throws Exception {
         File projectFilePom = new File(filePath+"/pom.xml");
         Template template = FreeMarkerTemplateUtils.getTemplate("/rest/pom-docker.ftl");
+        FileOutputStream fos = new FileOutputStream(projectFilePom);
+        Writer out = new BufferedWriter(new OutputStreamWriter(fos, "utf-8"), 10240);
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        String className = FilePathUtils.getClassName(projectName);
+        String packageName = FilePathUtils.getPackageName(projectName);
+        dataMap.put("projectName", projectName);
+        dataMap.put("className", className);
+        dataMap.put("packageName", packageName);
+        template.process(dataMap, out);
+    }
+
+    /**
+     * 生成docker项目pom.xml
+     * filePath = .......-rest
+     */
+    public static void generateYamlDockerPom(String filePath,String projectName) throws Exception {
+        File projectFilePom = new File(filePath+"/pom.xml");
+        Template template = FreeMarkerTemplateUtils.getTemplate("/rest/pom-yaml-docker.ftl");
         FileOutputStream fos = new FileOutputStream(projectFilePom);
         Writer out = new BufferedWriter(new OutputStreamWriter(fos, "utf-8"), 10240);
         Map<String, Object> dataMap = new HashMap<String, Object>();

@@ -210,8 +210,8 @@
         注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
         -->
 
-        <table tableName="sys_user" domainObjectName="SysUserDo"
-               mapperName="SysUserMapper" sqlProviderName="SysUserDynamicSqlSupport"
+        <table tableName="xxl_api_datatype" domainObjectName="ApiDatatypeDo"
+               mapperName="ApiDatatypeMapper" sqlProviderName="ApiDatatypeDynamicSqlSupport"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
@@ -219,10 +219,10 @@
                比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
             <property name="useActualColumnNames" value="false" />
             <!--忽略一些列 只生成 col01，col13-->
-<!--            <ignoreColumnsByRegex pattern="(?i)col.*">-->
-<!--                <except column="col01"/>-->
-<!--                <except column="col13"/>-->
-<!--            </ignoreColumnsByRegex>-->
+            <!--            <ignoreColumnsByRegex pattern="(?i)col.*">-->
+            <!--                <except column="col01"/>-->
+            <!--                <except column="col13"/>-->
+            <!--            </ignoreColumnsByRegex>-->
             <!--将字段 "f_" 替换为 "" -->
             <!--<columnRenamingRule searchString="^f_" replaceString="" />-->
         </table>

@@ -6,21 +6,23 @@
 
 参考 https://www.cnblogs.com/cjsblog/p/9174797.html
 
-理解auth2.0协议
+## 理解auth2.0协议
 OAuth是一个关于授权（authorization）的开放网络标准，
 在全世界得到广泛应用，目前的版本是2.0版。本文对OAuth 2.0的设计思路和运行流程，做一个简明通俗的解释，主要参考材料为RFC 6749。
 
-1.1 什么是OAuth协议
+### 1.1 什么是OAuth协议
 OAuth协议，是一种授权协议，不涉及具体的代码，只是表示一种约定的流程和规范。
 OAuth协议一般用于用户决定是否把自己在某个服务商上面的资源（比如：用户基本资料、照片、视频等）授权给第三方应用访问。
 此外，OAuth2.0协议是OAuth协议的升级版，现在已经逐渐成为单点登录（SSO）和用户授权的标准。
 
+
 OAuth定义了四种角色：
+``` 
 resource owner（资源所有者）
 resource server（资源服务器）
 client（客户端）：代表资源所有者并且经过所有者授权去访问受保护的资源的应用程序
 authorization server（授权服务器）：在成功验证资源所有者并获得授权后向客户端发出访问令牌
-
+``` 
 1.2 适用场景
 用户不再需要注册大量账号
 用于单点登录
@@ -35,6 +37,7 @@ CAS单点登录
 
 http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html
 为了理解OAuth的适用场合，让我举一个假设的例子。
+``` 
 有一个"云冲印"的网站，可以将用户储存在Google的照片，冲印出来。用户为了使用该服务，必须让"云冲印"读取自己储存在Google上的照片。
 问题是只有得到用户的授权，Google才会同意"云冲印"读取这些照片。那么，"云冲印"怎样获得用户的授权呢？
 传统方法是，用户将自己的Google用户名和密码，告诉"云冲印"，后者就可以读取用户的照片了。这样的做法有以下几个严重的缺点。
@@ -44,8 +47,10 @@ http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html
 （4）用户只有修改密码，才能收回赋予"云冲印"的权力。但是这样做，会使得其他所有获得用户授权的第三方应用程序全部失效。
 （5）只要有一个第三方应用程序被破解，就会导致用户密码泄漏，以及所有被密码保护的数据泄漏。
 OAuth就是为了解决上面这些问题而诞生的。
+``` 
 
 名词定义
+``` 
 在详细讲解OAuth 2.0之前，需要了解几个专用名词。它们对读懂后面的讲解，尤其是几张图，至关重要。
 （1） Third-party application：第三方应用程序，本文中又称"客户端"（client），即上一节例子中的"云冲印"。
 （2）HTTP service：HTTP服务提供商，本文中简称"服务提供商"，即上一节例子中的Google。
@@ -54,8 +59,9 @@ OAuth就是为了解决上面这些问题而诞生的。
 （5）Authorization server：认证服务器，即服务提供商专门用来处理认证的服务器。
 （6）Resource server：资源服务器，即服务提供商存放用户生成的资源的服务器。它与认证服务器，可以是同一台服务器，也可以是不同的服务器。
 知道了上面这些名词，就不难理解，OAuth的作用就是让"客户端"安全可控地获取"用户"的授权，与"服务商提供商"进行互动。
-
+``` 
 oauth的流程
+``` 
 （A）用户打开客户端以后，客户端要求用户给予授权。
 （B）用户同意给予客户端授权。
 （C）客户端使用上一步获得的授权，向认证服务器申请令牌。
@@ -63,22 +69,24 @@ oauth的流程
 （E）客户端使用令牌，向资源服务器申请获取资源。
 （F）资源服务器确认令牌无误，同意向客户端开放资源。
 不难看出来，上面六个步骤之中，B是关键，即用户怎样才能给于客户端授权。有了这个授权以后，客户端就可以获取令牌，进而凭令牌获取资源。
-
+``` 
 下面一一讲解客户端获取授权的四种模式。
 客户端必须得到用户的授权（authorization grant），才能获得令牌（access token）。OAuth 2.0定义了四种授权方式。
-
+``` 
 授权码模式（authorization code）
 简化模式（implicit）
 密码模式（resource owner password credentials）
 客户端模式（client credentials）
-
-模式	应用场景	描述
+``` 
+#### 模式	应用场景	描述
+``` 
 授权码(Auth Code)	成功后跳转其他页面，如第三方微信登录等	
 简化模式(implicit)	不通过第三方应用程序的服务器，直接在浏览器中向认证服务器申请令牌	
 密码模式(password credentials)	web页面用户名密码登录	
 客户端模式(client credentials)	主要针对openapi，使用apikey和secretkey方式
-
-1---授权码模式
+``` 
+##### 1---授权码模式
+``` 
 授权码模式（authorization code）是功能最完整、流程最严密的授权模式。它的特点就是通过客户端的后台服务器，与"服务提供商"的认证服务器进行互动。
 它的步骤如下：
 （A）用户访问客户端，后者将前者导向认证服务器。
@@ -140,8 +148,9 @@ Pragma: no-cache
 "example_parameter":"example_value"
 }
 从上面代码可以看到，相关参数使用JSON格式发送（Content-Type: application/json）。此外，HTTP头信息中明确指定不得缓存。
-
-2----简化模式
+``` 
+##### 2----简化模式
+``` 
 简化模式（implicit grant type）不通过第三方应用程序的服务器，直接在浏览器中向认证服务器申请令牌，跳过了"授权码"这个步骤，因此得名。所有步骤在浏览器中完成，令牌对访问者是可见的，且客户端不需要认证。
 它的步骤如下：
 （A）客户端将用户导向认证服务器。
@@ -176,8 +185,9 @@ Location: http://example.com/cb#access_token=2YotnFZFEjr1zCsicMWpAA
        &state=xyz&token_type=example&expires_in=3600
 在上面的例子中，认证服务器用HTTP头信息的Location栏，指定浏览器重定向的网址。注意，在这个网址的Hash部分包含了令牌。
 根据上面的D步骤，下一步浏览器会访问Location指定的网址，但是Hash部分不会发送。接下来的E步骤，服务提供商的资源服务器发送过来的代码，会提取出Hash中的令牌。
-
-3----密码模式
+``` 
+##### 3----密码模式
+``` 
 密码模式（Resource Owner Password Credentials Grant）中，用户向客户端提供自己的用户名和密码。客户端使用这些信息，向"服务商提供商"索要授权。
 在这种模式中，用户必须把自己的密码给客户端，但是客户端不得储存密码。这通常用在用户对客户端高度信任的情况下，比如客户端是操作系统的一部分，或者由一个著名公司出品。而认证服务器只有在其他授权模式无法执行的情况下，才能考虑使用这种模式。
 它的步骤如下：
@@ -212,8 +222,9 @@ Pragma: no-cache
 
 上面代码中，各个参数的含义参见《授权码模式》一节。
 整个过程中，客户端不得保存用户的密码。
-
-4----客户端模式
+``` 
+##### 4----客户端模式
+``` 
 客户端模式（Client Credentials Grant）指客户端以自己的名义，而不是以用户的名义，向"服务提供商"进行认证。严格地说，客户端模式并不属于OAuth框架所要解决的问题。在这种模式中，用户直接向客户端注册，客户端以自己的名义要求"服务提供商"提供服务，其实不存在授权问题。
 它的步骤如下：
 （A）客户端向认证服务器进行身份认证，并要求一个访问令牌。
@@ -257,21 +268,7 @@ Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=refresh_token&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+``` 
 
 ## 项目准备
 
@@ -285,14 +282,14 @@ grant_type=refresh_token&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA
     "scope": "app openid"
 }
 ```
-8.访问http://127.0.0.1:8080/sys-user/list
-```flie
+8.访问http://127.0.0.1:8080/sys-user/list  
+```
 在headers里面带上
 key=Content-Type,value=application/json
 key=Authorization,value=Bearer 34db999e-0840-4c82-91b7-d5040d7ffc4e
 ```
   
-```json
+```
 {
     "code": 200,
     "msg": "success",
@@ -322,8 +319,8 @@ key=Authorization,value=Bearer 34db999e-0840-4c82-91b7-d5040d7ffc4e
 ```
 
 ## 更多`OAuth2`请参考
-> [理解OAuth 2.0](http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html) 或者 
-> [spring-oauth-server 数据库表说明](http://andaily.com/spring-oauth-server/db_table_description.html) 或者
-> [springboot+spring security +oauth2.0 demo搭建（password模式）（认证授权端与资源服务端分离的形式）](https://www.cnblogs.com/hetutu-5238/p/10022963.html)
+> [理解OAuth 2.0](http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html) 或者   
+> [spring-oauth-server 数据库表说明](http://andaily.com/spring-oauth-server/db_table_description.html) 或者  
+> [springboot+spring security +oauth2.0 demo搭建（password模式）（认证授权端与资源服务端分离的形式）](https://www.cnblogs.com/hetutu-5238/p/10022963.html)  
 
  

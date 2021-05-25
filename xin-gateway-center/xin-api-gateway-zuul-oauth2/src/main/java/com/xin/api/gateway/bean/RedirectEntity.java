@@ -18,5 +18,4 @@ public class RedirectEntity {
      * 原始请求服务serverId  ，调转的新的服务的serverId
      */
     private String serviceIds;
-
 }

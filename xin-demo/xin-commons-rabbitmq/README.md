@@ -1,4 +1,4 @@
-
+```
 spring:
   rabbitmq:
     host: localhost # rabbitmq的连接地址
@@ -8,3 +8,4 @@ spring:
     password: mall # rabbitmq的密码
     publisher-confirms: true #如果对异步消息需要回调必须设置为true
     publisher-returns: true #消息发送到队列确认
+```

@@ -22,6 +22,7 @@
         <module>xin-commons-support</module>
         <module>xin-commons-support-web</module>
         <module>xin-commons-support-log</module>
+        <module>xin-commons-support-datadog</module>
     </modules>
 
 </project>

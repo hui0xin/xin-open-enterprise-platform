@@ -1,6 +1,6 @@
 package com.xin.commons.support.exception;
 
-import com.xin.commons.support.errorcode.SystemErrorCode;
+import com.xin.commons.support.errorcode.HttpErrorCode;
 import lombok.Getter;
 
 /**
@@ -23,13 +23,13 @@ public class HttpException extends BizException {
         super();
     }
 
-    public HttpException(final SystemErrorCode errorCode) {
+    public HttpException(final HttpErrorCode errorCode) {
         super(errorCode.getMessage());
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
     }
 
-    public HttpException(final SystemErrorCode errorCode, final Throwable cause) {
+    public HttpException(final HttpErrorCode errorCode, final Throwable cause) {
         super(errorCode.getMessage(), cause);
     }
 }

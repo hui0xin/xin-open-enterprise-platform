@@ -3,19 +3,21 @@
 
 # xin-commons-redis redis工具
 
-该项目主要提供了：
-1，redis的使用
-2，redis cachea 的使用
-3，geohash的基本操作
+该项目主要提供了：  
+1，redis的使用  
+2，redis cachea 的使用  
+3，geohash的基本操作  
 
 #redis使用
 ### 第一步 引入jar
+``` 
 <dependency>
     <groupId>com.xin.commons</groupId>
     <artifactId>xin-commons-redis</artifactId>
 </dependency>
-
+``` 
 ### 第二步 配置文件
+``` 
 #### Redis服务器地址
 spring.redis.host=0.0.0.0
 #### Redis服务器连接端口
@@ -32,13 +34,15 @@ spring.redis.lettuce.pool.max-wait=-1
 spring.redis.lettuce.pool.max-idle=8  
 #### 连接池中的最小空闲连接
 spring.redis.lettuce.pool.min-idle=0
-
+``` 
 ### 第三步 使用
+``` 
 @Autowired
 private RedisService redisService;
+``` 
 
-
-#redis cachea使用
+# redis cachea使用
+``` 
 @Cacheable(value = "user", key = "#id")
 @Override
 public User get(Long id) {
@@ -61,3 +65,4 @@ public void delete(Long id) {
     DATABASES.remove(id);
     log.info("进入 delete 方法");
 }
+``` 

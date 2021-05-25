@@ -8,7 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Bo 接受前端请求的参数
+ * @Description: Bo 接受前端请求的参数
+ * @author: 系统
  */
 @Data
 @ApiModel(value = "DemoBo", description = "说明")

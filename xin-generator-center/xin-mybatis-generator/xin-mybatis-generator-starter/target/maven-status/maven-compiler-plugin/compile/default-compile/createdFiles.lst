@@ -1,7 +1,0 @@
-com/mybatis/generator/starter/GenerateStartUp.class
-com/user/auth/mapper/SysUserMapper.class
-com/user/auth/controller/SysUserController.class
-com/user/auth/bean/DO/SysUserDo.class
-com/user/auth/service/SysUserService.class
-com/user/auth/bean/vo/SysUserVo.class
-com/user/auth/service/impl/SysUserServiceImpl.class

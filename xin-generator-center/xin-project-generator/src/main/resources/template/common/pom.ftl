@@ -10,13 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>${projectName}-common</artifactId>
-    <version>${r'${project.version}'}</version>
-    <name>${r'${project.artifactId}'}</name>
+    <version>${r'${projects.version}'}</version>
 
     <dependencies>
         <dependency>
             <groupId>com.xin.commons</groupId>
-            <artifactId>xin-commons</artifactId>
+            <artifactId>xin-commons-support</artifactId>
         </dependency>
     </dependencies>
 

@@ -1,7 +1,8 @@
 package com.${packageName}.common.constant;
 
 /**
- * 静态常量都配置在这里
+ * @Description: 静态常量都配置在这里
+ * @author: 系统
  */
 public class BusinessConstant {
 

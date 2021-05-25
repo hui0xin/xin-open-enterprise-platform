@@ -23,7 +23,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
 
     /**
      * @explain: 添加${fileDoName}对象
-     * @param:   ${fileDoName} 对象参数
+     * @param:   model 对象参数
      * @return:  int
      */
     @Override
@@ -33,7 +33,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
 
     /**
      * @explain: 删除${fileDoName}对象
-     * @param:   id  对象参数
+     * @param:   id
      * @return:  int
      */
     @Override
@@ -43,7 +43,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
 
     /**
      * @explain: 修改${fileDoName}对象
-     * @param:   ${fileDoName}  对象参数
+     * @param:   model 对象参数
      * @return:  int
      */
     @Override
@@ -53,7 +53,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
 
     /**
      * @explain: 查询${fileDoName}对象
-     * @param:   id  对象参数
+     * @param:   id
      * @return:  ${fileDoName}
      */
     @Override
@@ -63,7 +63,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
 
     /**
      * @explain: 查询${fileDoName}对象
-     * @param:   ${fileDoName}  对象参数
+     * @param:   model 对象参数
      * @return:  ${fileDoName} 对象
      */
     @Override
@@ -73,7 +73,7 @@ public class ${fileName}ServiceImpl implements ${fileName}Service {
 
     /**
      * @explain: 查询列表
-     * @param:  ${fileDoName}  对象参数
+     * @param:  model  对象参数
      * @return: list
      */
     @Override

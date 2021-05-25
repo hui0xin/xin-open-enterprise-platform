@@ -206,6 +206,13 @@ swagger:
 ## 日志配置
 logging:
   config: classpath:logs/logback-spring.xml
+  level:
+    # 全局日志级别
+    default: INFO
+    # 项目日志级别
+    commons: INFO
+    # mybatis日志级别
+    mybatis: DEBUG
 
 ---
 #控制台输出彩色

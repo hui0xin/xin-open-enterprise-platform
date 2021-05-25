@@ -1,1 +1,0 @@
-java -jar .\target\xin-eureka-server-1.0-SNAPSHOT.jar --spring.profiles.active=node-2

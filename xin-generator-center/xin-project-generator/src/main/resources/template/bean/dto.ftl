@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * dto 用于中途处理的 中间状态，
- * 比如：controller ---- service 的中间数据类
- * 注意：这个不需要swagger
+ * @Description: dto 用于中途处理的 中间状态，比如：controller <————> service 的中间数据类
+ *               注意：这个不需要swagger
+ * @author: 系统
  */
 @Data
 public class DemoDto implements Serializable {

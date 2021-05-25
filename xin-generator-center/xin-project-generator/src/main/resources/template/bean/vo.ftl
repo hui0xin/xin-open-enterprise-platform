@@ -8,7 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * vo 返回给前端的数据
+ * @Description: vo 返回给前端的数据
+ * @author: 系统
  */
 @Data
 @ApiModel(value = "DemoVo", description = "说明")

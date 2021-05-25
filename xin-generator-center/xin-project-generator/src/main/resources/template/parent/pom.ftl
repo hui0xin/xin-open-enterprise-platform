@@ -21,33 +21,32 @@
 
     <groupId>com.xin.commons</groupId>
     <artifactId>${projectName}</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>${r'${project.artifactId}'}</name>
     <description>${projectDesc}</description>
+    <version>${r'${projects.version}'}</version>
+    <packaging>pom</packaging>
 
-    <!-- 管理依赖   -->
+    <!--管理依赖-->
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.xin.commons</groupId>
                 <artifactId>${projectName}-bean</artifactId>
-                <version>${r'${project.version}'}</version>
+                <version>${r'${projects.version}'}</version>
             </dependency>
             <dependency>
                 <groupId>com.xin.commons</groupId>
                 <artifactId>${projectName}-common</artifactId>
-                <version>${r'${project.version}'}</version>
+                <version>${r'${projects.version}'}</version>
             </dependency>
             <dependency>
                 <groupId>com.xin.commons</groupId>
                 <artifactId>${projectName}-core</artifactId>
-                <version>${r'${project.version}'}</version>
+                <version>${r'${projects.version}'}</version>
             </dependency>
             <dependency>
                 <groupId>com.xin.commons</groupId>
                 <artifactId>${projectName}-sdk</artifactId>
-                <version>${r'${project.version}'}</version>
+                <version>${r'${projects.version}'}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

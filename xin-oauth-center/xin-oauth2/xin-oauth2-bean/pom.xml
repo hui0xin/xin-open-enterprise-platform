@@ -18,6 +18,7 @@
             <groupId>com.xin.commons</groupId>
             <artifactId>xin-oauth2-common</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

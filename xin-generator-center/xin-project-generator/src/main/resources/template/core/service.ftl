@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @interface: DemoService
- * @Description:  描述 这里可以通过 xin-mybatis-generator 直接生成
+ * @Description:  这里可以通过 xin-mybatis-generator 直接生成
  * @author: 系统
  */
 public interface DemoService {
@@ -21,7 +21,7 @@ public interface DemoService {
 
     /**
      * @explain: 删除DemoDo对象
-     * @param:   id  对象参数
+     * @param:   id
      * @return:  int
      */
     int deleteByPrimaryKey(Long id);
@@ -35,7 +35,7 @@ public interface DemoService {
 
     /**
      * @explain: 查询DemoDo对象
-     * @param:   id  对象参数
+     * @param:   id
      * @return:  DemoDo
      */
     DemoDo selectByPrimaryKey(Long id);

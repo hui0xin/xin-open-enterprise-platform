@@ -5,7 +5,8 @@ import com.${packageName}.common.errorcode.${className}ErrorCode;
 import lombok.Getter;
 
 /**
- * 业务层异常类
+ * @Description: 业务异常类
+ * @author: 系统
  */
 @Getter
 public class ${className}Exception extends BizException {

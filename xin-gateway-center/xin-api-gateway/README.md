@@ -28,11 +28,11 @@
 
 
 
-###以下为规则，有不会的可以参考
+### 以下为规则，有不会的可以参考
 Route Predicate Factory
 id uri顾名思义，不多说，但predicates是什么呢？predicates做动词有使基于; 
 使以…为依据; 表明; 阐明; 断言;的意思，简单说，用于表明在那种条件下，该路由配置生效。
-
+```
 spring:
   cloud:
     gateway:
@@ -64,12 +64,13 @@ spring:
         - Query=foo, ba.
         # 匹配远程地址
         - RemoteAddr=192.168.1.1/24
+```
 
 GatewayFilter Factory
 除此predicates外，还有filter，用于过滤请求。与predicates一样，
 Spring官方也提供了需要内置的过滤器。过滤器部分相对于predicates来说难得多，
 有全局的也有可配置的。甚至一些过滤器不支持通过配置文件来修改。
-
+```
 spring:
   cloud:
     gateway:
@@ -136,12 +137,15 @@ spring:
             args:
               rate-limiter: "#{@myRateLimiter}"
               key-resolver: "#{@userKeyResolver}"
-
+```
+```
 @Bean
 KeyResolver userKeyResolver() {
     return exchange -> Mono.just(exchange.getRequest().getQueryParams().getFirst("user"));
 }
+```
 除此外还有两个“特别”的过滤器，modifyRequestBody modifyResponseBody他们只能使用在Fluent Java Routes API中。例如：
+```
 @Bean
 public RouteLocator routes(RouteLocatorBuilder builder) {
     return builder.routes()
@@ -151,13 +155,14 @@ public RouteLocator routes(RouteLocatorBuilder builder) {
                     (exchange, s) -> return Mono.just(new Hello(s.toUpperCase())))).uri(uri))
         .build();
 }
+```
 
 PrefixPath Filter 在请求路径前加上自定义的路径
 假如应用访问地址是localhost:8001/app, 
 接口地址是/test，这里设置了prefixPath为/app, 
 那么当你访问localhost:8080/test, 网关在帮你转发请求之前，
 会在/test 前加上/app，转发时的请求就变成了localhost:8001/app/test。
-
+```
 spring:
   cloud:
     gateway:
@@ -168,10 +173,11 @@ spring:
         - Path=/{path}
         filters:
         - PrefixPath=/app
+```       
         
         
-        
-RewritePath Filter 重写请求路径
+RewritePath Filter 重写请求路径、
+```
 spring:
   cloud:
     gateway:
@@ -183,7 +189,7 @@ spring:
         filters:
         # 访问localhost:8080/test, 请求会转发到localhost:8001/app/test
         - RewritePath=/test, /app/test        
-         
+```        
               
 这个filter比较灵活的就是可以进行正则匹配替换，
 如下的例子就是当请求localhost:8080/test时，
@@ -191,7 +197,7 @@ spring:
 所以现在请求变成了localhost:8080/app/test。
 然后转发时的url变成了localhost:8001/app/test 。
 在测试的时候，这个filter是没办法使用模板进行匹配的。可能是因为它是用的正则进行匹配替换，所以没办法使用模板吧
-
+```
 spring:
   cloud:
     gateway:
@@ -202,14 +208,13 @@ spring:
         - Path=/test
         filters:
         - RewritePath=(?<oldPath>^/), /app$\{oldPath}      
-        
+```        
 值得注意的是在yml文档中 $ 要写成 $\ 。替换路径是使用的是String.replaceAll()方法，这个方法和replace()不同，是根据正则进行替换的。具体的替换规则感兴趣的话可以去了解一下Pattern。
 https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
 
-
 SetPath Filter 通过模板设置路径
 这个filter的使用方式比较简单。就是匹配到满足/a开头的路径后重新设置路径为以/app开头。
-
+```
 spring:
   cloud:
     gateway:
@@ -220,6 +225,6 @@ spring:
         - Path=/a/{path}
         filters:
         - SetPath=/app/{path}
-        
+```        
         
 

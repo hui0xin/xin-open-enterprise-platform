@@ -14,14 +14,19 @@ import com.xin.project.generator.sdk.SdkProjectGenerateUtil;
 public class GenerateStartUp {
 
     //生成项目地址
-    public final static String filePath = "/Users/hx/project";
+    public final static String filePath = "/Users/bixin/project";
     //项目名称
-    public final static String  projectName = "xin-order";
+    public final static String  projectName = "xin-user";
     //项目说明
-    public final static String  projectDesc = "订单服务";
+    public final static String  projectDesc = "用户服务";
 
     //是否是docker项目，true-->是，false-->否
-    public final static Boolean isDockerProject = false;
+    public final static Boolean isDockerProject = true;
+
+    //项目配置文件结构:
+    // (1) yaml 为纯yml配置，这种结构在启动的时候才确定环境，打出的jar都是一样的
+    // （2）yaml_properties，为混合方式，这种结构在打包时候就确定了环境
+    public final static String isYaml = "yaml";
 
     public static void main(String[] args) {
 
@@ -41,7 +46,7 @@ public class GenerateStartUp {
             CoreProjectGenerateUtil.generateCoreProject(filePath,projectName,projectDesc);
 
             System.out.println("6, ----生成Rest项目.");
-            RestProjectGenerateUtil.generateRestProject(filePath,projectName,projectDesc,isDockerProject);
+            RestProjectGenerateUtil.generateRestProject(filePath,projectName,projectDesc,isDockerProject,isYaml);
 
             System.out.println("6, ----生成Sdk项目.");
             SdkProjectGenerateUtil.generateSdkProject(filePath,projectName,projectDesc);

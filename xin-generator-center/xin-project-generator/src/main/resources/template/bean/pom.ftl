@@ -10,8 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>${projectName}-bean</artifactId>
-    <version>${r'${project.version}'}</version>
-    <name>${r'${project.artifactId}'}</name>
+    <version>${r'${projects.version}'}</version>
 
     <dependencies>
         <dependency>
