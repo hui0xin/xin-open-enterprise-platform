@@ -82,7 +82,7 @@
 
     <logger name="com.apache.ibatis" level="${r'${logging.level.mybatis}'}"/>
     <logger name="java.sql.Connection" level="${r'${logging.level.mybatis}'}"/>
-    <logger name="java.sql.Statement" level="${r'${logging.level.mybatis}"'}"/>
+    <logger name="java.sql.Statement" level="${r'${logging.level.mybatis}'}"/>
     <logger name="java.sql.PreparedStatement" level="${r'${logging.level.mybatis}'}"/>
     <logger name="org.mybatis" level="${r'${logging.level.mybatis}'}"/>
     <logger name="com.xin" level="${r'${logging.level.project}'}"/>
