@@ -26,7 +26,7 @@ public class GenerateStartUp {
     //项目配置文件结构:
     // (1) yaml 为纯yml配置，这种结构在启动的时候才确定环境，打出的jar都是一样的
     //（2）yaml_properties，为混合方式，这种结构在打包时候就确定了环境
-    public final static String isYaml = "yaml_properties";
+    public final static String isYaml = "yaml";
 
     public static void main(String[] args) {
 
