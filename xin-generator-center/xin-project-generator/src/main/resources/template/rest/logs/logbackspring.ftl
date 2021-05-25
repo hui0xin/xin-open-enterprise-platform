@@ -14,15 +14,14 @@
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
 
     <springProperty scope="context" name="springAppName" source="spring.application.name" />
-
+    <springProperty scope="context" name="logging.path" source="logging.path"/>
     <springProperty scope="context" name="logging.level.default" source="logging.level.default"/>
-    <springProperty scope="context" name="logging.level.project" source="logging.level.exchange"/>
+    <springProperty scope="context" name="logging.level.project" source="logging.level.project"/>
     <springProperty scope="context" name="logging.level.mybatis" source="logging.level.mybatis"/>
-    <springProperty scope="context" name="logging.level.commons" source="logging.level.commons"/>
 
 
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
-    <property name="logHomeDir" value="/Users/xin/logs/"/>
+    <property name="logHomeDir" value="${r'${logging.path}'}"/>
     <property name="logPattern" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr([${r'${springAppName:-}'}]){blue} %clr(%-5level){faint} %clr([%thread]){magenta} %clr(%logger{50}){cyan} - %msg%n"/>
     <!-- 异步缓冲队列的深度,该值会影响性能.默认值为256-->
     <property name="queueSize" value="512"/>
@@ -41,12 +40,12 @@
     </appender>
 
     <!-- DEBUG日志配置 -->
-    <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文件的路径及文件名 -->
-        <file>${r'${logHomeDir}'}/${r'${springAppName}'}/${r'${springAppName}'}_debug.log</file>
+        <file>${r'${logHomeDir}'}/${r'${springAppName}'}/${r'${springAppName}'}.log</file>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${r'${logHomeDir}'}/${r'${springAppName}'}/debug/${r'${springAppName}'}_debug.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${r'${logHomeDir}'}/${r'${springAppName}'}/${r'${springAppName}'}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- 单个文件最大为20MB -->
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>50MB</maxFileSize>
@@ -73,147 +72,25 @@
         </filter>
     </appender>
 
-    <!-- INFO日志配置 -->
-    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 正在记录的日志文件的路径及文件名 -->
-        <file>${r'${logHomeDir}'}/${r'${springAppName}'}/${r'${springAppName}'}_info.log</file>
-        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${r'${logHomeDir}'}/${r'${springAppName}'}/info/${r'${springAppName}'}_info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!-- 单个文件最大为20MB -->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>50MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <!--日志文件保留天数-->
-            <MaxHistory>30</MaxHistory>
-        </rollingPolicy>
-        <!-- 如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true。 -->
-        <append>true</append>
-        <!-- 日志文件的格式 -->
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>${r'${logPattern}'}</pattern>c
-            <charset>utf-8</charset>
-        </encoder>
-        <!-- 过滤器，只记录INFO级别的日志 -->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <!-- 设置过滤级别 -->
-            <level>INFO</level>
-            <!-- 用于配置符合过滤条件的操作 -->
-            <onMatch>ACCEPT</onMatch>
-            <!-- 用于配置不符合过滤条件的操作 -->
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
-
-    <!--WARN日志配置 -->
-    <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 正在记录的日志文件的路径及文件名 -->
-        <file>${r'${logHomeDir}'}/${r'${springAppName}'}/${r'${springAppName}'}_warn.log</file>
-        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${r'${logHomeDir}'}/${r'${springAppName}'}/warn/${r'${springAppName}'}_warn.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!-- 单个文件最大为20MB -->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>50MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <!--日志文件保留天数-->
-            <MaxHistory>30</MaxHistory>
-        </rollingPolicy>
-        <!-- 如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true。 -->
-        <append>true</append>
-        <!-- 日志文件的格式 -->
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>${r'${logPattern}'}</pattern>c
-            <charset>utf-8</charset>
-        </encoder>
-        <!-- 过滤器，只记录INFO级别的日志 -->
-        <!-- 果日志级别等于配置级别，过滤器会根据onMath 和 onMismatch接收或拒绝日志。 -->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <!-- 设置过滤级别 -->
-            <level>WARN</level>
-            <!-- 用于配置符合过滤条件的操作 -->
-            <onMatch>ACCEPT</onMatch>
-            <!-- 用于配置不符合过滤条件的操作 -->
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
-
-    <!--ERROR日志配置 -->
-    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 正在记录的日志文件的路径及文件名 -->
-        <file>${r'${logHomeDir}'}/${r'${springAppName}'}/${r'${springAppName}'}_error.log</file>
-        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${r'${logHomeDir}'}/${r'${springAppName}'}/error/${r'${springAppName}'}_error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!-- 单个文件最大为20MB -->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>50MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <!--日志文件保留天数-->
-            <MaxHistory>30</MaxHistory>
-        </rollingPolicy>
-        <!-- 如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true。 -->
-        <append>true</append>
-        <!-- 日志文件的格式 -->
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>${r'${logPattern}'}</pattern>c
-            <charset>utf-8</charset>
-        </encoder>
-        <!-- 过滤器，只记录INFO级别的日志 -->
-        <!-- 果日志级别等于配置级别，过滤器会根据onMath 和 onMismatch接收或拒绝日志。 -->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <!-- 设置过滤级别 -->
-            <level>ERROR</level>
-            <!-- 用于配置符合过滤条件的操作 -->
-            <onMatch>ACCEPT</onMatch>
-            <!-- 用于配置不符合过滤条件的操作 -->
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
-
-    <appender name="ASYNC_LOG_DEBUG" class="ch.qos.logback.classic.AsyncAppender">
+    <appender name="ASYNC_LOG_FILE" class="ch.qos.logback.classic.AsyncAppender">
         <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
         <discardingThreshold>0</discardingThreshold>
         <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
         <queueSize>${r'${queueSize}'}</queueSize>
-        <appender-ref ref="FILE_DEBUG"/>
-    </appender>
-    <appender name="ASYNC_LOG_INFO" class="ch.qos.logback.classic.AsyncAppender">
-        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
-        <discardingThreshold>0</discardingThreshold>
-        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
-        <queueSize>${r'${queueSize}'}</queueSize>
-        <appender-ref ref="FILE_INFO"/>
-    </appender>
-    <appender name="ASYNC_LOG_WARN" class="ch.qos.logback.classic.AsyncAppender">
-        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
-        <discardingThreshold>0</discardingThreshold>
-        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
-        <queueSize>${r'${queueSize}'}</queueSize>
-        <appender-ref ref="FILE_WARN"/>
-    </appender>
-    <appender name="ASYNC_LOG_ERROR" class="ch.qos.logback.classic.AsyncAppender">
-        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
-        <discardingThreshold>0</discardingThreshold>
-        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
-        <queueSize>${r'${queueSize}'}</queueSize>
-        <appender-ref ref="FILE_ERROR"/>
+        <appender-ref ref="LOG_FILE"/>
     </appender>
 
     <logger name="com.apache.ibatis" level="${r'${logging.level.mybatis}'}"/>
     <logger name="java.sql.Connection" level="${r'${logging.level.mybatis}'}"/>
-    <logger name="java.sql.Statement" level="${r'${logging.level.mybatis}"'}/>
+    <logger name="java.sql.Statement" level="${r'${logging.level.mybatis}"'}"/>
     <logger name="java.sql.PreparedStatement" level="${r'${logging.level.mybatis}'}"/>
     <logger name="org.mybatis" level="${r'${logging.level.mybatis}'}"/>
-    <logger name="com.xin" level="${r'${logging.level.commons}'}"/>
+    <logger name="com.xin" level="${r'${logging.level.project}'}"/>
 
     <root level="${r'${logging.level.default}'}">
         <!-- appender referenced after it is defined -->
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="ASYNC_LOG_DEBUG"/>
-        <appender-ref ref="ASYNC_LOG_INFO"/>
-        <appender-ref ref="ASYNC_LOG_WARN"/>
-        <appender-ref ref="ASYNC_LOG_ERROR"/>
+        <appender-ref ref="ASYNC_LOG_FILE"/>
     </root>
 
 <!--    &lt;!&ndash;日志异步到数据库 &ndash;&gt;-->

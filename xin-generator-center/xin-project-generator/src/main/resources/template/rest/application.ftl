@@ -206,6 +206,7 @@ swagger:
 ## 日志配置
 logging:
   config: classpath:logs/logback-spring.xml
+  path: /Users/bixin/logs
   level:
     # 全局日志级别
     default: INFO
