@@ -23,13 +23,13 @@
 
     <!--版本管理-->
     <properties>
-        <xin-commons-redis.version>1.0-SNAPSHOT</xin-commons-redis.version>
-        <xin-commons-lock.version>1.0-SNAPSHOT</xin-commons-lock.version>
-        <xin-commons.version>1.0-SNAPSHOT</xin-commons.version>
         <xin-commons-support.version>1.0-SNAPSHOT</xin-commons-support.version>
         <xin-commons-support-web.version>1.0-SNAPSHOT</xin-commons-support-web.version>
-        <xin-commons-support-log.version>1.0-SNAPSHOT</xin-commons-support-log.version>
-        <xin-commons-mail.version>1.0-SNAPSHOT</xin-commons-mail.version>
+        <xin-spring-boot-starter-redis.version>1.0-SNAPSHOT</xin-spring-boot-starter-redis.version>
+        <xin-spring-boot-starter-lock.version>1.0-SNAPSHOT</xin-spring-boot-starter-lock.version>
+        <xin-spring-boot-starter-log.version>1.0-SNAPSHOT</xin-spring-boot-starter-log.version>
+        <xin-spring-boot-starter-datadog.version>1.0-SNAPSHOT</xin-spring-boot-starter-datadog.version>
+        <xin-spring-boot-starter-mail.version>1.0-SNAPSHOT</xin-spring-boot-starter-mail.version>
         <xin-file-upload-sdk>1.0-SNAPSHOT</xin-file-upload-sdk>
     </properties>
 
@@ -42,26 +42,6 @@
         <dependencies>
             <dependency>
                 <groupId>com.xin.commons</groupId>
-                <artifactId>xin-commons-redis</artifactId>
-                <version>${xin-commons-redis.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xin.commons</groupId>
-                <artifactId>xin-commons-lock</artifactId>
-                <version>${xin-commons-lock.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xin.commons</groupId>
-                <artifactId>xin-commons</artifactId>
-                <version>${xin-commons.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xin.commons</groupId>
-                <artifactId>xin-commons-mail</artifactId>
-                <version>${xin-commons-mail.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xin.commons</groupId>
                 <artifactId>xin-commons-support</artifactId>
                 <version>${xin-commons-support.version}</version>
             </dependency>
@@ -72,8 +52,28 @@
             </dependency>
             <dependency>
                 <groupId>com.xin.commons</groupId>
-                <artifactId>xin-commons-support-log</artifactId>
-                <version>${xin-commons-support-log.version}</version>
+                <artifactId>xin-spring-boot-starter-redis</artifactId>
+                <version>${xin-spring-boot-starter-redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-spring-boot-starter-lock</artifactId>
+                <version>${xin-spring-boot-starter-lock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-spring-boot-starter-log</artifactId>
+                <version>${xin-spring-boot-starter-log.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-spring-boot-starter-datadog</artifactId>
+                <version>${xin-spring-boot-starter-datadog.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-spring-boot-starter-mail</artifactId>
+                <version>${xin-spring-boot-starter-mail.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.xin.commons</groupId>

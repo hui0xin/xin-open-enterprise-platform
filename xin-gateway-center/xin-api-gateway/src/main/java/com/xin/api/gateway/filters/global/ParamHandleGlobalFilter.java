@@ -30,7 +30,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * 参数处理：
+ * 参数处理：不需要在配置文件中制定，就可以执行
  * 将请求参数 写入 Attribute，
  * 用于之后的没有拦截器使用
  */

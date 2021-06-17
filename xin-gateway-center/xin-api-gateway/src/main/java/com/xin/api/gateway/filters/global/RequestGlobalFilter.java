@@ -15,7 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 /**
- * 全局路由 对一些特殊接口进行直接拦截
+ * 全局路由：不需要在配置文件中制定，就可以执行
+ * 对一些特殊接口进行直接拦截
  */
 @Slf4j
 @Component

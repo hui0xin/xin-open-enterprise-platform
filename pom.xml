@@ -19,7 +19,7 @@
         <module>xin-support</module>
         <module>xin-demo</module>
         <module>xin-gateway-center</module>
-        <module>xin-oauth-center</module>
+        <module>xin-spring-boot-starter</module>
         <module>xin-generator-center</module>
         <module>xin-monitor-center</module>
         <module>xin-eureka-server</module>

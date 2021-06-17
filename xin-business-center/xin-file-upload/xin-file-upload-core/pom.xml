@@ -33,7 +33,11 @@
         </dependency>
         <dependency>
             <groupId>com.xin.commons</groupId>
-            <artifactId>xin-commons-redis</artifactId>
+            <artifactId>xin-commons-support-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xin.commons</groupId>
+            <artifactId>xin-spring-boot-starter-redis</artifactId>
         </dependency>
     </dependencies>
 

@@ -1,17 +1,12 @@
 多数据源配置 实现了：   
 
-1，jdbcTemplate 的多数据源配置
-
-2，jpa 注解方式的多数据源配置
-
-3，jpa 扫描包方式的多数据源配置
-
-4，kafka 多数据源配置
-
-5，mongodb 多数据源配置
-
-6，mybatis 注解方式的多数据源配置
-
-7，mybatis 扫描包方式的多数据源配置
-
-8，shardingjdbc 方式多数据源配置
+1，jdbcTemplate 的多数据源配置  
+2，jpa 注解方式的多数据源配置  
+3，jpa 扫描包方式的多数据源配置  
+4，kafka 多数据源配置  
+5，mongodb 多数据源配置  
+6，redis 多数据源配置，通过配置文件的配置确定加载多少个数据源  
+7，mybatis 注解方式的多数据源配置  
+8，mybatis 扫描包方式的多数据源配置  
+9，mybatis 自动配置多数据源，通过配置文件的配置确定加载多少个数据源  
+10，shardingjdbc 方式多数据源配置  

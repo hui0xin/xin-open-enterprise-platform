@@ -14,7 +14,6 @@
     <artifactId>xin-commons-support</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>${project.artifactId}</name>
     <description>提供工具类，公共返回，统一异常等</description>
 
     <dependencies>

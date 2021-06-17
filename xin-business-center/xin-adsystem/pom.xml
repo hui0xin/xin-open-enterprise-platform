@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.xin.commons</groupId>
+        <artifactId>xin-spring-boot-starter-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <modules>
+        <module>xin-adsystem-bean</module>
+        <module>xin-adsystem-common</module>
+        <module>xin-adsystem-core</module>
+        <module>xin-adsystem-rest</module>
+        <module>xin-adsystem-sdk</module>
+    </modules>
+
+    <properties>
+        <projects.version>1.0-SNAPSHOT</projects.version>
+    </properties>
+
+    <groupId>com.xin.commons</groupId>
+    <artifactId>xin-adsystem</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>程序化广告系统</description>
+
+    <!-- 管理依赖   -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-adsystem-bean</artifactId>
+                <version>${projects.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-adsystem-common</artifactId>
+                <version>${projects.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-adsystem-core</artifactId>
+                <version>${projects.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xin.commons</groupId>
+                <artifactId>xin-adsystem-sdk</artifactId>
+                <version>${projects.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

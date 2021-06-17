@@ -16,6 +16,9 @@
 
     <modules>
         <module>xin-file-upload</module>
+        <module>xin-adsystem</module>
+        <module>xin-pay</module>
+        <module>xin-oauth-center</module>
     </modules>
 
 </project>

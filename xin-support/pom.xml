@@ -10,19 +10,14 @@
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
-    <description>公共组件</description>
+    <description>公共支持</description>
+
     <!--个人博客地址-->
     <url>https://www.jianshu.com/u/6ad247189165</url>
 
     <modules>
-        <module>xin-commons</module>
-        <module>xin-commons-lock</module>
-        <module>xin-commons-mail</module>
-        <module>xin-commons-redis</module>
         <module>xin-commons-support</module>
         <module>xin-commons-support-web</module>
-        <module>xin-commons-support-log</module>
-        <module>xin-commons-support-datadog</module>
     </modules>
 
 </project>

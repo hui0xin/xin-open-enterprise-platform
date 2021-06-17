@@ -1,0 +1,273 @@
+# application name
+spring:
+  application:
+    name: @spring.application.name@
+
+# port
+server:
+  port: @server.port@
+  tomcat:
+    uri-encoding: UTF-8
+    # 最大线程数
+    max-threads: @server.tomcat.max-threads@
+    # 最大连接数
+    max-connections: @server.tomcat.max-connections@
+  servlet:
+    context-path: /adsystem
+
+---
+# database HikariCP相关配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: @spring.datasource.url@
+    username: @spring.datasource.username@
+    password: @spring.datasource.password@
+    hikari:
+      minimum-idle: @spring.datasource.hikari.minimum-idle@
+      maximum-pool-size: @spring.datasource.hikari.maximum-pool-size@
+      auto-commit: @spring.datasource.hikari.auto-commit@
+      idle-timeout: @spring.datasource.hikari.idle-timeout@
+      pool-name: DatebookHikariCP
+      max-lifetime: @spring.datasource.hikari.max-lifetime@
+      connection-timeout: @spring.datasource.hikari.connection-timeout@
+      connection-test-query: @spring.datasource.hikari.connection-test-query@
+    type: com.zaxxer.hikari.HikariDataSource
+
+# MyBatis
+mybatis:
+  # 搜索指定包别名
+  type-aliases-package: com.xin.innovate.sunflower
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  #  mapper-locations: classpath:mapper/*Mapper.xml
+  # 加载全局的配置文件
+  config_location: classpath:mybatis/mybatis-config.xml
+
+#mybatis:
+#  #配置驼峰属性自动映射
+#  configuration:
+#    map-underscore-to-camel-case: true
+
+# pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  returnPageInfo: check
+
+---
+# kafka多数据源配置
+spring:
+  # --------------------------------kafka1-----------------------------
+  kafka1:
+    # 以逗号分隔的地址列表，用于建立与Kafka集群的初始连接(kafka 默认的端口号为9092)
+    bootstrap-servers: @spring.kafka1.bootstrap-servers@
+    producer:
+      # 发生错误后，消息重发的次数。
+      retries: 0
+      #当有多个消息需要被发送到同一个分区时，生产者会把它们放在同一个批次里。该参数指定了一个批次可以使用的内存大小，按照字节数计算。
+      batch-size: 16384
+      # 设置生产者内存缓冲区的大小。
+      buffer-memory: 33554432
+      # 键的序列化方式
+      keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 值的序列化方式
+      valueDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # acks=0 ： 生产者在成功写入消息之前不会等待任何来自服务器的响应。
+      # acks=1 ： 只要集群的首领节点收到消息，生产者就会收到一个来自服务器成功响应。
+      # acks=all ：只有当所有参与复制的节点全部收到消息时，生产者才会收到一个来自服务器的成功响应。
+      acks: 0
+    consumer:
+      # 自动提交的时间间隔 在spring boot 2.X 版本中这里采用的是值的类型为Duration 需要符合特定的格式，如1S,1M,2H,5D
+      auto-commit-interval: 100
+      # 该属性指定了消费者在读取一个没有偏移量的分区或者偏移量无效的情况下该作何处理：
+      # latest（默认值）在偏移量无效的情况下，消费者将从最新的记录开始读取数据（在消费者启动之后生成的记录）
+      # earliest ：在偏移量无效的情况下，消费者将从起始位置读取分区的记录
+      auto-offset-reset: latest
+      # 是否自动提交偏移量，默认值是true,为了避免出现重复数据和数据丢失，可以把它设置为false,然后手动提交偏移量
+      enable-auto-commit: true
+      # 键的反序列化方式
+      keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 值的反序列化方式
+      valueDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: @spring.kafka1.consumer.group-id@
+    listener:
+      # 在侦听器容器中运行的线程数。
+      concurrency: 5
+  # --------------------------------kafka2-----------------------------
+  kafka2:
+    # 以逗号分隔的地址列表，用于建立与Kafka集群的初始连接(kafka 默认的端口号为9092)
+    bootstrap-servers: @spring.kafka2.bootstrap-servers@
+    producer:
+      # 发生错误后，消息重发的次数。
+      retries: 0
+      #当有多个消息需要被发送到同一个分区时，生产者会把它们放在同一个批次里。该参数指定了一个批次可以使用的内存大小，按照字节数计算。
+      batch-size: 16384
+      # 设置生产者内存缓冲区的大小。
+      buffer-memory: 33554432
+      # 键的序列化方式
+      keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 值的序列化方式
+      valueDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # acks=0 ： 生产者在成功写入消息之前不会等待任何来自服务器的响应。
+      # acks=1 ： 只要集群的首领节点收到消息，生产者就会收到一个来自服务器成功响应。
+      # acks=all ：只有当所有参与复制的节点全部收到消息时，生产者才会收到一个来自服务器的成功响应。
+      acks: 0
+    consumer:
+      # 自动提交的时间间隔 在spring boot 2.X 版本中这里采用的是值的类型为Duration 需要符合特定的格式，如1S,1M,2H,5D
+      auto-commit-interval: 100
+      # 该属性指定了消费者在读取一个没有偏移量的分区或者偏移量无效的情况下该作何处理：
+      # latest（默认值）在偏移量无效的情况下，消费者将从最新的记录开始读取数据（在消费者启动之后生成的记录）
+      # earliest ：在偏移量无效的情况下，消费者将从起始位置读取分区的记录
+      auto-offset-reset: latest
+      # 是否自动提交偏移量，默认值是true,为了避免出现重复数据和数据丢失，可以把它设置为false,然后手动提交偏移量
+      enable-auto-commit: true
+      # 键的反序列化方式
+      keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 值的反序列化方式
+      valueDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: @spring.kafka2.consumer.group-id@
+    listener:
+      # 在侦听器容器中运行的线程数。
+      concurrency: 5
+## 主题
+topic:
+  music: @topic.music@
+
+---
+## redis config
+spring:
+  redis:
+    # Redis默认情况下有16个分片，这里配置具体使用的分片
+    database: 0
+    host: @spring.redis.host@
+    port: @spring.redis.port@
+    # 连接超时时间（毫秒）
+    timeout: @spring.redis.timeout@
+    password: @spring.redis.password@
+      #集群配置
+      #cluster:
+      #nodes: #192.168.211.134:7000,192.168.211.134:7001
+      #max-redirects: 5
+      #哨兵配置
+      #sentinel:
+      #master: master1
+    #nodes: # 172.16.33.216:16001,172.16.33.216:16002
+    lettuce:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: @spring.redis.lettuce.pool.max-active@
+        # 连接池中的最大空闲连接
+        max-idle: @spring.redis.lettuce.pool.max-idle@
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: @spring.redis.lettuce.pool.max-wait@
+        # 连接池中的最小空闲连接
+        min-idle: @spring.redis.lettuce.pool.min-idle@
+
+---
+# 邮件发送配置
+spring:
+  mail:
+    # 邮箱服务器
+    host: smtp.exmail.qq.com
+    # 发送者的邮箱账号
+    username: ptyy-alerm-sender@xinauto.com
+    # 密码
+    password: Ptyy.a1000000
+    # 字符集
+    default-encoding: UTF-8
+    # 表示开启 DEBUG 模式，这样，邮件发送过程的日志会在控制台打印出来，方便排查错误
+    debug: true
+    smtp:
+      # 需要验证登录名和密码 默认是true
+      auth: true
+      port: 465
+      ssl:
+        #开启ssl加密 否则项目启动时报530error
+        enable: true
+        socketFactory: sf
+      starttls:
+        #需要TLS认证 保证发送邮件安全验证
+        enable: true
+        required: true
+
+# 上传文件限制
+---
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10Mb
+      max-request-size: 100Mb
+
+#ribbon请求连接的超时时间- 限制3秒内必须请求到服务，并不限制服务处理的返回时间
+#ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
+#ribbonTimeout = (15000 + 3000) * (1 + 0) * (1 + 1) = 36000
+# ribbon config
+ribbon:
+  #请求连接超时时间
+  ConnectTimeout: 3000
+  #请求处理的超时时间
+  ReadTimeout: 6000
+  #对当前实例的重试次数
+  MaxAutoRetries: 0
+  #切换实例的重试次数 1
+  MaxAutoRetriesNextServer: 1
+  #ServerList缓存时间
+  ServerListRefreshInterval: 10000
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            #熔断超时时间
+            timeoutInMilliseconds: 10000
+        timeout:
+          #是否启用超时时间
+          enabled: true
+
+#开启断路器 新版本的fegin自带断路器
+feign:
+  hystrix:
+    enabled: true
+
+
+# 允许/actuator/bus-refresh接口被外部调用
+management:
+  endpoints:
+    web:
+      exposure:
+        # 开放监控内容
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true #启用shutdown端点
+    health:
+      # health/detail 细节（）
+      show-details: always
+
+
+## 日志配置
+logging:
+  config: classpath:logs/logback-spring.xml
+  path: /Users/bixin/logs
+  level:
+    # 全局日志级别
+    default: INFO
+    # 项目日志级别
+    project: INFO
+    # mybatis日志级别
+    mybatis: DEBUG
+
+# swagger 开关 true为开启，false或没有为关闭
+swagger:
+  enable: @swagger.enable@
+
+---
+#控制台输出彩色
+spring:
+  output:
+    ansi:
+      enabled: always

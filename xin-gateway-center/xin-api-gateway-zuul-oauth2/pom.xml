@@ -29,7 +29,7 @@
         <!--redis 操作包-->
         <dependency>
             <groupId>com.xin.commons</groupId>
-            <artifactId>xin-commons-redis</artifactId>
+            <artifactId>xin-spring-boot-starter-redis</artifactId>
         </dependency>
         <dependency>
             <groupId>com.xin.commons</groupId>

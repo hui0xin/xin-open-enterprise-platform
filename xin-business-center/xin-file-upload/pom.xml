@@ -23,10 +23,9 @@
     <artifactId>xin-file-upload</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>${project.artifactId}</name>
     <description>上传下载服务</description>
 
-    <!-- 管理依赖   -->
+    <!--管理依赖-->
     <dependencyManagement>
         <dependencies>
             <dependency>

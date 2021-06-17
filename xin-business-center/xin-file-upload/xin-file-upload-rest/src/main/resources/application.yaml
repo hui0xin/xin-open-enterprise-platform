@@ -119,6 +119,14 @@ management:
 ## 日志配置
 logging:
   config: classpath:logs/logback-spring.xml
+  path: /Users/bixin/logs
+  level:
+    # 全局日志级别
+    default: INFO
+    # 项目日志级别
+    project: INFO
+    # mybatis日志级别
+    mybatis: DEBUG
 
 # swagger 开关 true为开启，false或没有为关闭
 swagger:

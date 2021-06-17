@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>com.xin.commons</groupId>
-            <artifactId>xin-commons-redis</artifactId>
+            <artifactId>xin-spring-boot-starter-redis</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

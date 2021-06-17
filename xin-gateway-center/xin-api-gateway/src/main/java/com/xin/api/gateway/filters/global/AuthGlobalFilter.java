@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 全局过滤器
+ * 全局过滤器：不需要在配置文件中制定，就可以执行
  * 验证token
  */
 @Slf4j
