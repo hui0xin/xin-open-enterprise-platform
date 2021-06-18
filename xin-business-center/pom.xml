@@ -19,6 +19,7 @@
         <module>xin-adsystem</module>
         <module>xin-pay</module>
         <module>xin-oauth-center</module>
+        <module>xin-exchange</module>
     </modules>
 
 </project>

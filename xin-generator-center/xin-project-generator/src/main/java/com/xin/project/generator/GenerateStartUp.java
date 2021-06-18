@@ -16,9 +16,9 @@ public class GenerateStartUp {
     //生成项目地址
     public final static String filePath = "/Users/bixin/project";
     //项目名称
-    public final static String  projectName = "xin-user";
+    public final static String  projectName = "xin-exchange-trade";
     //项目说明
-    public final static String  projectDesc = "用户服务";
+    public final static String  projectDesc = "撮合";
 
     //是否是docker项目，true-->是，false-->否
     public final static Boolean isDockerProject = false;
