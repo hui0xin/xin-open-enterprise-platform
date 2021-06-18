@@ -10,6 +10,5 @@ tmp/
 *.tmp
 *.bak
 *.swp
-**/logs/
 *.log
 /bin/
