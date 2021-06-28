@@ -21,6 +21,8 @@
         <module>xin-spring-boot-starter-log</module>
         <module>xin-spring-boot-starter-lock</module>
         <module>xin-spring-boot-starter-datadog</module>
+        <module>xin-spring-boot-starter-dynamic-datasource</module>
+        <module>xin-spring-boot-starter-dynamic-datasource-redis</module>
     </modules>
 
 </project>

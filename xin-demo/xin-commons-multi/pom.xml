@@ -12,14 +12,12 @@
     <modules>
         <module>xin-commons-multi-mongodb</module>
         <module>xin-commons-multi-kafka</module>
-        <module>xin-commons-multi-redis</module>
         <module>xin-commons-multi-jpa-annotation</module>
         <module>xin-commons-multi-jpa-scanpackage</module>
         <module>xin-commons-multi-shardingjdbc</module>
         <module>xin-commons-multi-jdbctemplate</module>
         <module>xin-commons-multi-mybatis-annotation</module>
         <module>xin-commons-multi-mybatis-scanpackage</module>
-        <module>xin-commons-multi-mybatis-automatic</module>
     </modules>
 
     <properties>
@@ -39,11 +37,6 @@
             <dependency>
                 <groupId>com.xin.commons</groupId>
                 <artifactId>xin-commons-multi-mongodb</artifactId>
-                <version>${projects.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xin.commons</groupId>
-                <artifactId>xin-commons-multi-redis</artifactId>
                 <version>${projects.version}</version>
             </dependency>
             <dependency>
@@ -74,11 +67,6 @@
             <dependency>
                 <groupId>com.xin.commons</groupId>
                 <artifactId>xin-commons-multi-mybatis-scanpackage</artifactId>
-                <version>${projects.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xin.commons</groupId>
-                <artifactId>xin-commons-multi-mybatis-automatic</artifactId>
                 <version>${projects.version}</version>
             </dependency>
         </dependencies>

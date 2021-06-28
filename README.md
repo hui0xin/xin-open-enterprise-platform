@@ -32,9 +32,7 @@
         -- xin-commons-multi-kafka                kafka 多数据源配置  
         -- xin-commons-multi-mongodb              mongodb 多数据源配置   
         -- xin-commons-multi-mybatis-annotation   mybatis 注解方式的多数据源配置   
-        -- xin-commons-multi-mybatis-automatic    mybatis 自动配置，通过配置文件自动实例化  
         -- xin-commons-multi-mybatis-scanpackage  mybatis 扫描包方式的多数据源配置   
-        -- xin-commons-multi-redis                redis多数据源配置，通过配置文件自动实例化   
         -- xin-commons-multi-shardingjdbc         shardingjdbc 方式多数据源配置   
 -- xin-eureka-server                 注册中心   
 -- xin-gateway-center                网关中心   
@@ -50,11 +48,13 @@
     -- xin-mybatis-generator         生成 controller，service serviceImple，mapper，DO 等实体   
     -- xin-project-generator         生成demo工程   
 -- xin-spring-boot-starter           支持工具   
-    -- xin-spring-boot-starter-datadog              datadog组建
-    -- xin-spring-boot-starter-lock                 基于redisson实现的分布式锁  
-    -- xin-spring-boot-starter-log                  log日志组建
-    -- xin-spring-boot-starter-mail                 邮件发送模版组建
-    -- xin-spring-boot-starter-redis                redis工具类组建   
+    -- xin-spring-boot-starter-datadog                  datadog组建
+    -- xin-spring-boot-starter-lock                     基于redisson实现的分布式锁  
+    -- xin-spring-boot-starter-log                      log日志组建
+    -- xin-spring-boot-starter-mail                     邮件发送模版组建
+    -- xin-spring-boot-starter-redis                    redis工具类组建   
+    -- xin-spring-boot-starter-dynamic-datasource       动态数据源，通过配置加载
+    -- xin-spring-boot-starter-dynamic-datasource-redis redis动态数据源，通过配置加载
 -- xin-support                       支持工具
     -- xin-commons-support           基本工具工程 util，exception，errorcode，baseBean 全局枚举，多语言支持等等   
     -- xin-commons-support-web       提供web功能的支持 跨域，请求和返回数据格式化，全局异常处理，   
