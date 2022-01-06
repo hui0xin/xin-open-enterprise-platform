@@ -18,9 +18,7 @@
         <module>xin-file-upload</module>
         <module>xin-adsystem</module>
         <module>xin-pay</module>
-        <module>xin-security-oauth2</module>
-        <module>xin-security-oauth2-jwt</module>
-        <module>xin-sso-jwt</module>
+
     </modules>
 
 </project>
