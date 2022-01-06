@@ -10,7 +10,7 @@ import com.xin.file.upload.bean.bo.FileBitBo;
 import com.xin.file.upload.common.errorcode.FileUploadErrorCode;
 import com.xin.file.upload.common.exception.FileUploadException;
 import com.xin.file.upload.common.utils.PcmUtils;
-import com.xin.file.upload.core.service.FileUploadService;
+import com.xin.file.upload.core.service.CosFileUploadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -33,7 +33,8 @@ import java.util.*;
 public class FileUploadController {
 
     @Autowired
-    private FileUploadService fileUploadService;
+    private CosFileUploadService cosFileUploadService;
+
     @Autowired
     private RedisService redisService;
 
@@ -140,7 +141,7 @@ public class FileUploadController {
                 return ResponseResult.failure(FileUploadErrorCode.FILE_PATH_IS_NULL);
             }
             fileNamePath = FileUtil.getFileNamePath(filePath, fileSuffix);
-            Boolean result = fileUploadService.uploadFile(fileNamePath, input);
+            Boolean result = cosFileUploadService.uploadFile(fileNamePath, input);
             if (!result) {
                 return ResponseResult.failure(FileUploadErrorCode.FILE_UPLOAD_FAIL);
             }
@@ -175,7 +176,7 @@ public class FileUploadController {
             fileNamePath = FileUtil.getFileNamePath(filePath, fileSuffix);
             //将本地的mp3文件上传到cos
             File file = new File(MP3PATH);
-            Boolean result = fileUploadService.uploadFile(file,fileNamePath);
+            Boolean result = cosFileUploadService.uploadFile(file,fileNamePath);
             if (!result) {
                 return ResponseResult.failure(FileUploadErrorCode.FILE_UPLOAD_FAIL);
             }
@@ -199,7 +200,7 @@ public class FileUploadController {
             return ResponseResult.failure(FileUploadErrorCode.FILE_PATH_IS_NULL);
         }
         try {
-            Boolean result = fileUploadService.downFile(new File(downFile), filePathName);
+            Boolean result = cosFileUploadService.downFile(new File(downFile), filePathName);
             if (!result) {
                 return ResponseResult.failure(FileUploadErrorCode.FILE_DELETE_FAIL);
             }
@@ -218,7 +219,7 @@ public class FileUploadController {
         if (StringUtils.isBlank(filePathName)) {
             return ResponseResult.failure(FileUploadErrorCode.FILE_PATH_IS_NULL);
         }
-        Boolean result = fileUploadService.deleteFile(filePathName);
+        Boolean result = cosFileUploadService.deleteFile(filePathName);
         if (!result) {
             return ResponseResult.failure(FileUploadErrorCode.FILE_DELETE_FAIL);
         }
@@ -245,7 +246,7 @@ public class FileUploadController {
             inputStream = imageFile.getInputStream();
             // 指定要上传到 COS 上的路径，包括名称
             fileNamePath = FileUtil.getImageNamePathByWeightAndHeigh(imageFilePath, fileSuffix, width, height);
-            Boolean result = fileUploadService.uploadFile(fileNamePath,inputStream);
+            Boolean result = cosFileUploadService.uploadFile(fileNamePath,inputStream);
             if (!result) {
                 log.error("图片上传到cos失败");
                 throw new FileUploadException(FileUploadErrorCode.FILE_UPLOAD_FAIL);
@@ -286,7 +287,7 @@ public class FileUploadController {
             String fileSuffix = FileUtil.getExtensionName(file.getOriginalFilename());
             // 指定要上传到 COS 上的路径
             fileNamePath = FileUtil.getFileNamePath(filePath, fileSuffix);
-            Boolean result = fileUploadService.uploadFile(fileNamePath,inputStream);
+            Boolean result = cosFileUploadService.uploadFile(fileNamePath,inputStream);
             if (!result) {
                 log.error("长传文件到cos失败");
                 throw new FileUploadException(FileUploadErrorCode.FILE_UPLOAD_FAIL);

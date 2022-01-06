@@ -16,7 +16,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <description>xin所有基于springboot开发的组件及应用的maven依赖包管理pom</description>
+    <description>xin所有spring-boot项目的parent，pom.xml所有的spring-boot应用都继承该pom.xml</description>
     <!--个人博客地址-->
     <url>https://www.jianshu.com/u/6ad247189165</url>
 
@@ -50,7 +50,7 @@
         <name>xin Inc.</name>
         <url>http://www.xin.com</url>
     </organization>
-    <inceptionYear>2020</inceptionYear>
+    <inceptionYear>2021</inceptionYear>
 
     <!--代码仓库-->
     <scm>

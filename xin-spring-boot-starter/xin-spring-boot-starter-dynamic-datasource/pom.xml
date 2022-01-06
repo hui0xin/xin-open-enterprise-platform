@@ -10,8 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>xin-spring-boot-starter-dynamic-datasource</artifactId>
-    <version>${projects.version}</version>
-    <name>${project.artifactId}</name>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <start-class>com.xin.commons.multi.mybatis.automatic.MybatisAutomaticApplication</start-class>

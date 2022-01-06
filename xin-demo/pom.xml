@@ -19,6 +19,7 @@
         <module>xin-commons-mongodb</module>
         <module>xin-commons-multi</module>
         <module>xin-commons-rabbitmq</module>
+        <module>xin-commons-javademo</module>
 
     </modules>
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty scope="context" name="logging.path" source="logging.path"/>
+    <springProperty scope="context" name="logging.level.default" source="logging.level.default"/>
+    <springProperty scope="context" name="logging.level.ucenter" source="logging.level.ucenter"/>
+    <springProperty scope="context" name="logging.level.mybatis" source="logging.level.mybatis"/>
+    <springProperty scope="context" name="logging.level.commons" source="logging.level.commons"/>
+    <springProperty scope="context" name="okcoin.app.env.name" source="okcoin.app.env.name"/>
+    <!-- Output full logs to file -->
+    <appender name="FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logging.path}/info.log</file>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logging.path}/archive/history_info.%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Output WARN, ERROR logs to file -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logging.path}/error.log</file>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logging.path}/history_error.%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <!--direct log messages to stdout -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC_FILE_ALL" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+        <appender-ref ref="FILE_ALL"/>
+    </appender>
+
+    <appender name="ASYNC_FILE_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+        <appender-ref ref="FILE_ERROR"/>
+    </appender>
+
+    <logger name="com.okcoin.ucenter" level="${logging.level.ucenter}"/>
+    <logger name="com.okcoin.commons" level="${logging.level.commons}"/>
+    <logger name="org.mybatis" level="${logging.level.mybatis}"/>
+
+    <root level="${logging.level.default}">
+        <appender-ref ref="ASYNC_FILE_ALL"/>
+        <appender-ref ref="ASYNC_FILE_ERROR"/>
+        <if condition='"${okcoin.app.env.name}".equals("dev")'>
+            <then>
+                <appender-ref ref="STDOUT"/>
+            </then>
+        </if>
+    </root>
+</configuration>

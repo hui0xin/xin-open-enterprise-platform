@@ -1,213 +1,214 @@
 package com.xin.file.upload.core.service;
 
-import com.qcloud.cos.COSClient;
-import com.qcloud.cos.ClientConfig;
-import com.qcloud.cos.auth.BasicCOSCredentials;
-import com.qcloud.cos.auth.COSCredentials;
-import com.qcloud.cos.model.*;
-import com.qcloud.cos.region.Region;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import com.xin.file.upload.bean.dto.FileUploadMetadata;
+import com.xin.file.upload.bean.vo.FileUploadVo;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 
 /**
- * FileName: FileUploadService
- * Author: xin
- * Date: 2019/1/10 14:24
- * Description: 文件上传
+ * 上传下载service
  */
-@Slf4j
-@Service
-public class FileUploadService {
-
-    private String secretId = "xxx";
-    private String secretKey = "xxx";
-    private String regionName = "ap-beijing";
-    private String bucketName = "xxx-1255510688";
-
-    private COSCredentials cred;
-    private ClientConfig clientConfig;
-
-    public FileUploadService() {
-        cred = new BasicCOSCredentials(secretId, secretKey);
-        clientConfig = new ClientConfig(new Region(regionName));
-    }
-
+public interface FileUploadService {
     /**
-     * 文件上传 将本地文件上传到 COS
+     * 上传文件并存储到日期格式(yyyyMMdd)目录下
      *
-     * @param localFile     本地上传文件路径
-     * @param fileName 文件名称
+     * @param fileName 上传后的文件名称(可带相对路径）
+     * @param file     当前上传文件对象
+     * @return 上传后的文件私有签名url地址
      */
-    public Boolean uploadFile(File localFile, String fileName) {
-        Boolean result = false;
-        // 生成 cos 客户端。
-        COSClient cosClient = new COSClient(cred, clientConfig);
-        try {
-            cosClient.putObject(bucketName, fileName, localFile);
-            result = true;
-        } catch (Exception e) {
-            log.error("文件上传失败：{}", ExceptionUtils.getStackTrace(e));
-        } finally {
-            // 关闭客户端(关闭后台线程)
-            cosClient.shutdown();
-        }
-        return result;
-
-    }
+    FileUploadVo uploadFileWithDatePath(String fileName, File file);
 
     /**
-     * 文件上传 输入流上传到 COS
+     * 上传文件并存储到日期格式(yyyyMMdd)目录下
      *
-     * FileInputStream fileInputStream = new FileInputStream(localFile);
-     * ObjectMetadata objectMetadata = new ObjectMetadata();
-     * objectMetadata.setContentLength(500);  // 设置输入流长度为500
-     * objectMetadata.setContentType("application/pdf"); // 设置 Content type, 默认是 application/octet-stream
-     * @param input    输入流
+     * @param fileName    上传后的文件名称(可带相对路径）
+     * @param inputStream 当前上传的文件流
+     * @return 上传后的文件私有签名url地址
      */
-    public Boolean uploadFile(String fileName, InputStream input) {
-        MultipartFile imageFile =null;
+    FileUploadVo uploadFileWithDatePath(String fileName, InputStream inputStream);
 
-        Boolean result = false;
-        // 生成 cos 客户端。
-        COSClient cosClient = new COSClient(cred, clientConfig);
-        try {
-            //文件的元信息
-            ObjectMetadata metadata = new ObjectMetadata();
-            // input.available() 获取文件大小，从输入流上传必须指定content length,
-            // 否则http客户端可能会缓存所有数据，存在内存OOM的情况
-            metadata.setContentLength(input.available());
-            cosClient.putObject(bucketName, fileName, input, metadata);
-            result = true;
-        } catch (Exception e) {
-            log.error("文件上传失败：{}", ExceptionUtils.getStackTrace(e));
-        } finally {
-            cosClient.shutdown();
-        }
-        return result;
-    }
     /**
-     * 文件上传 输入流上传到 COS
+     * 上传文件并存储到日期格式目录下
      *
-     * FileInputStream fileInputStream = new FileInputStream(localFile);
-     * ObjectMetadata objectMetadata = new ObjectMetadata();
-     * objectMetadata.setContentLength(500);  // 设置输入流长度为500
-     * objectMetadata.setContentType("application/pdf"); // 设置 Content type, 默认是 application/octet-stream
-     * @param input    输入流
-     * @param metadata  注意，这里需要设置它的长度 ，从输入流上传必须制定content length, 否则http客户端可能会缓存所有数据，存在内存OOM的情况
+     * @param fileName 上传后的文件名称(可带相对路径）
+     * @param file     当前上传文件对象
+     * @param pattern  日期时间模式(默认为yyyyMMdd)
+     * @return 上传后的文件私有签名url地址
      */
-    public Boolean uploadFile(String fileName, InputStream input,ObjectMetadata metadata) {
-        Boolean result = false;
-        // 生成 cos 客户端。
-        COSClient cosClient = new COSClient(cred, clientConfig);
-        try {
-            cosClient.putObject(bucketName, fileName, input, metadata);
-            result = true;
-        } catch (Exception e) {
-            log.error("文件上传失败：{}", ExceptionUtils.getStackTrace(e));
-        } finally {
-            cosClient.shutdown();
-        }
-        return result;
-    }
+    FileUploadVo uploadFileWithDatePath(String fileName, File file, String pattern);
 
     /**
-     * 文件上传
-     * 对以上两个方法的包装, 支持更细粒度的参数控制, 如 content-type,  content-disposition 等
-     * PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, fileName, localFile);
-     * putObjectRequest.setStorageClass(StorageClass.Standard_IA);// 设置存储类型为低频
-     * ObjectMetadata objectMetadata = new ObjectMetadata();// 设置自定义属性(如 content-type, content-disposition 等)
-     * objectMetadata.setContentType("image/jpeg");// 设置 Content type, 默认是 application/octet-stream
-     * putObjectRequest.setMetadata(objectMetadata);
-     * @param putObjectRequest    上传文件请求体
-     */
-    public Boolean uploadFile(String fileName, PutObjectRequest putObjectRequest) {
-
-        Boolean result = false;
-        // 生成 cos 客户端。
-        COSClient cosClient = new COSClient(cred, clientConfig);
-        try {
-            cosClient.putObject(putObjectRequest);
-            result = true;
-        } catch (Exception e) {
-            log.error("文件上传失败：{}", ExceptionUtils.getStackTrace(e));
-        } finally {
-            cosClient.shutdown();
-        }
-        return result;
-
-    }
-
-    /**
-     * 下载文件
+     * 上传文件并存储到日期格式目录下
      *
-     * @param downFile 本地存放文件路径
-     * @param fileName cos上文件名称
+     * @param fileName    上传后的文件名称(可带相对路径）
+     * @param inputStream 当前上传的文件流
+     * @param pattern     日期时间模式(默认为yyyyMMdd)
+     * @return 上传后的文件私有签名url地址
      */
-    public Boolean downFile(File downFile, String fileName) {
-        Boolean result = false;
-        // 生成 cos 客户端。
-        COSClient cosClient = new COSClient(cred, clientConfig);
-        try {
-            //file中截取文件名称
-            GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, fileName);
-            cosClient.getObject(getObjectRequest, downFile);
-            result = true;
-        } catch (Exception e) {
-            log.error("文件下载失败：{}", ExceptionUtils.getStackTrace(e));
-        } finally {
-            cosClient.shutdown();
-        }
-        return result;
-    }
-
+    FileUploadVo uploadFileWithDatePath(String fileName, InputStream inputStream, String pattern);
 
     /**
-     * 获取下载输入流
+     * 上传文件
      *
-     * @param fileName cos上文件名称
+     * @param fileName 上传后的文件名称(可带相对路径）
+     * @param file     当前上传文件对象
+     * @return 上传后的文件私有签名url地址
      */
-    public COSObjectInputStream COSObjectInputStream(String fileName) {
-
-        COSObjectInputStream cosObjectInput = null;
-        // 生成 cos 客户端。
-        COSClient cosClient = new COSClient(cred, clientConfig);
-        try {
-            GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, fileName);
-            COSObject cosObject = cosClient.getObject(getObjectRequest);
-            cosObjectInput = cosObject.getObjectContent();
-        } catch (Exception e) {
-            log.error("获取下载流失败：{}", ExceptionUtils.getStackTrace(e));
-        } finally {
-            cosClient.shutdown();
-        }
-        return cosObjectInput;
-    }
+    FileUploadVo uploadFile(String fileName, File file);
 
     /**
-     * 删除文件
+     * 上传文件
      *
-     * @param fileName cos上文件名称
+     * @param fileName    上传后的文件名称(可带相对路径）
+     * @param inputStream 当前上传的文件流
+     * @return 上传后的文件私有签名url地址
      */
-    public Boolean deleteFile(String fileName) {
-        Boolean result = false;
-        // 生成 cos 客户端。
-        COSClient cosClient = new COSClient(cred, clientConfig);
-        try {
-            //file中截取文件名称
-            cosClient.deleteObject(bucketName, fileName);
-            result = true;
-        } catch (Exception e) {
-            log.error("文件下载失败：{}", ExceptionUtils.getStackTrace(e));
-        } finally {
-            cosClient.shutdown();
-        }
-        return result;
-    }
+    FileUploadVo uploadFile(String fileName, InputStream inputStream);
 
+    /**
+     * 上传文件
+     *
+     * @param fileName
+     * @param in
+     * @param contentLength
+     * @param contentType
+     * @return 上传后的文件私有签名url地址
+     */
+    FileUploadVo uploadFile(String fileName, InputStream in, long contentLength, String contentType);
+
+    /**
+     * 上传文件
+     *
+     * @param fileName   上传后的文件名称(可带相对路径）
+     * @param file       当前上传的文件
+     * @param objectMeta oss元数据
+     * @return 上传后的文件私有签名url地址
+     */
+    FileUploadVo uploadFile(String fileName, File file, FileUploadMetadata objectMeta);
+
+    /**
+     * 上传文件
+     *
+     * @param fileName    上传后的文件名称(可带相对路径）
+     * @param inputStream 当前上传的文件流
+     * @param objectMeta  oss元数据
+     * @return 上传后的文件私有签名url地址
+     */
+    FileUploadVo uploadFile(String fileName, InputStream inputStream, FileUploadMetadata objectMeta);
+
+    /**
+     * 删除Oss文件
+     *
+     * @param fileName 文件名称(可带相对路径）
+     * @return true|false
+     */
+    boolean delete(String fileName);
+
+    /**
+     * 获取上传后的文件url地址
+     *
+     * @param fileName 文件名称(可带相对路径）
+     * @return 上传文件的url
+     */
+    String getUrl(String fileName);
+
+    /**
+     * @param url URL对象
+     *            如（http://bucket-name.oss-cn-hongkong.aliyuncs.com/public/vod/example.jpg）
+     *            其中把上述url解析成如下：
+     *            endpoint=http://oss-cn-hongkong.aliyuncs.com
+     *            bucketName=bucket-name
+     *            fileName=public/vod/example.jpg
+     * @return 带私有签名url地址ok-private-hk
+     */
+    String getSignedUrlByParseUrl(final URL url);
+
+    /**
+     * @param url url地址
+     *            如（http://ok-private-hk.oss-cn-hongkong.aliyuncs.com/public/vod/example.jpg）
+     *            其中把上述url解析成如下：
+     *            endpoint=http://oss-cn-hongkong.aliyuncs.com
+     *            bucketName=bucket-name
+     *            fileName=public/vod/example.jpg
+     * @return 带私有签名url地址
+     */
+    String getSignedUrlByParseUrl(final String url);
+
+    /**
+     * 获取上传后的文件临时签名url地址
+     *
+     * @param fileName 文件名称(可带相对路径）
+     * @return 带私有签名url地址
+     */
+    String getSignedUrl(String fileName);
+
+    /**
+     * @param endpoint   endpoint url (如:http://oss-cn-hongkong.aliyuncs.com)
+     * @param bucketName 桶名称
+     * @param fileName   文件名称(可带相对路径）
+     * @return 带私有签名url地址
+     */
+    String getSignedUrl(final String endpoint, final String bucketName, final String fileName);
+
+    /**
+     * 获取文件上传的bucket key
+     *
+     * @param fileName 上传的文件名称
+     * @return bucket key
+     */
+    String getKey(String fileName);
+
+    /**
+     * 生成（yyyyMMdd)日期格式文件目录
+     */
+    String generateDateFilePath();
+
+    /**
+     * 生成日期格式文件目录
+     *
+     * @param pattern 日期时间模式(默认为yyyyMMdd)
+     */
+    String generateDateFilePath(String pattern);
+
+    /**
+     * 生成yyyyMMdd)日期格式上传文件名称
+     *
+     * @param originalFileName 原文件名
+     */
+    String generateDateFileName(String originalFileName);
+
+    /**
+     * 生成yyyyMMdd)日期格式上传文件名称
+     *
+     * @param originalFileName 原文件名
+     * @param pattern          日期时间模式(默认为yyyyMMdd)
+     */
+    String generateDateFileName(String originalFileName, String pattern);
+
+    /**
+     * 根据原文件名的扩展名生成新的文件名称
+     *
+     * @param newFileName      新文件名(不需要带扩展名）
+     * @param originalFileName 原文件名
+     */
+    String generateFileName(String newFileName, String originalFileName);
+
+    /**
+     * 获取带日期时间格式(默认为yyyyMMdd)目录的文件名
+     *
+     * @param fileName 文件名称(可带相对路径）
+     * @return 带日期时间格式目录的文件名
+     */
+    String getDatePathFileName(String fileName);
+
+    /**
+     * 获取带日期时间格式目录的文件名
+     *
+     * @param fileName 文件名称(可带相对路径）
+     * @param pattern  日期时间模式(默认为yyyyMMdd)
+     * @return 带日期时间格式目录的文件名
+     */
+    String getDatePathFileName(String fileName, String pattern);
 }
-

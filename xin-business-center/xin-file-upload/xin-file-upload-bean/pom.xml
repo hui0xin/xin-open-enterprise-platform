@@ -18,7 +18,6 @@
             <groupId>com.xin.commons</groupId>
             <artifactId>xin-file-upload-common</artifactId>
         </dependency>
-
     </dependencies>
 
 </project>

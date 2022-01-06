@@ -138,3 +138,29 @@ spring:
   output:
     ansi:
       enabled: always
+
+  # logging
+  #
+  logging.level.default=INFO
+  logging.level.ucenter=DEBUG
+  logging.level.commons=DEBUG
+  logging.level.mybatis=DEBUG
+  logging.config=classpath:conf/logging/logback-spring.xml
+
+  okcoin.fileupload.oss.vpc-endpoint=http://vpc100-oss-cn-hongkong.aliyuncs.com
+  okcoin.fileupload.oss.endpoint=http://oss-cn-hongkong.aliyuncs.com
+  okcoin.fileupload.oss.access-key-id=
+  okcoin.fileupload.oss.access-key-secret=
+  okcoin.fileupload.oss.bucket-name=ok-private-hk
+  okcoin.fileupload.oss.path=service-asset
+
+  #
+  # okcoin fileupload
+  #
+  okcoin.fileupload.s3.vpc-endpoint=
+  okcoin.fileupload.s3.access-key-id=AKIAI3BMZZKS5J4IWFQA
+  okcoin.fileupload.s3.access-key-secret=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
+  okcoin.fileupload.s3.bucket-name=okcoin-jp-private
+  okcoin.fileupload.s3.path=/public/users/kyc
+  okcoin.fileupload.s3.region=ap-northeast-1
+  okcoin.fileupload.s3.urlScheme=https

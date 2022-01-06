@@ -2,7 +2,8 @@
 技术文章地址：https://www.jianshu.com/u/6ad247189165
 
 # xin-file-upload
-基于腾讯云cos 文件上传下载服务
+文件上传组件支持aliyun oss与aws s3存储上传
+基于腾讯云cos 文件上传下载服务 
 
 1，解决了fegin不能传递 MultipartFile 类型文件
 
