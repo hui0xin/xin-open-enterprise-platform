@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -57,8 +56,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
     @ResponseBody
-    public ResponseResult handlerMethodArgumentNotValid(HttpServletRequest request, HttpServletResponse response,
-                                                    Exception ex) {
+    public ResponseResult handlerMethodArgumentNotValid(HttpServletRequest request, Exception ex) {
         log.error("MethodArgumentNotValidException [path={}][code={}][msg={}][message={}]", request.getRequestURI(),
                 SystemErrorCode.DATA_BIND_VALIDATION_FAILURE.getCode(), SystemErrorCode.DATA_BIND_VALIDATION_FAILURE.getMessage(),
                 ExceptionUtils.getStackTrace(ex));
@@ -94,8 +92,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BizException.class)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseResult handleBusinessException(HttpServletRequest request, HttpServletResponse response,
-                                              BizException ex) {
+    public ResponseResult handleBusinessException(HttpServletRequest request, BizException ex) {
         log.error("BizException [path={}][code={}][msg={}]", request.getRequestURI(), ex.getCode(), ex.getMessage());
         return ResponseResult.failure(ex.getCode(),ex.getMessage());
     }
@@ -110,14 +107,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ResponseResult handleException(HttpServletRequest request, HttpServletResponse response, Exception ex) {
+    public ResponseResult handleException(HttpServletRequest request, Exception ex) {
         log.error("Exception [path={}][message={}][exception={}]", request.getRequestURI(), ex.getMessage(),
                 ExceptionUtils.getStackTrace(ex));
-//        if(!StringUtils.isEmpty(profile) && profile.equals("prod")){
-//            return RestResult.failure(SystemErrorCodeEnum.SYSTEM_ERROR);
-//        }else{
-//            return RestResult.failure(SystemErrorCodeEnum.SYSTEM_ERROR, ex.getMessage());
-//        }
         return ResponseResult.failure(SystemErrorCode.SYSTEM_ERROR);
     }
 

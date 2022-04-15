@@ -63,8 +63,8 @@
     <properties>
 
         <!--gitlib的分组和地址 ；暂时这里都是虚拟的，可以替换为公司真正的地址-->
-        <project.gitlab.group>http://gitlab.xin.com/xin-commons/</project.gitlab.group>
-        <project.gitlab.url>git@gitlab.xin.com:xin-commons/xin-spring-boot-dependencies.git</project.gitlab.url>
+        <project.gitlab.group>https://github.com/hui0xin</project.gitlab.group>
+        <project.gitlab.url>https://github.com/hui0xin/xin-open-enterprise-platform.git</project.gitlab.url>
 
         <!--docker config-->
         <push.image>true</push.image>

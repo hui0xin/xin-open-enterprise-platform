@@ -30,10 +30,6 @@
         </dependency>
         <dependency>
             <groupId>com.xin.commons</groupId>
-            <artifactId>xin-commons-support</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.xin.commons</groupId>
             <artifactId>xin-commons-support-web</artifactId>
         </dependency>
         <dependency>
@@ -49,6 +45,36 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>local</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <env>prod</env>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <finalName>${r'${project.artifactId}'}-${r'${project.version}'}</finalName>

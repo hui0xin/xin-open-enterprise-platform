@@ -17,7 +17,7 @@ public class GenerateStartUp {
     //生成项目地址
     public final static String filePath = "/Users/hx/project";
     //项目名称
-    public final static String projectName = "xin-user";
+    public final static String projectName = "xin-user1";
     //项目说明
     public final static String projectDesc = "用户服务";
 
@@ -30,16 +30,16 @@ public class GenerateStartUp {
     //项目配置文件结构:
     // (1) yaml 为纯yml配置，这种结构在启动的时候才确定环境，打出的jar都是一样的
     //（2）yaml_properties，为混合方式，这种结构在打包时候就确定了环境
-    public final static String isYaml = "yaml";
+    public final static String isYaml = "yaml_properties";
 
     //是否是分环境项目，true-->是，false-->否
-    public final static Boolean isMultiEnv = true;
+    public final static Boolean isMultiEnv = false;
 
     public static void main(String[] args) {
 
         try {
             if (projectType.equals("simple")) {
-                SimpleProjectGenerateUtil.generateSimpleProject(filePath, projectName, projectDesc,isMultiEnv);
+                SimpleProjectGenerateUtil.generateSimpleProject(filePath, projectName, projectDesc,isMultiEnv,isDockerProject);
             } else {
                 //生成 parent 项目
                 System.out.println("1, ----生成parent项目");
