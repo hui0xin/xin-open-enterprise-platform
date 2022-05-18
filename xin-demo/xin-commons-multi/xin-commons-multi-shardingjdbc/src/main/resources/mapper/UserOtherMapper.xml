@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xin.commons.multi.shardingjdbc.mapper.UserOtherMapper">
+  <resultMap id="BaseResultMap" type="com.xin.commons.multi.shardingjdbc.bean.UserOtherDo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_ext" jdbcType="VARCHAR" property="userExt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, user_ext
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xin_user_other
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from xin_user_other
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserOtherDo" useGeneratedKeys="true">
+    insert into xin_user_other (id, user_id, user_ext
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{userExt,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserOtherDo">
+    update xin_user_other
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userExt != null">
+        user_ext = #{userExt,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="baseQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != userId">
+         and user_id = #{userId,jdbcType=BIGINT}
+      </if>
+      <if test="null != userExt">
+         and user_ext = #{userExt,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByPrimaryKeySelective" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserOtherDo" resultMap="BaseResultMap">
+    select  * from xin_user_other
+    <include refid="baseQuery" />
+  </select>
+  <select id="selectByPrimaryKeySelectiveList" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserOtherDo" resultMap="BaseResultMap">
+    select  * from xin_user_other
+    <include refid="baseQuery" />
+  </select>
+</mapper>

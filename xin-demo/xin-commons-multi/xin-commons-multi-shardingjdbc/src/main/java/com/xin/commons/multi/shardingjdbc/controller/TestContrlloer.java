@@ -1,112 +1,67 @@
 package com.xin.commons.multi.shardingjdbc.controller;
 
-import com.xin.commons.multi.shardingjdbc.bean.PerpetualCoin;
-import com.xin.commons.multi.shardingjdbc.service.PerpetualCoinService;
-import com.xin.commons.support.response.ResponseResult;
+import com.xin.commons.multi.shardingjdbc.bean.UserAppDo;
+import com.xin.commons.multi.shardingjdbc.bean.UserDeptDo;
+import com.xin.commons.multi.shardingjdbc.bean.UserOtherDo;
+import com.xin.commons.multi.shardingjdbc.service.UserAppService;
+import com.xin.commons.multi.shardingjdbc.service.UserDeptService;
+import com.xin.commons.multi.shardingjdbc.service.UserOtherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
-/**
- * @ClassName: TestContrlloer
- * @Description:
- * @author: xin
- * @date: 2018/6/4下午4:56
- */
 
 @RestController
 @RequestMapping("/test")
 @Slf4j
 public class TestContrlloer {
 
+    //1
     @Autowired
-    private PerpetualCoinService perpetualCoinService;
+    private UserOtherService userOtherService;
 
-    @GetMapping(value = "/get")
+    //2
+    @Autowired
+    private UserAppService userAppService;
 
-    public ResponseResult get() {
+    //2
+    @Autowired
+    private UserDeptService userDeptService;
 
-        List<PerpetualCoin> list = perpetualCoinService.getPerpetualCoinList();
-
-        return ResponseResult.success(list);
-    }
-    @GetMapping(value = "/save")
-    public ResponseResult save() {
-
-        PerpetualCoin model = new  PerpetualCoin();
-        model.setId(90L);
-        model.setSymbol(90);
-        model.setSymbolSum(111111L);
-        model.setSymbolName("btc");
-        model.setIndexMarketFrom(12);
-        model.setSeqencing(1);
-        model.setConfigType(1);
-
-        model.setSymbolMark("ddddd");
-        model.setMarketFrom("12");
-        model.setFuturesMarketFrom("dddd");
-        model.setPricePoint(1);
-        model.setCreatedDate(new Date());
-        model.setModifyDate(new Date());
-        model.setInvalidSwitch(Byte.parseByte("1"));
-
-        int result = perpetualCoinService.savePerpetualCoin(model);
-        System.out.println("______________________save__success!!!!!_______________________");
-        return ResponseResult.success(result);
-    }
-    @GetMapping(value = "/update/{id}")
-    public ResponseResult update(@PathVariable("id") long id) {
-        long id2 = id;
-        System.out.println("****************************"+id2+"");
-        PerpetualCoin model = perpetualCoinService.getPerpetualCoinById(id);
-        model.setModifyDate(new Date());
-        int restult = perpetualCoinService.updatePerpetualCoin(model);
-        System.out.println("_____________________update___success!!!!!_______________________");
-        return ResponseResult.success(model);
+    @GetMapping(value = "/get1")
+    public List<UserOtherDo> get() {
+        UserOtherDo userOtherDo = new UserOtherDo();
+        return userOtherService.listByObject(userOtherDo);
     }
 
-    @GetMapping(value = "/get/{id}")
-    public ResponseResult getByid(@PathVariable("id") long id) {
-        long id2 = id;
-        System.out.println("****************************"+id2+"");
-        PerpetualCoin model = perpetualCoinService.getPerpetualCoinById(id);
-        return ResponseResult.success(model);
+
+    @GetMapping(value = "/get2")
+    public List<UserAppDo> get2() {
+        UserAppDo userAppDo = new UserAppDo();
+        return userAppService.listByObject(userAppDo);
     }
 
-    @GetMapping(value = "/delete/{id}")
-    public ResponseResult delete(@PathVariable("id") long id) {
-        int delete = perpetualCoinService.deletePerpetualCoin(id);
-        System.out.println("_____________________delete___success!!!!!_______________________");
-        return ResponseResult.success(delete);
+    @GetMapping(value = "/get3")
+    public List<UserDeptDo> get3() {
+        UserDeptDo userDeptDo = new UserDeptDo();
+        return userDeptService.listByObject(userDeptDo);
     }
 
-    @GetMapping(value = "/transcation")
-    public ResponseResult transcation() {
+    @GetMapping(value = "/get4")
+    public String get4() {
+        UserOtherDo userOtherDo = new UserOtherDo();
+        System.out.println(userOtherService.listByObject(userOtherDo));
 
-        PerpetualCoin model = new  PerpetualCoin();
-        model.setId(60L);
-        model.setSymbol(90);
-        model.setSymbolSum(1111L);
-        model.setSymbolName("btc");
-        model.setIndexMarketFrom(12);
-        model.setSeqencing(1);
-        model.setConfigType(1);
+        UserAppDo userAppDo = new UserAppDo();
+        System.out.println(userAppService.listByObject(userAppDo));
 
-        model.setSymbolMark("bbbb");
-        model.setMarketFrom("12");
-        model.setFuturesMarketFrom("bbbbb");
-        model.setPricePoint(1);
-        model.setCreatedDate(new Date());
-        model.setModifyDate(new Date());
-        model.setInvalidSwitch(Byte.parseByte("1"));
 
-        int result = perpetualCoinService.transactionPerpetualCoin(model,60L);
+        UserDeptDo userDeptDo = new UserDeptDo();
+        System.out.println(userDeptService.listByObject(userDeptDo));
 
-        System.out.println("-----------------transcation!!!!!_______________________");
-        return ResponseResult.success(result);
+        return "success";
     }
 
 }

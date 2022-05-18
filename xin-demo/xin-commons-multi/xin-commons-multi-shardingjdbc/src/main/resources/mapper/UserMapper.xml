@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xin.commons.multi.shardingjdbc.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.xin.commons.multi.shardingjdbc.bean.UserDo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tenant_id" jdbcType="VARCHAR" property="tenantId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="role_id" jdbcType="VARCHAR" property="roleId" />
+    <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+    <result column="post_id" jdbcType="VARCHAR" property="postId" />
+    <result column="create_user" jdbcType="BIGINT" property="createUser" />
+    <result column="create_dept" jdbcType="BIGINT" property="createDept" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_user" jdbcType="BIGINT" property="updateUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, tenant_id, code, user_type, account, password, name, real_name, avatar, email, 
+    phone, birthday, sex, role_id, dept_id, post_id, create_user, create_dept, create_time, 
+    update_user, update_time, status, is_deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xin_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from xin_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserDo" useGeneratedKeys="true">
+    insert into xin_user (id, tenant_id, code, 
+      user_type, account, password, 
+      name, real_name, avatar, 
+      email, phone, birthday, 
+      sex, role_id, dept_id, 
+      post_id, create_user, create_dept, 
+      create_time, update_user, update_time, 
+      status, is_deleted)
+    values (#{id,jdbcType=BIGINT}, #{tenantId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{userType,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
+      #{sex,jdbcType=INTEGER}, #{roleId,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}, 
+      #{postId,jdbcType=VARCHAR}, #{createUser,jdbcType=BIGINT}, #{createDept,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{isDeleted,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserDo">
+    update xin_user
+    <set>
+      <if test="tenantId != null">
+        tenant_id = #{tenantId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null">
+        post_id = #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createDept != null">
+        create_dept = #{createDept,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="baseQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != tenantId">
+         and tenant_id = #{tenantId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != code">
+         and code = #{code,jdbcType=VARCHAR}
+      </if>
+      <if test="null != userType">
+         and user_type = #{userType,jdbcType=INTEGER}
+      </if>
+      <if test="null != account">
+         and account = #{account,jdbcType=VARCHAR}
+      </if>
+      <if test="null != password">
+         and password = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="null != name">
+         and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="null != realName">
+         and real_name = #{realName,jdbcType=VARCHAR}
+      </if>
+      <if test="null != avatar">
+         and avatar = #{avatar,jdbcType=VARCHAR}
+      </if>
+      <if test="null != email">
+         and email = #{email,jdbcType=VARCHAR}
+      </if>
+      <if test="null != phone">
+         and phone = #{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="null != birthday">
+         and birthday = #{birthday,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != sex">
+         and sex = #{sex,jdbcType=INTEGER}
+      </if>
+      <if test="null != roleId">
+         and role_id = #{roleId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != deptId">
+         and dept_id = #{deptId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != postId">
+         and post_id = #{postId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != createUser">
+         and create_user = #{createUser,jdbcType=BIGINT}
+      </if>
+      <if test="null != createDept">
+         and create_dept = #{createDept,jdbcType=BIGINT}
+      </if>
+      <if test="null != createTime">
+         and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != updateUser">
+         and update_user = #{updateUser,jdbcType=BIGINT}
+      </if>
+      <if test="null != updateTime">
+         and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="null != status">
+         and status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="null != isDeleted">
+         and is_deleted = #{isDeleted,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByPrimaryKeySelective" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserDo" resultMap="BaseResultMap">
+    select  * from xin_user
+    <include refid="baseQuery" />
+  </select>
+  <select id="selectByPrimaryKeySelectiveList" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserDo" resultMap="BaseResultMap">
+    select  * from xin_user
+    <include refid="baseQuery" />
+  </select>
+</mapper>

@@ -21,11 +21,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.xin.commons</groupId>
-            <artifactId>xin-auth-jwt-sdk</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <!--redis 操作包-->
         <dependency>
             <groupId>com.xin.commons</groupId>

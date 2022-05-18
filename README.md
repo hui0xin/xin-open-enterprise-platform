@@ -19,7 +19,6 @@
     -- xin-adsystem                 广告系统   
     -- xin-file-upload              上传下载   
     -- xin-oauth-center             oatuh认证中心   
-        -- xin-auth-jwt             jwt实现单点登陆（配合网关使用）   
         -- xin-oauth2               oauth2实现单点登陆（配合网关使用）   
 -- xin-demo                         demo操作   
     -- xin-commons-elasticsearch    es操作demo   

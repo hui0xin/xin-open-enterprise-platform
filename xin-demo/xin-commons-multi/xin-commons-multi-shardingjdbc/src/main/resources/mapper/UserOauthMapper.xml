@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xin.commons.multi.shardingjdbc.mapper.UserOauthMapper">
+  <resultMap id="BaseResultMap" type="com.xin.commons.multi.shardingjdbc.bean.UserOauthDo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tenant_id" jdbcType="VARCHAR" property="tenantId" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="blog" jdbcType="VARCHAR" property="blog" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, tenant_id, uuid, user_id, username, nickname, avatar, blog, company, location, 
+    email, remark, gender, source
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xin_user_oauth
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from xin_user_oauth
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserOauthDo" useGeneratedKeys="true">
+    insert into xin_user_oauth (id, tenant_id, uuid, 
+      user_id, username, nickname, 
+      avatar, blog, company, 
+      location, email, remark, 
+      gender, source)
+    values (#{id,jdbcType=BIGINT}, #{tenantId,jdbcType=VARCHAR}, #{uuid,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{avatar,jdbcType=VARCHAR}, #{blog,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserOauthDo">
+    update xin_user_oauth
+    <set>
+      <if test="tenantId != null">
+        tenant_id = #{tenantId,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null">
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="blog != null">
+        blog = #{blog,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <sql id="baseQuery">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="null != id">
+         and id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="null != tenantId">
+         and tenant_id = #{tenantId,jdbcType=VARCHAR}
+      </if>
+      <if test="null != uuid">
+         and uuid = #{uuid,jdbcType=VARCHAR}
+      </if>
+      <if test="null != userId">
+         and user_id = #{userId,jdbcType=BIGINT}
+      </if>
+      <if test="null != username">
+         and username = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="null != nickname">
+         and nickname = #{nickname,jdbcType=VARCHAR}
+      </if>
+      <if test="null != avatar">
+         and avatar = #{avatar,jdbcType=VARCHAR}
+      </if>
+      <if test="null != blog">
+         and blog = #{blog,jdbcType=VARCHAR}
+      </if>
+      <if test="null != company">
+         and company = #{company,jdbcType=VARCHAR}
+      </if>
+      <if test="null != location">
+         and location = #{location,jdbcType=VARCHAR}
+      </if>
+      <if test="null != email">
+         and email = #{email,jdbcType=VARCHAR}
+      </if>
+      <if test="null != remark">
+         and remark = #{remark,jdbcType=VARCHAR}
+      </if>
+      <if test="null != gender">
+         and gender = #{gender,jdbcType=VARCHAR}
+      </if>
+      <if test="null != source">
+         and source = #{source,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByPrimaryKeySelective" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserOauthDo" resultMap="BaseResultMap">
+    select  * from xin_user_oauth
+    <include refid="baseQuery" />
+  </select>
+  <select id="selectByPrimaryKeySelectiveList" parameterType="com.xin.commons.multi.shardingjdbc.bean.UserOauthDo" resultMap="BaseResultMap">
+    select  * from xin_user_oauth
+    <include refid="baseQuery" />
+  </select>
+</mapper>

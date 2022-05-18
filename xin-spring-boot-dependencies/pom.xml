@@ -95,10 +95,11 @@
 
         <!-- 数据库操作 相关包-->
         <mysql-connector-java.version>8.0.19</mysql-connector-java.version>
-        <!-- <mysql-connector-java.version>5.1.47</mysql-connector-java.version>-->
         <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
         <pagehelper-spring-boot-starter.version>1.2.13</pagehelper-spring-boot-starter.version>
         <druid-spring-boot-starter.version>1.1.21</druid-spring-boot-starter.version>
+        <sharding-jdbc-spring-namespace.version>4.1.1</sharding-jdbc-spring-namespace.version>
+        <sharding-jdbc-spring-boot-starter.version>4.1.1</sharding-jdbc-spring-boot-starter.version>
 
         <!-- redis相关包 相关包-->
         <jedis.version>3.2.0</jedis.version>
@@ -270,6 +271,17 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid-spring-boot-starter.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.shardingsphere/sharding-jdbc-spring-boot-starter -->
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+                <version>${sharding-jdbc-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-spring-namespace</artifactId>
+                <version>${sharding-jdbc-spring-namespace.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
