@@ -94,7 +94,7 @@
         <spring-cloud-zuul-ratelimit.version>2.4.0.RELEASE</spring-cloud-zuul-ratelimit.version>
 
         <!-- 数据库操作 相关包-->
-        <mysql-connector-java.version>8.0.19</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
         <pagehelper-spring-boot-starter.version>1.2.13</pagehelper-spring-boot-starter.version>
         <druid-spring-boot-starter.version>1.1.21</druid-spring-boot-starter.version>
