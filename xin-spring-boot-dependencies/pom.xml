@@ -117,7 +117,7 @@
         <guava.version>28.2-jre</guava.version>
         <okhttp.version>4.4.1</okhttp.version>
         <fastjson.version>1.2.68</fastjson.version>
-        <jackson.version>2.10.3</jackson.version>
+        <jackson.version>2.13.4.1</jackson.version>
         <jackson-mapper.version>1.9.13</jackson-mapper.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <aspectjrt.version>1.9.6</aspectjrt.version>
