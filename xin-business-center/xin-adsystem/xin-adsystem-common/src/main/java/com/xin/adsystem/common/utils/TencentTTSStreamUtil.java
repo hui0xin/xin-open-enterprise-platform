@@ -26,8 +26,8 @@ public class TencentTTSStreamUtil {
     /**
      * 配置申请的KEY
      */
-    public static final String secretId = "AKIDX0JVBnvYijeOlzxFAvW4RecUBrQqmHKE";
-    public static final String secretKey = "wjKnBQTBpV3QeotnsxwxuwaKtIdv55uH";
+    public static final String secretId = "xxx";
+    public static final String secretKey = "xxx";
     public static final Integer appId = 1255510688;
 
     public static final String host = "tts.cloud.tencent.com";
